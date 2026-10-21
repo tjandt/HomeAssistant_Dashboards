@@ -1,0 +1,222 @@
+title: Energy
+path: energy
+type: sections
+max_columns: 3
+theme: Frosted Glass Dark
+icon: mdi:home-lightning-bolt-outline
+sections:
+  - cards:
+      - type: heading
+        heading: Hauswirtschaft
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: tile
+                entity: switch.waschmaschine
+                name: Waschmaschine
+                icon: mdi:washing-machine
+                color: blue
+              - type: entities
+                entities:
+                  - entity: sensor.waschmaschine_power
+                    name: Power
+                  - entity: sensor.waschmaschine_energy
+                    name: Energy
+          - type: vertical-stack
+            cards:
+              - type: tile
+                entity: switch.trockner
+                name: Trockner
+                icon: mdi:tumble-dryer
+                color: orange
+              - type: entities
+                entities:
+                  - entity: sensor.trockner_power
+                    name: Power
+                  - entity: sensor.trockner_energy
+                    name: Energy
+      - type: entities
+        title: Kühlschrank
+        entities:
+          - entity: sensor.kuhlschrank_power
+            name: '- power'
+          - entity: sensor.kuhlschrank_energy
+            name: '- energy'
+          - entity: sensor.kuhlschrank_current
+            name: '- current'
+          - entity: sensor.kuhlschrank_voltage
+            name: '- voltage'
+          - entity: sensor.kuhlschrank_config_overtemp_type
+            name: Config_overtemp_type
+      - type: entities
+        title: Thermomix
+        entities:
+          - entity: sensor.thermomix_power
+            name: '- power'
+          - entity: sensor.thermomix_energy
+            name: '- energy'
+          - entity: sensor.thermomix_current
+            name: '- current'
+          - entity: sensor.thermomix_voltage
+            name: '- voltage'
+          - entity: sensor.thermomix_consumption
+            name: Consumption
+          - entity: sensor.thermomix_config_overtemp_type
+            name: Config overtemp type
+  - cards:
+      - type: heading
+        heading: Küche & Technik
+      - type: glance
+        title: Aktuelle Watt
+        show_state: true
+        entities:
+          - entity: sensor.kuhlschrank_power
+            name: Kühlschrank
+          - entity: sensor.wohnzimmer_power_consumption
+            name: TV
+          - entity: sensor.kaffeemaschine_power
+            name: Kaffee
+          - entity: sensor.thermomix_power
+            name: Thermomix
+          - entity: sensor.arbeitsplatz_power_2
+            name: Office
+          - entity: sensor.schlafzimmer_energy_power
+            name: Schlafzimmer
+          - entity: sensor.technik_power
+            name: Technik
+          - entity: sensor.shelly_plug_s_shelly_plug_s_power
+            name: Keller
+          - entity: sensor.staubsauger_power
+            name: Server
+          - entity: sensor.trockner_power
+            name: Trockner
+          - entity: sensor.waschmaschine_power
+            name: Waschmaschine
+      - type: entities
+        title: Kaffeemaschine
+        entities:
+          - entity: sensor.kaffeemaschine_power
+            name: '- power'
+          - entity: sensor.kaffeemaschine_energy
+            name: '- energy'
+          - entity: sensor.kaffeemaschine_current
+            name: '- current'
+          - entity: sensor.kaffeemaschine_voltage
+            name: '- voltage'
+  - cards:
+      - type: heading
+        heading: Wohnzimmer & Deko
+      - type: tile
+        entity: switch.wohnzimmer
+        name: Wohnzimmer
+      - type: entities
+        entities:
+          - entity: sensor.wohnzimmer_power_consumption
+            name: Power Consumption
+          - entity: sensor.wohnzimmer_total_energy
+            name: Total Energy
+          - entity: sensor.wohnzimmer_electric_current
+            name: Electric Current
+          - entity: sensor.wohnzimmer_voltage
+            name: Voltage
+      - type: entities
+        title: Schwippbogen & Schneemänner
+        entities:
+          - entity: sensor.wzschwippbogen
+            name: Schwippbogen Verbrauch
+          - entity: sensor.smart_switch_24060472346212510802c4e7ae048cf8_power
+            name: Schwippbogen Power
+          - entity: sensor.schwippschneemann
+            name: Schneemänner Verbrauch
+          - entity: sensor.smart_switch_24060416836319510802c4e7ae048cef_power
+            name: Schneemänner Power
+  - cards:
+      - type: heading
+        heading: Schlafzimmer & Licht
+      - type: entities
+        title: Schlafzimmer Energy
+        entities:
+          - entity: sensor.schlafzimmer_energy_power
+            name: '- power'
+          - entity: sensor.schlafzimmer_energy_energy
+            name: '- energy'
+          - entity: sensor.schlafzimmer_energy_current
+            name: '- current'
+          - entity: sensor.schlafzimmer_energy_voltage
+            name: '- voltage'
+          - entity: sensor.luftreiniger
+          - entity: sensor.ikea_of_sweden_starkvind_air_purifier_table_power
+      - type: entities
+        title: Licht (kWh)
+        entities:
+          - entity: sensor.philips_lwb004_energy
+            name: Schlafzimmer
+          - entity: sensor.philips_lwb004_energy_2
+            name: Buddha
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_806lm_energy
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_clear_250lm_energy
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy
+            name: Küche 1
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_2
+            name: Küche 2
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_3
+            name: Küche 3
+  - cards:
+      - type: heading
+        heading: Technik & Büro
+      - type: entities
+        title: Arbeitsplatz
+        entities:
+          - entity: sensor.arbeitsplatz_power_2
+            name: Power
+          - entity: sensor.arbeitsplatz_energy_2
+            name: Energy
+          - entity: sensor.arbeitsplatz_current_2
+            name: Current
+          - entity: sensor.arbeitsplatz_voltage_2
+            name: Voltage
+          - entity: sensor.arbeitsplatz_consumption_2
+            name: Consumption
+      - type: entities
+        title: Technik Schrank
+        entities:
+          - entity: sensor.technik_power
+            name: '- power'
+          - entity: sensor.technik_energy
+            name: '- energy'
+          - entity: sensor.technik_current
+            name: '- current'
+          - entity: sensor.technik_voltage
+            name: '- voltage'
+      - type: entities
+        title: Keller & Server
+        entities:
+          - entity: sensor.shelly_plug_s_shelly_plug_s_power
+            name: Shelly Power
+          - entity: sensor.shelly_plug_s_shelly_plug_s_current
+            name: Shelly Current
+          - entity: sensor.staubsauger_power
+            name: '- power'
+          - entity: sensor.staubsauger_energy
+            name: '- energy'
+  - cards:
+      - type: heading
+        heading: Equipment & Sonos
+      - type: entities
+        entities:
+          - entity: sensor.frida_energy
+            name: Frida Sonos
+          - entity: sensor.schlafzimmersound_energy
+            name: Schlafzimmer Sonos
+          - entity: sensor.buro_energy_2
+            name: Büro Sonos
+          - entity: sensor.wled_energy
+            name: Office Lightstrip
+          - entity: sensor.nachttisch_energy
+            name: Nachttisch Light
+visible:
+  - user: 091148952dfb4a85a202d471674871af
+cards: []

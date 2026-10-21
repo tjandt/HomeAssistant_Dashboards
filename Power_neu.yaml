@@ -1,0 +1,655 @@
+# =============================================================================
+#  Strom Melsungen – Neuentwurf der Ansicht "Energy"
+# =============================================================================
+#  Einrichtung (Ansicht ersetzen):
+#    Dashboard bearbeiten → Tab "Energy" → Stift-Symbol (Ansicht bearbeiten)
+#    → ⋮ → "In YAML bearbeiten" → gesamten Inhalt dieser Datei einfügen → Speichern.
+#  Benötigte Frontend-Karten (HACS): mushroom, mini-graph-card, apexcharts-card.
+#  Strompreis für die Kostenrechnung: in den Templates "Standby-Check" und
+#  "Dauerläufer" die Variable  price  ändern (aktuell 0.35 €/kWh).
+# =============================================================================
+title: Strom
+path: energy
+icon: mdi:home-lightning-bolt-outline
+type: sections
+max_columns: 4
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading: Jetzt
+        heading_style: title
+        icon: mdi:flash
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Steckdosen gesamt
+            secondary: "{{ ([states('sensor.waschmaschine_power'),states('sensor.trockner_power'),states('sensor.kuhlschrank_power'),states('sensor.thermomix_power'),states('sensor.kaffeemaschine_power'),states('sensor.wohnzimmer_power_consumption'),states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power'),states('sensor.schlafzimmer_energy_power'),states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power'),states('sensor.arbeitsplatz_power_2'),states('sensor.technik_power'),states('sensor.shelly_plug_s_shelly_plug_s_power'),states('sensor.staubsauger_power')]|map('float', 0)|sum)|round(0)|int }} W"
+            icon: mdi:flash-circle
+            icon_color: "{% set p = [states('sensor.waschmaschine_power'),states('sensor.trockner_power'),states('sensor.kuhlschrank_power'),states('sensor.thermomix_power'),states('sensor.kaffeemaschine_power'),states('sensor.wohnzimmer_power_consumption'),states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power'),states('sensor.schlafzimmer_energy_power'),states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power'),states('sensor.arbeitsplatz_power_2'),states('sensor.technik_power'),states('sensor.shelly_plug_s_shelly_plug_s_power'),states('sensor.staubsauger_power')]|map('float', 0)|sum %}{% if p < 300 %}green{% elif p < 800 %}amber{% else %}orange{% endif %}"
+            layout: vertical
+            tap_action:
+              action: none
+          - type: custom:mushroom-template-card
+            primary: Größter Verbraucher
+            secondary: "{% set ns = namespace(n='', p=0) %}{% for n, e in [('Waschmaschine','sensor.waschmaschine_power'),('Trockner','sensor.trockner_power'),('Kühlschrank','sensor.kuhlschrank_power'),('Thermomix','sensor.thermomix_power'),('Kaffeemaschine','sensor.kaffeemaschine_power'),('Wohnzimmer / TV','sensor.wohnzimmer_power_consumption'),('Schwippbogen','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),('Schneemänner','sensor.smart_switch_24060416836319510802c4e7ae048cef_power'),('Schlafzimmer','sensor.schlafzimmer_energy_power'),('Luftreiniger (Starkvind)','sensor.ikea_of_sweden_starkvind_air_purifier_table_power'),('Arbeitsplatz','sensor.arbeitsplatz_power_2'),('Technik-Schrank','sensor.technik_power'),('Keller (Shelly)','sensor.shelly_plug_s_shelly_plug_s_power'),('Server (Plug „Staubsauger“)','sensor.staubsauger_power')] %}{% set p = states(e)|float(0) %}{% if p > ns.p %}{% set ns.p = p %}{% set ns.n = n %}{% endif %}{% endfor %}{{ (ns.n ~ ' · ' ~ (ns.p|round(0)|int) ~ ' W') if ns.p >= 1 else 'nichts nennenswert' }}"
+            icon: mdi:podium-gold
+            icon_color: amber
+            layout: vertical
+            tap_action:
+              action: none
+            multiline_secondary: true
+          - type: custom:mushroom-template-card
+            primary: Aktive Geräte
+            secondary: "{% set ns = namespace(c=0) %}{% for e in ['sensor.waschmaschine_power','sensor.trockner_power','sensor.kuhlschrank_power','sensor.thermomix_power','sensor.kaffeemaschine_power','sensor.wohnzimmer_power_consumption','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power','sensor.smart_switch_24060416836319510802c4e7ae048cef_power','sensor.schlafzimmer_energy_power','sensor.ikea_of_sweden_starkvind_air_purifier_table_power','sensor.arbeitsplatz_power_2','sensor.technik_power','sensor.shelly_plug_s_shelly_plug_s_power','sensor.staubsauger_power'] %}{% if states(e)|float(0) > 5 %}{% set ns.c = ns.c + 1 %}{% endif %}{% endfor %}{{ ns.c }} von 14 Geräten aktiv"
+            icon: mdi:power-plug
+            icon_color: blue
+            layout: vertical
+            tap_action:
+              action: none
+            multiline_secondary: true
+          - type: custom:mushroom-template-card
+            primary: Dauerläufer
+            secondary: "{{ ([states('sensor.kuhlschrank_power'),states('sensor.technik_power'),states('sensor.shelly_plug_s_shelly_plug_s_power'),states('sensor.staubsauger_power')]|map('float', 0)|sum)|round(0)|int }} W"
+            icon: mdi:autorenew
+            icon_color: purple
+            layout: vertical
+            tap_action:
+              action: none
+      - type: markdown
+        content: ℹ️ *Summe der gemessenen Steckdosen – nicht der Hausverbrauch (Heizung, Beleuchtung, Herd, nicht gemessene Geräte fehlen).*
+      - type: custom:mushroom-template-card
+        primary: Standby-Check
+        secondary: |-
+          {% set price = 0.35 %}
+          {% set ns = namespace(l=[], w=0) %}
+          {% for n, e in [('Waschmaschine','sensor.waschmaschine_power'),('Trockner','sensor.trockner_power'),('Thermomix','sensor.thermomix_power'),('Kaffeemaschine','sensor.kaffeemaschine_power'),('Wohnzimmer / TV','sensor.wohnzimmer_power_consumption'),('Schwippbogen','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),('Schneemänner','sensor.smart_switch_24060416836319510802c4e7ae048cef_power'),('Schlafzimmer','sensor.schlafzimmer_energy_power'),('Luftreiniger (Starkvind)','sensor.ikea_of_sweden_starkvind_air_purifier_table_power'),('Arbeitsplatz','sensor.arbeitsplatz_power_2')] %}
+          {% set p = states(e)|float(0) %}{% if p >= 0.5 and p < 20 %}{% set ns.l = ns.l + [n ~ ' ' ~ (p|round(1)) ~ ' W'] %}{% set ns.w = ns.w + p %}{% endif %}
+          {% endfor %}
+          {% if ns.l %}Mögliche Standby-Verbraucher (0,5–20 W): {{ ns.l|join(', ') }} – zusammen {{ ns.w|round(1) }} W ≈ {{ (ns.w * 8.76 * price)|round(0)|int }} € pro Jahr bei {{ price }} €/kWh.{% else %}Keine auffälligen Standby-Verbraucher.{% endif %}
+        icon: mdi:sleep
+        icon_color: "{% set ns = namespace(w=0) %}{% for e in ['sensor.waschmaschine_power','sensor.trockner_power','sensor.thermomix_power','sensor.kaffeemaschine_power','sensor.wohnzimmer_power_consumption','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power','sensor.smart_switch_24060416836319510802c4e7ae048cef_power','sensor.schlafzimmer_energy_power','sensor.ikea_of_sweden_starkvind_air_purifier_table_power','sensor.arbeitsplatz_power_2'] %}{% set p = states(e)|float(0) %}{% if p >= 0.5 and p < 20 %}{% set ns.w = ns.w + p %}{% endif %}{% endfor %}{{ 'green' if ns.w < 10 else ('amber' if ns.w < 30 else 'orange') }}"
+        layout: horizontal
+        tap_action:
+          action: none
+        multiline_secondary: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Ranking – wer zieht gerade Strom?
+        heading_style: title
+        icon: mdi:format-list-numbered
+      - type: markdown
+        content: |-
+          {% set ns = namespace(l=[], tot=0) %}
+          {% for n, e in [('Waschmaschine','sensor.waschmaschine_power'),('Trockner','sensor.trockner_power'),('Kühlschrank','sensor.kuhlschrank_power'),('Thermomix','sensor.thermomix_power'),('Kaffeemaschine','sensor.kaffeemaschine_power'),('Wohnzimmer / TV','sensor.wohnzimmer_power_consumption'),('Schwippbogen','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),('Schneemänner','sensor.smart_switch_24060416836319510802c4e7ae048cef_power'),('Schlafzimmer','sensor.schlafzimmer_energy_power'),('Luftreiniger (Starkvind)','sensor.ikea_of_sweden_starkvind_air_purifier_table_power'),('Arbeitsplatz','sensor.arbeitsplatz_power_2'),('Technik-Schrank','sensor.technik_power'),('Keller (Shelly)','sensor.shelly_plug_s_shelly_plug_s_power'),('Server (Plug „Staubsauger“)','sensor.staubsauger_power')] %}
+          {% set p = states(e)|float(0) %}{% set ns.l = ns.l + [{'n': n, 'p': p}] %}{% set ns.tot = ns.tot + p %}
+          {% endfor %}
+          {% set mx = ns.l|map(attribute='p')|max %}
+          {% if mx < 1 %}Alle gemessenen Geräte unter 1 W.{% else %}
+          **Summe: {{ ns.tot|round(0)|int }} W**
+
+          | Gerät | Leistung | |
+          |---|--:|---|
+          {%- for x in ns.l|sort(attribute='p', reverse=true) %}
+          {%- if x.p >= 1 %}
+          | {{ x.n }} | {{ x.p|round(0)|int }} W | {{ '█' * ([(x.p / mx * 12)|round(0)|int, 1]|max) }} |
+          {%- endif %}
+          {%- endfor %}
+          {% endif %}
+      - type: custom:apexcharts-card
+        chart_type: donut
+        header:
+          show: true
+          title: Verteilung jetzt
+          show_states: false
+        apex_config:
+          legend:
+            position: bottom
+        series:
+          - entity: sensor.waschmaschine_power
+            name: Waschmaschine
+            show:
+              legend_value: true
+          - entity: sensor.trockner_power
+            name: Trockner
+            show:
+              legend_value: true
+          - entity: sensor.kuhlschrank_power
+            name: Kühlschrank
+            show:
+              legend_value: true
+          - entity: sensor.thermomix_power
+            name: Thermomix
+            show:
+              legend_value: true
+          - entity: sensor.kaffeemaschine_power
+            name: Kaffeemaschine
+            show:
+              legend_value: true
+          - entity: sensor.wohnzimmer_power_consumption
+            name: Wohnzimmer / TV
+            show:
+              legend_value: true
+          - entity: sensor.smart_switch_24060472346212510802c4e7ae048cf8_power
+            name: Schwippbogen
+            show:
+              legend_value: true
+          - entity: sensor.smart_switch_24060416836319510802c4e7ae048cef_power
+            name: Schneemänner
+            show:
+              legend_value: true
+          - entity: sensor.schlafzimmer_energy_power
+            name: Schlafzimmer
+            show:
+              legend_value: true
+          - entity: sensor.ikea_of_sweden_starkvind_air_purifier_table_power
+            name: Luftreiniger (Starkvind)
+            show:
+              legend_value: true
+          - entity: sensor.arbeitsplatz_power_2
+            name: Arbeitsplatz
+            show:
+              legend_value: true
+          - entity: sensor.technik_power
+            name: Technik-Schrank
+            show:
+              legend_value: true
+          - entity: sensor.shelly_plug_s_shelly_plug_s_power
+            name: Keller (Shelly)
+            show:
+              legend_value: true
+          - entity: sensor.staubsauger_power
+            name: Server (Plug „Staubsauger“)
+            show:
+              legend_value: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Hauswirtschaft & Küche
+        heading_style: title
+        icon: mdi:washing-machine
+      - type: custom:mushroom-template-card
+        primary: Summe
+        secondary: "{{ ([states('sensor.waschmaschine_power'),states('sensor.trockner_power'),states('sensor.kuhlschrank_power'),states('sensor.thermomix_power'),states('sensor.kaffeemaschine_power')]|map('float', 0)|sum)|round(0)|int }} W"
+        icon: mdi:sigma
+        icon_color: amber
+        layout: horizontal
+        tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Waschmaschine
+        secondary: "{{ ((states('sensor.waschmaschine_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.waschmaschine_power')) else '–') }} · {{ ((states('sensor.waschmaschine_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.waschmaschine_energy')) else '–') }}"
+        icon: mdi:washing-machine
+        icon_color: "{% set p = states('sensor.waschmaschine_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: switch.waschmaschine
+        tap_action:
+          action: toggle
+          confirmation:
+            text: Steckdose „Waschmaschine“ wirklich schalten? Ein laufender Vorgang würde unterbrochen.
+        hold_action: &id001
+          action: more-info
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Trockner
+        secondary: "{{ ((states('sensor.trockner_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.trockner_power')) else '–') }} · {{ ((states('sensor.trockner_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.trockner_energy')) else '–') }}"
+        icon: mdi:tumble-dryer
+        icon_color: "{% set p = states('sensor.trockner_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: switch.trockner
+        tap_action:
+          action: toggle
+          confirmation:
+            text: Steckdose „Trockner“ wirklich schalten? Ein laufender Vorgang würde unterbrochen.
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Kühlschrank
+        secondary: "{{ ((states('sensor.kuhlschrank_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.kuhlschrank_power')) else '–') }} · {{ ((states('sensor.kuhlschrank_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.kuhlschrank_energy')) else '–') }}"
+        icon: mdi:fridge
+        icon_color: "{% set p = states('sensor.kuhlschrank_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.kuhlschrank_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Thermomix
+        secondary: "{{ ((states('sensor.thermomix_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.thermomix_power')) else '–') }} · {{ ((states('sensor.thermomix_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.thermomix_energy')) else '–') }}"
+        icon: mdi:blender
+        icon_color: "{% set p = states('sensor.thermomix_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.thermomix_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Kaffeemaschine
+        secondary: "{{ ((states('sensor.kaffeemaschine_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.kaffeemaschine_power')) else '–') }} · {{ ((states('sensor.kaffeemaschine_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.kaffeemaschine_energy')) else '–') }}"
+        icon: mdi:coffee-maker
+        icon_color: "{% set p = states('sensor.kaffeemaschine_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.kaffeemaschine_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Wohnen & Deko
+        heading_style: title
+        icon: mdi:sofa-outline
+      - type: custom:mushroom-template-card
+        primary: Summe
+        secondary: "{{ ([states('sensor.wohnzimmer_power_consumption'),states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power'),states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power')]|map('float', 0)|sum)|round(0)|int }} W"
+        icon: mdi:sigma
+        icon_color: amber
+        layout: horizontal
+        tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Wohnzimmer / TV
+        secondary: "{{ ((states('sensor.wohnzimmer_power_consumption')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.wohnzimmer_power_consumption')) else '–') }} · {{ ((states('sensor.wohnzimmer_total_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.wohnzimmer_total_energy')) else '–') }}"
+        icon: mdi:television
+        icon_color: "{% set p = states('sensor.wohnzimmer_power_consumption')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: switch.wohnzimmer
+        tap_action:
+          action: toggle
+          confirmation:
+            text: Steckdose „Wohnzimmer / TV“ wirklich schalten? Ein laufender Vorgang würde unterbrochen.
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Schwippbogen
+        secondary: "{{ ((states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power')) else '–') }} · {{ ((states('sensor.wzschwippbogen')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.wzschwippbogen')) else '–') }}"
+        icon: mdi:string-lights
+        icon_color: "{% set p = states('sensor.smart_switch_24060472346212510802c4e7ae048cf8_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.smart_switch_24060472346212510802c4e7ae048cf8_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Schneemänner
+        secondary: "{{ ((states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power')) else '–') }} · {{ ((states('sensor.schwippschneemann')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.schwippschneemann')) else '–') }}"
+        icon: mdi:snowman
+        icon_color: "{% set p = states('sensor.smart_switch_24060416836319510802c4e7ae048cef_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.smart_switch_24060416836319510802c4e7ae048cef_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Schlafen & Luft
+        heading_style: title
+        icon: mdi:bed-outline
+      - type: custom:mushroom-template-card
+        primary: Summe
+        secondary: "{{ ([states('sensor.schlafzimmer_energy_power'),states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power')]|map('float', 0)|sum)|round(0)|int }} W"
+        icon: mdi:sigma
+        icon_color: amber
+        layout: horizontal
+        tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Schlafzimmer
+        secondary: "{{ ((states('sensor.schlafzimmer_energy_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.schlafzimmer_energy_power')) else '–') }} · {{ ((states('sensor.schlafzimmer_energy_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.schlafzimmer_energy_energy')) else '–') }}"
+        icon: mdi:bed
+        icon_color: "{% set p = states('sensor.schlafzimmer_energy_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.schlafzimmer_energy_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Luftreiniger (Starkvind)
+        secondary: "{{ ((states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power')) else '–') }}"
+        icon: mdi:air-purifier
+        icon_color: "{% set p = states('sensor.ikea_of_sweden_starkvind_air_purifier_table_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.ikea_of_sweden_starkvind_air_purifier_table_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Büro, Technik & Keller
+        heading_style: title
+        icon: mdi:desktop-classic
+      - type: custom:mushroom-template-card
+        primary: Summe
+        secondary: "{{ ([states('sensor.arbeitsplatz_power_2'),states('sensor.technik_power'),states('sensor.shelly_plug_s_shelly_plug_s_power'),states('sensor.staubsauger_power')]|map('float', 0)|sum)|round(0)|int }} W"
+        icon: mdi:sigma
+        icon_color: amber
+        layout: horizontal
+        tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        primary: Arbeitsplatz
+        secondary: "{{ ((states('sensor.arbeitsplatz_power_2')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.arbeitsplatz_power_2')) else '–') }} · {{ ((states('sensor.arbeitsplatz_energy_2')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.arbeitsplatz_energy_2')) else '–') }}"
+        icon: mdi:desktop-tower-monitor
+        icon_color: "{% set p = states('sensor.arbeitsplatz_power_2')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.arbeitsplatz_power_2
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Technik-Schrank
+        secondary: "{{ ((states('sensor.technik_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.technik_power')) else '–') }} · {{ ((states('sensor.technik_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.technik_energy')) else '–') }}"
+        icon: mdi:router-network
+        icon_color: "{% set p = states('sensor.technik_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.technik_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Keller (Shelly)
+        secondary: "{{ ((states('sensor.shelly_plug_s_shelly_plug_s_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.shelly_plug_s_shelly_plug_s_power')) else '–') }}"
+        icon: mdi:stairs-down
+        icon_color: "{% set p = states('sensor.shelly_plug_s_shelly_plug_s_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.shelly_plug_s_shelly_plug_s_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+      - type: custom:mushroom-template-card
+        primary: Server (Plug „Staubsauger“)
+        secondary: "{{ ((states('sensor.staubsauger_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.staubsauger_power')) else '–') }} · {{ ((states('sensor.staubsauger_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.staubsauger_energy')) else '–') }}"
+        icon: mdi:server
+        icon_color: "{% set p = states('sensor.staubsauger_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+        layout: horizontal
+        entity: sensor.staubsauger_power
+        tap_action: *id001
+        hold_action: *id001
+        multiline_secondary: true
+  - type: grid
+    cards:
+      - type: heading
+        heading: Verlauf
+        heading_style: title
+        icon: mdi:chart-bar
+      - type: custom:mini-graph-card
+        name: Leistung der großen Verbraucher (24 h)
+        icon: mdi:flash
+        hours_to_show: 24
+        points_per_hour: 4
+        line_width: 2
+        smoothing: false
+        entities:
+          - entity: sensor.waschmaschine_power
+            name: Waschmaschine
+            color: '#4c78a8'
+          - entity: sensor.trockner_power
+            name: Trockner
+            color: '#f58518'
+          - entity: sensor.kuhlschrank_power
+            name: Kühlschrank
+            color: '#e45756'
+          - entity: sensor.thermomix_power
+            name: Thermomix
+            color: '#72b7b2'
+          - entity: sensor.kaffeemaschine_power
+            name: Kaffeemaschine
+            color: '#54a24b'
+          - entity: sensor.wohnzimmer_power_consumption
+            name: Wohnzimmer / TV
+            color: '#eeca3b'
+          - entity: sensor.arbeitsplatz_power_2
+            name: Arbeitsplatz
+            color: '#b279a2'
+        show:
+          legend: true
+          labels: false
+          fill: false
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          title: Verbrauch je Tag (kWh, 14 Tage, gestapelt)
+          show_states: false
+        graph_span: 14d
+        span:
+          end: day
+        apex_config:
+          chart:
+            stacked: true
+          xaxis:
+            labels:
+              format: dd.MM
+          legend:
+            show: true
+        series:
+          - entity: sensor.waschmaschine_energy
+            name: Waschmaschine
+            type: column
+            color: '#4c78a8'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.trockner_energy
+            name: Trockner
+            type: column
+            color: '#f58518'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.kuhlschrank_energy
+            name: Kühlschrank
+            type: column
+            color: '#e45756'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.thermomix_energy
+            name: Thermomix
+            type: column
+            color: '#72b7b2'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.kaffeemaschine_energy
+            name: Kaffeemaschine
+            type: column
+            color: '#54a24b'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.wohnzimmer_total_energy
+            name: Wohnzimmer / TV
+            type: column
+            color: '#eeca3b'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.wzschwippbogen
+            name: Schwippbogen
+            type: column
+            color: '#b279a2'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.schwippschneemann
+            name: Schneemänner
+            type: column
+            color: '#ff9da6'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.schlafzimmer_energy_energy
+            name: Schlafzimmer
+            type: column
+            color: '#9d755d'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.arbeitsplatz_energy_2
+            name: Arbeitsplatz
+            type: column
+            color: '#bab0ac'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.technik_energy
+            name: Technik-Schrank
+            type: column
+            color: '#4c78a8'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.staubsauger_energy
+            name: Server
+            type: column
+            color: '#f58518'
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+      - type: statistics-graph
+        title: Verbrauch je Monat (kWh, 12 Monate)
+        chart_type: bar
+        period: month
+        days_to_show: 365
+        stat_types:
+          - change
+        entities:
+          - entity: sensor.waschmaschine_energy
+            name: Waschmaschine
+          - entity: sensor.trockner_energy
+            name: Trockner
+          - entity: sensor.kuhlschrank_energy
+            name: Kühlschrank
+          - entity: sensor.thermomix_energy
+            name: Thermomix
+          - entity: sensor.kaffeemaschine_energy
+            name: Kaffeemaschine
+          - entity: sensor.wohnzimmer_total_energy
+            name: Wohnzimmer / TV
+          - entity: sensor.wzschwippbogen
+            name: Schwippbogen
+          - entity: sensor.schwippschneemann
+            name: Schneemänner
+          - entity: sensor.schlafzimmer_energy_energy
+            name: Schlafzimmer
+          - entity: sensor.arbeitsplatz_energy_2
+            name: Arbeitsplatz
+          - entity: sensor.technik_energy
+            name: Technik-Schrank
+          - entity: sensor.staubsauger_energy
+            name: Server
+    column_span: 2
+  - type: grid
+    cards:
+      - type: heading
+        heading: Kosten & Einsparpotenzial
+        heading_style: title
+        icon: mdi:cash-multiple
+      - type: markdown
+        title: Dauerläufer – Hochrechnung bei aktueller Leistung
+        content: |-
+          {% set price = 0.35 %}
+          {% set ns = namespace(w=0) %}
+          | Gerät | Leistung jetzt | kWh/Jahr | €/Jahr |
+          |---|--:|--:|--:|
+          {%- for n, e in [('Kühlschrank','sensor.kuhlschrank_power'),('Technik-Schrank','sensor.technik_power'),('Keller (Shelly)','sensor.shelly_plug_s_shelly_plug_s_power'),('Server (Plug „Staubsauger“)','sensor.staubsauger_power')] %}
+          {%- set p = states(e)|float(0) %}{%- set ns.w = ns.w + p %}
+          | {{ n }} | {{ p|round(0)|int }} W | {{ (p * 8.76)|round(0)|int }} | {{ (p * 8.76 * price)|round(0)|int }} |
+          {%- endfor %}
+          | **Summe** | **{{ ns.w|round(0)|int }} W** | **{{ (ns.w * 8.76)|round(0)|int }}** | **{{ (ns.w * 8.76 * price)|round(0)|int }}** |
+      - type: markdown
+        content: '*Annahme: **0.35 €/kWh** (im Template als Variable `price` anpassbar). Die Hochrechnung nimmt an, dass die aktuelle Leistung das ganze Jahr anliegt – beim Kühlschrank schwankt sie mit dem Kompressor, daher nur Größenordnung. Als Dauerläufer gelten: Kühlschrank, Technik-Schrank, Keller, Server.*'
+  - type: grid
+    cards:
+      - type: heading
+        heading: Zähler (kWh gesamt seit Inbetriebnahme)
+        heading_style: title
+        icon: mdi:counter
+      - type: entities
+        title: Licht
+        show_header_toggle: false
+        entities:
+          - entity: sensor.philips_lwb004_energy
+            name: Schlafzimmer (Philips)
+          - entity: sensor.philips_lwb004_energy_2
+            name: Buddha (Philips)
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_806lm_energy
+            name: E27 806 lm
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_clear_250lm_energy
+            name: E27 Filament 250 lm
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy
+            name: Küche 1
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_2
+            name: Küche 2
+          - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_3
+            name: Küche 3
+      - type: entities
+        title: Audio & Beleuchtung
+        show_header_toggle: false
+        entities:
+          - entity: sensor.frida_energy
+            name: Sonos Frida
+          - entity: sensor.schlafzimmersound_energy
+            name: Sonos Schlafzimmer
+          - entity: sensor.buro_energy_2
+            name: Sonos Büro
+          - entity: sensor.wled_energy
+            name: Office-Lightstrip (WLED)
+          - entity: sensor.nachttisch_energy
+            name: Nachttisch-Licht
+      - type: entities
+        title: Weitere Zähler
+        show_header_toggle: false
+        entities:
+          - entity: sensor.luftreiniger
+            name: Luftreiniger (Zähler/Statistik)
+          - entity: sensor.thermomix_consumption
+            name: Thermomix – Verbrauch gesamt
+          - entity: sensor.arbeitsplatz_consumption_2
+            name: Arbeitsplatz – Verbrauch gesamt
+          - entity: sensor.wzschwippbogen
+            name: Schwippbogen – Verbrauch
+          - entity: sensor.schwippschneemann
+            name: Schneemänner – Verbrauch
+  - type: grid
+    cards:
+      - type: heading
+        heading: Elektrische Details
+        heading_style: title
+        icon: mdi:table
+      - type: markdown
+        title: Alle Steckdosen (Leistung · Strom · Spannung · Zähler)
+        content: |-
+          {% set plugs = [('Waschmaschine','sensor.waschmaschine_power','','','sensor.waschmaschine_energy'),('Trockner','sensor.trockner_power','','','sensor.trockner_energy'),('Kühlschrank','sensor.kuhlschrank_power','sensor.kuhlschrank_current','sensor.kuhlschrank_voltage','sensor.kuhlschrank_energy'),('Thermomix','sensor.thermomix_power','sensor.thermomix_current','sensor.thermomix_voltage','sensor.thermomix_energy'),('Kaffeemaschine','sensor.kaffeemaschine_power','sensor.kaffeemaschine_current','sensor.kaffeemaschine_voltage','sensor.kaffeemaschine_energy'),('Wohnzimmer / TV','sensor.wohnzimmer_power_consumption','sensor.wohnzimmer_electric_current','sensor.wohnzimmer_voltage','sensor.wohnzimmer_total_energy'),('Schwippbogen','sensor.smart_switch_24060472346212510802c4e7ae048cf8_power','','','sensor.wzschwippbogen'),('Schneemänner','sensor.smart_switch_24060416836319510802c4e7ae048cef_power','','','sensor.schwippschneemann'),('Schlafzimmer','sensor.schlafzimmer_energy_power','sensor.schlafzimmer_energy_current','sensor.schlafzimmer_energy_voltage','sensor.schlafzimmer_energy_energy'),('Luftreiniger (Starkvind)','sensor.ikea_of_sweden_starkvind_air_purifier_table_power','','',''),('Arbeitsplatz','sensor.arbeitsplatz_power_2','sensor.arbeitsplatz_current_2','sensor.arbeitsplatz_voltage_2','sensor.arbeitsplatz_energy_2'),('Technik-Schrank','sensor.technik_power','sensor.technik_current','sensor.technik_voltage','sensor.technik_energy'),('Keller (Shelly)','sensor.shelly_plug_s_shelly_plug_s_power','sensor.shelly_plug_s_shelly_plug_s_current','',''),('Server (Plug „Staubsauger“)','sensor.staubsauger_power','','','sensor.staubsauger_energy')] %}
+          | Gerät | Leistung | Strom | Spannung | Zähler |
+          |---|--:|--:|--:|--:|
+          {%- for n, p, c, v, e in plugs %}
+          | {{ n }} | {{ (states(p)|float|round(0)|int|string ~ ' W') if is_number(states(p)) else '–' }} | {{ (states(c)|float|round(2)|string ~ ' A') if c != '' and is_number(states(c)) else '–' }} | {{ (states(v)|float|round(0)|int|string ~ ' V') if v != '' and is_number(states(v)) else '–' }} | {{ (states(e)|float|round(1)|string ~ ' kWh') if e != '' and is_number(states(e)) else '–' }} |
+          {%- endfor %}
+      - type: entities
+        title: Technische Zusatzwerte
+        show_header_toggle: false
+        entities:
+          - entity: sensor.kuhlschrank_config_overtemp_type
+            name: Kühlschrank – Übertemperatur-Modus
+          - entity: sensor.thermomix_config_overtemp_type
+            name: Thermomix – Übertemperatur-Modus
+visible:
+  - user: 091148952dfb4a85a202d471674871af
