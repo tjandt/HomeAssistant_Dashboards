@@ -1,0 +1,1848 @@
+# =============================================================================
+#  Rochlitz – eigenständiges Home-Assistant-Dashboard (Neuentwurf von Rochlitz_view.yaml)
+# =============================================================================
+#  Einrichtung:  Einstellungen → Dashboards → Dashboard hinzufügen
+#                Titel "Rochlitz", URL "dashboard-rochlitz" → öffnen → ⋮ → Roh-Konfigurationseditor
+#                → gesamten Inhalt dieser Datei einfügen.
+#  Anderer URL-Pfad?  sed -i 's#/dashboard-rochlitz/#/MEIN-PFAD/#g' Rochlitz_neu.yaml
+#
+#  Benötigte Frontend-Karten (HACS): mushroom, mini-graph-card, apexcharts-card.
+#  Nur für einzelne Karten: landroid-card, flightradar-flight-card (wie im Original).
+#  Nicht mehr nötig: layout-card (horizontal-layout), bar-card, Theme "Liquid Glass".
+#  Alle Ansichten sind – wie im Original – für alle Dashboard-Nutzer sichtbar.
+# =============================================================================
+title: Rochlitz
+views:
+  - title: Übersicht
+    path: uebersicht
+    icon: mdi:view-dashboard-outline
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Rochlitz heute
+            heading_style: title
+            icon: mdi:home-variant-outline
+          - type: custom:mushroom-title-card
+            title: Rochlitz
+            subtitle: "{{ ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'][now().weekday()] }}, {{ now().day }}. {{ ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][now().month - 1] }} {{ now().year }}"
+          - type: markdown
+            title: Was braucht Aufmerksamkeit?
+            content: |-
+              {% set ns = namespace(h=[], t=[], d=[], dead=[]) %}
+              {% for n, e in [('Wohnzimmer','sensor.rochlitz_wohnzimmer_temperatur'),('Oma','sensor.rochlitz_oma_temperatur'),('Tilo','sensor.indoor_temperature'),('Büro','sensor.esp32c3_rl_buro_temperature_2')] %}{% if is_number(states(e)) and states(e)|float < 5 %}{% set ns.h = ns.h + ['🥶 Frostgefahr ' ~ n ~ ': ' ~ (states(e)|float|round(1)) ~ ' °C'] %}{% endif %}{% endfor %}
+              {% if is_number(states('sensor.rochlitz_oma_temperatur')) and states('sensor.rochlitz_oma_temperatur')|float < 18 %}{% set ns.h = ns.h + ['👵 Oma-Zimmer nur ' ~ (states('sensor.rochlitz_oma_temperatur')|float|round(1)) ~ ' °C (Soll ≥ 20 °C)'] %}{% endif %}
+              {% for n, e in [('Wohnzimmer','sensor.rochlitz_wohnzimmer_luftfeuchtigkeit'),('Oma','sensor.rochlitz_oma_luftfeuchtigkeit'),('Tilo','sensor.indoor_humidity'),('Büro','sensor.esp32c3_rl_buro_humidity_2')] %}{% if states(e)|float(0) > 65 %}{% set ns.h = ns.h + ['💧 Luft zu feucht ' ~ n ~ ': ' ~ (states(e)|float|round(0)|int) ~ ' %'] %}{% endif %}{% endfor %}
+              {% if is_number(states('sensor.uvr16x2_node_2_analog_logging_2')) and states('sensor.uvr16x2_node_2_analog_logging_2')|float < 35 %}{% set ns.h = ns.h + ['🚿 Warmwasser nur ' ~ (states('sensor.uvr16x2_node_2_analog_logging_2')|float|round(1)) ~ ' °C'] %}{% endif %}
+              {% if states('sensor.aeg_backofen_upperoven_appliancestate')|lower == 'running' %}{% set ns.h = ns.h + ['🥘 Backofen ist in Betrieb (' ~ states('sensor.aeg_backofen_upperoven_displaytemperaturec') ~ ' °C)'] %}{% endif %}
+              {% if is_state('binary_sensor.kaffeevollautomat_konnektivitat','off') %}{% set ns.h = ns.h + ['☕ Kaffeevollautomat offline'] %}{% endif %}
+              {% if states('camera.eingang') == 'unavailable' %}{% set ns.h = ns.h + ['📷 Kamera „Eingang“ offline'] %}{% endif %}
+              {% if states('camera.hintereingang') == 'unavailable' %}{% set ns.h = ns.h + ['📷 Kamera „Hintereingang“ offline'] %}{% endif %}
+              {% if states('sensor.rochlitz_kuhlschrank_power') == 'unavailable' %}{% set ns.h = ns.h + ['🧊 Kühlschrank-Messung offline'] %}{% endif %}
+              {% if is_state('binary_sensor.aeg_backofen_cleaningreminder','on') %}{% set ns.h = ns.h + ['🧽 Backofen: Reinigung fällig'] %}{% endif %}
+              {% if is_state('binary_sensor.aeg_backofen_descalingreminderstate','on') %}{% set ns.h = ns.h + ['🧽 Backofen: Entkalken fällig'] %}{% endif %}
+              {% if states('sensor.rochlitz_serverraum_serverraum_temperatur')|float(0) > 30 %}{% set ns.t = ns.t + ['🖥️ Serverraum warm: ' ~ (states('sensor.rochlitz_serverraum_serverraum_temperatur')|float|round(1)) ~ ' °C'] %}{% endif %}
+              {% if is_state('binary_sensor.rochlitznas_sicherheitsstatus','on') %}{% set ns.t = ns.t + ['🛡️ RochlitzNAS: Sicherheitsstatus auffällig'] %}{% endif %}
+              {% if is_state('binary_sensor.rochlitznas_drive_1_max_fehlerhafte_sektoren_uberschritten','on') %}{% set ns.t = ns.t + ['💾 RochlitzNAS: zu viele defekte Sektoren'] %}{% endif %}
+              {% if is_state('binary_sensor.rochlitznas_drive_1_unterhalb_der_mindestrestlebensdauer','on') %}{% set ns.t = ns.t + ['💾 RochlitzNAS: Platte unter Mindest-Restlebensdauer'] %}{% endif %}
+              {% if states('sensor.rochlitznas_drive_1_temperatur')|float(0) > 50 %}{% set ns.t = ns.t + ['🌡️ RochlitzNAS: Festplatte ' ~ (states('sensor.rochlitznas_drive_1_temperatur')|float|round(0)|int) ~ ' °C'] %}{% endif %}
+              {% if states('sensor.rochlitznas_cpu_auslastung_gesamt')|float(0) > 90 %}{% set ns.t = ns.t + ['🧠 RochlitzNAS: CPU-Last über 90 %'] %}{% endif %}
+              {% if states('sensor.rochlitznas_speichernutzung_real')|float(0) > 90 %}{% set ns.t = ns.t + ['🧠 RochlitzNAS: RAM über 90 %'] %}{% endif %}
+              {% for n, e in [('Wohnzimmer','sensor.rochlitz_wohnzimmer_temperatur'),('Oma','sensor.rochlitz_oma_temperatur'),('Tilo','sensor.indoor_temperature'),('Büro','sensor.esp32c3_rl_buro_temperature_2'),('Serverraum','sensor.rochlitz_serverraum_serverraum_temperatur'),('Außen','sensor.temperature_humidity_sensor_7cd9_temperature'),('Warmwasser','sensor.uvr16x2_node_2_analog_logging_2'),('Kollektor','sensor.uvr16x2_node_2_input_7'),('Kessel','sensor.uvr16x2_node_2_input_1'),('Speicher oben','sensor.uvr16x2_node_2_input_2'),('Speicher unten','sensor.uvr16x2_node_2_input_4'),('Kühlschrank','sensor.rochlitz_kuhlschrank_power'),('Oma-Steckdose','sensor.smart_switch_24060408263254510802c4e7ae048e5e_power'),('NAS','sensor.rochlitznas_cpu_auslastung_gesamt')] %}{% if states(e) in ['unavailable','unknown'] %}{% set ns.dead = ns.dead + [n] %}{% endif %}{% endfor %}
+              {% if ns.dead %}{% set ns.d = ['Keine Messwerte: ' ~ ns.dead|join(', ')] %}{% endif %}
+              {% set total = ns.h|length + ns.t|length + ns.d|length %}
+              {% if total == 0 %}✅ **Alles unauffällig** – Rochlitz läuft normal.{% else %}
+              {% if ns.h %}**🏡 Haus**
+              {% for x in ns.h %}- {{ x }}
+              {% endfor %}
+              {% endif %}
+              {% if ns.t %}**🖥️ Technik**
+              {% for x in ns.t %}- {{ x }}
+              {% endfor %}
+              {% endif %}
+              {% if ns.d %}**📡 Datenqualität**
+              {% for x in ns.d %}- {{ x }}
+              {% endfor %}
+              {% endif %}
+              {% endif %}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Raumklima
+            heading_style: title
+            icon: mdi:home-thermometer-outline
+            badges:
+              - type: entity
+                entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                show_state: true
+                show_icon: true
+                icon: mdi:tree-outline
+                color: orange
+              - type: entity
+                entity: sensor.temperature_humidity_sensor_7cd9_humidity
+                show_state: true
+                show_icon: true
+                icon: mdi:water-percent
+                color: blue
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/klima
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Wohnzimmer
+                secondary: "{{ ((states('sensor.rochlitz_wohnzimmer_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_wohnzimmer_temperatur')) else '–') }} · {{ ((states('sensor.rochlitz_wohnzimmer_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_wohnzimmer_luftfeuchtigkeit')) else '–') }}"
+                icon: mdi:sofa-outline
+                icon_color: "{% set t = states('sensor.rochlitz_wohnzimmer_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.rochlitz_wohnzimmer_temperatur
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/klima
+              - type: custom:mushroom-template-card
+                primary: Oma
+                secondary: "{{ ((states('sensor.rochlitz_oma_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_oma_temperatur')) else '–') }} · {{ ((states('sensor.rochlitz_oma_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_oma_luftfeuchtigkeit')) else '–') }}"
+                icon: mdi:human-cane
+                icon_color: "{% set t = states('sensor.rochlitz_oma_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.rochlitz_oma_temperatur
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/klima
+              - type: custom:mushroom-template-card
+                primary: Tilo
+                secondary: "{{ ((states('sensor.indoor_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.indoor_temperature')) else '–') }} · {{ ((states('sensor.indoor_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.indoor_humidity')) else '–') }}"
+                icon: mdi:bed-outline
+                icon_color: "{% set t = states('sensor.indoor_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.indoor_temperature
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/klima
+              - type: custom:mushroom-template-card
+                primary: Büro
+                secondary: "{{ ((states('sensor.esp32c3_rl_buro_temperature_2')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.esp32c3_rl_buro_temperature_2')) else '–') }} · {{ ((states('sensor.esp32c3_rl_buro_humidity_2')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.esp32c3_rl_buro_humidity_2')) else '–') }}"
+                icon: mdi:desk
+                icon_color: "{% set t = states('sensor.esp32c3_rl_buro_temperature_2')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.esp32c3_rl_buro_temperature_2
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/klima
+              - type: custom:mushroom-template-card
+                primary: Serverraum
+                secondary: "{{ ((states('sensor.rochlitz_serverraum_serverraum_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_serverraum_serverraum_temperatur')) else '–') }} · {{ ((states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')) else '–') }}"
+                icon: mdi:server
+                icon_color: "{% set t = states('sensor.rochlitz_serverraum_serverraum_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 15 %}blue{% elif t < 18 %}cyan{% elif t < 26 %}green{% elif t < 30 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/klima
+          - type: custom:mushroom-template-card
+            primary: Außen
+            secondary: "{{ ((states('sensor.temperature_humidity_sensor_7cd9_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.temperature_humidity_sensor_7cd9_temperature')) else '–') }} · {{ ((states('sensor.temperature_humidity_sensor_7cd9_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.temperature_humidity_sensor_7cd9_humidity')) else '–') }} · Dach {{ ((states('sensor.uvr16x2_node_2_analog_logging_5')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_analog_logging_5')) else '–') }}"
+            icon: mdi:tree-outline
+            icon_color: "{% set t = states('sensor.temperature_humidity_sensor_7cd9_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 0 %}indigo{% elif t < 10 %}blue{% elif t < 20 %}green{% elif t < 28 %}orange{% else %}red{% endif %}"
+            layout: horizontal
+            entity: sensor.temperature_humidity_sensor_7cd9_temperature
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/klima
+      - type: grid
+        cards:
+          - type: heading
+            heading: Heizung & Warmwasser
+            heading_style: title
+            icon: mdi:fire
+            badges:
+              - type: entity
+                entity: sensor.uvr16x2_node_2_input_7
+                show_state: true
+                show_icon: true
+                icon: mdi:solar-power
+                color: orange
+              - type: entity
+                entity: sensor.uvr16x2_node_2_analog_logging_2
+                show_state: true
+                show_icon: true
+                icon: mdi:water-boiler
+                color: red
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/heizung
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Warmwasser
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_analog_logging_2')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_analog_logging_2')) else '–') }}"
+                icon: mdi:water-boiler
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_analog_logging_2')|float(none) %}{% if t is none %}disabled{% elif t < 35 %}blue{% elif t < 45 %}orange{% elif t < 60 %}red{% else %}purple{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_analog_logging_2
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/heizung
+              - type: custom:mushroom-template-card
+                primary: Kollektor
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_input_7')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_input_7')) else '–') }}"
+                icon: mdi:solar-power
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% if t is none %}disabled{% elif t < 30 %}blue{% elif t < 60 %}amber{% elif t < 90 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_input_7
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/heizung
+          - type: custom:mushroom-template-card
+            primary: Solar-Ladung
+            secondary: |-
+              {% set k = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% set s = states('sensor.uvr16x2_node_2_input_4')|float(none) %}
+              {% if none in [k, s] %}Keine Messwerte{% else %}
+              Δ Kollektor – Speicher unten: {{ (k - s)|round(1) }} K
+              {% if k - s > 8 %} · Solar lädt vermutlich{% elif k - s > 3 %} · Anlauf möglich{% else %} · keine Ladung{% endif %}
+              {% endif %}
+            icon: mdi:solar-power
+            icon_color: |-
+              {% set k = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% set s = states('sensor.uvr16x2_node_2_input_4')|float(none) %}
+              {% if none in [k, s] %}disabled{% elif k - s > 8 %}orange{% elif k - s > 3 %}amber{% else %}grey{% endif %}
+            layout: horizontal
+            entity: sensor.uvr16x2_node_2_input_7
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/heizung
+            multiline_secondary: true
+          - type: custom:mushroom-template-card
+            primary: Kessel
+            secondary: |-
+              {% set v = states('sensor.uvr16x2_node_2_input_1')|float(none) %}{% set o = states('sensor.uvr16x2_node_2_input_2')|float(none) %}
+              {% if none in [v, o] %}Keine Messwerte{% else %}
+              Vorlauf {{ v|round(1) }} °C · Speicher oben {{ o|round(1) }} °C
+              {% if v - o > 10 %} · Kessel lädt vermutlich{% elif v - o < -5 %} · Speicher gibt Wärme ab{% else %} · Gleichgewicht{% endif %}
+              {% endif %}
+            icon: mdi:fire
+            icon_color: |-
+              {% set v = states('sensor.uvr16x2_node_2_input_1')|float(none) %}{% set o = states('sensor.uvr16x2_node_2_input_2')|float(none) %}
+              {% if none in [v, o] %}disabled{% elif v - o > 10 %}red{% else %}grey{% endif %}
+            layout: horizontal
+            entity: sensor.uvr16x2_node_2_input_1
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/heizung
+            multiline_secondary: true
+          - type: custom:mini-graph-card
+            name: Warmwasser 48 h
+            icon: mdi:water-boiler
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_2
+            hours_to_show: 48
+            points_per_hour: 0.75
+            line_width: 2
+            smoothing: true
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+            show:
+              fill: fade
+              extrema: true
+              labels: false
+            height: 60
+      - type: grid
+        cards:
+          - type: heading
+            heading: Strom
+            heading_style: title
+            icon: mdi:flash-outline
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/strom
+          - type: custom:mushroom-template-card
+            primary: Steckdosen gesamt
+            secondary: "{{ ([states('sensor.rochlitz_kuhlschrank_power'),states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power'),states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power'),states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power'),states('sensor.kaffeemaschine_rochlitz_power'),states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power'),states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power'),states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power')]|map('float', 0)|sum)|round(0)|int }} W gemessen (ohne Heizung/Licht)"
+            icon: mdi:flash-circle
+            icon_color: amber
+            layout: horizontal
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/strom
+            multiline_secondary: true
+          - type: custom:apexcharts-card
+            chart_type: donut
+            header:
+              show: true
+              title: Leistung jetzt
+              show_states: false
+            apex_config:
+              legend:
+                position: bottom
+            series:
+              - entity: sensor.rochlitz_kuhlschrank_power
+                name: Kühlschrank
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+                name: Oma
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+                name: Waschmaschine
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+                name: Computer
+                show:
+                  legend_value: true
+              - entity: sensor.kaffeemaschine_rochlitz_power
+                name: Kaffeemaschine
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+                name: Wohnzimmer
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+                name: Tilo
+                show:
+                  legend_value: true
+              - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+                name: Büro / Musik
+                show:
+                  legend_value: true
+      - type: grid
+        cards:
+          - type: heading
+            heading: Haus & Sicherheit
+            heading_style: title
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-rochlitz/haus
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Kaffee
+                secondary: "{{ states('select.kaffeevollautomat_aktives_programm') }} · {{ 'online' if is_state('binary_sensor.kaffeevollautomat_konnektivitat','on') else 'offline' }}"
+                icon: mdi:coffee-maker
+                icon_color: "{{ 'brown' if is_state('switch.kaffeevollautomat_einschalter','on') else 'disabled' }}"
+                layout: vertical
+                entity: switch.kaffeevollautomat_einschalter
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/haus
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Backofen
+                secondary: "{{ states('sensor.aeg_backofen_upperoven_appliancestate') }} · {{ ((states('sensor.aeg_backofen_upperoven_displaytemperaturec')|float|round(0)|int|string) ~ ' °C' if is_number(states('sensor.aeg_backofen_upperoven_displaytemperaturec')) else '–') }}"
+                icon: mdi:stove
+                icon_color: "{{ 'red' if states('sensor.aeg_backofen_upperoven_appliancestate')|lower == 'running' else 'disabled' }}"
+                layout: vertical
+                entity: sensor.aeg_backofen_upperoven_appliancestate
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/haus
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Mähroboter
+                secondary: "{{ states('lawn_mower.bennivision_cloud') }}"
+                icon: mdi:robot-mower-outline
+                icon_color: "{{ 'green' if is_state('lawn_mower.bennivision_cloud','mowing') else 'disabled' }}"
+                layout: vertical
+                entity: lawn_mower.bennivision_cloud
+                tap_action: &id001
+                  action: more-info
+              - type: custom:mushroom-template-card
+                primary: NAS
+                secondary: "CPU {{ ((states('sensor.rochlitznas_cpu_auslastung_gesamt')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitznas_cpu_auslastung_gesamt')) else '–') }} · RAM {{ ((states('sensor.rochlitznas_speichernutzung_real')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitznas_speichernutzung_real')) else '–') }}"
+                icon: mdi:nas
+                icon_color: "{{ 'red' if is_state('binary_sensor.rochlitznas_sicherheitsstatus','on') else 'green' }}"
+                layout: vertical
+                entity: binary_sensor.rochlitznas_sicherheitsstatus
+                tap_action:
+                  action: navigate
+                  navigation_path: /dashboard-rochlitz/technik
+                multiline_secondary: true
+          - type: picture-entity
+            entity: camera.eingang
+            name: Eingang
+            camera_view: auto
+          - type: custom:mini-graph-card
+            name: Mulde · Wechselburg (Pegel 7 Tage)
+            entities:
+              - entity: sensor.wechselburg_mulde_pegelstand
+                color: '#2a9d8f'
+            hours_to_show: 168
+            points_per_hour: 0.5
+            line_width: 2
+            font_size: 70
+            height: 45
+            smoothing: true
+            show:
+              icon: true
+              name: true
+              state: true
+              legend: false
+              labels: false
+              extrema: true
+              fill: fade
+            icon: mdi:waves
+  - title: Klima
+    path: klima
+    icon: mdi:home-thermometer-outline
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Räume im Detail
+            heading_style: title
+            icon: mdi:home-thermometer-outline
+            badges:
+              - type: entity
+                entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                show_state: true
+                show_icon: true
+                icon: mdi:tree-outline
+                color: orange
+              - type: entity
+                entity: sensor.temperature_humidity_sensor_7cd9_humidity
+                show_state: true
+                show_icon: true
+                icon: mdi:water-percent
+                color: blue
+          - type: markdown
+            title: Komfort-Check
+            content: |-
+              {% set rooms = [('Wohnzimmer','sensor.rochlitz_wohnzimmer_temperatur','sensor.rochlitz_wohnzimmer_luftfeuchtigkeit',18,24,35,60),('Oma','sensor.rochlitz_oma_temperatur','sensor.rochlitz_oma_luftfeuchtigkeit',20,24,35,60),('Tilo','sensor.indoor_temperature','sensor.indoor_humidity',18,24,35,60),('Büro','sensor.esp32c3_rl_buro_temperature_2','sensor.esp32c3_rl_buro_humidity_2',18,25,35,60),('Serverraum','sensor.rochlitz_serverraum_serverraum_temperatur','sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit',12,28,15,70)] %}
+              | Raum | Temperatur | Feuchte | Bewertung |
+              |---|--:|--:|---|
+              {%- for n, t, h, lo, hi, hlo, hhi in rooms %}
+              {%- set tv = states(t)|float(none) %}{%- set hv = states(h)|float(none) %}
+              | {{ n }} | {{ (tv|round(1)|string ~ ' °C') if tv is not none else '–' }} | {{ (hv|round(0)|int|string ~ ' %') if hv is not none else '–' }} | {{ '⚪ keine Daten' if tv is none else ('🔵 zu kühl' if tv < lo else ('🟠 zu warm' if tv > hi else ('💧 zu feucht' if (hv is not none and hv > hhi) else ('🏜️ zu trocken' if (hv is not none and hv < hlo) else '🟢 gut')))) }} |
+              {%- endfor %}
+      - type: grid
+        cards:
+          - type: heading
+            heading: Letzte 48 Stunden
+            heading_style: title
+            icon: mdi:chart-line
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Wohnzimmer
+                    secondary: "{{ ((states('sensor.rochlitz_wohnzimmer_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_wohnzimmer_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_wohnzimmer_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_wohnzimmer_luftfeuchtigkeit')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_wohnzimmer_luftdruck')|float|round(0)|int|string) ~ ' hPa' if is_number(states('sensor.rochlitz_wohnzimmer_luftdruck')) else '–') }}"
+                    icon: mdi:sofa-outline
+                    icon_color: "{% set t = states('sensor.rochlitz_wohnzimmer_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.rochlitz_wohnzimmer_temperatur
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.rochlitz_wohnzimmer_temperatur
+                        color: '#e8714a'
+                      - entity: sensor.rochlitz_wohnzimmer_luftfeuchtigkeit
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Oma
+                    secondary: "{{ ((states('sensor.rochlitz_oma_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_oma_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_oma_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_oma_luftfeuchtigkeit')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_oma_luftdruck')|float|round(0)|int|string) ~ ' hPa' if is_number(states('sensor.rochlitz_oma_luftdruck')) else '–') }}"
+                    icon: mdi:human-cane
+                    icon_color: "{% set t = states('sensor.rochlitz_oma_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.rochlitz_oma_temperatur
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.rochlitz_oma_temperatur
+                        color: '#e8714a'
+                      - entity: sensor.rochlitz_oma_luftfeuchtigkeit
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Tilo
+                    secondary: "{{ ((states('sensor.indoor_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.indoor_temperature')) else '–') ~ ' · ' ~ ((states('sensor.indoor_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.indoor_humidity')) else '–') }}"
+                    icon: mdi:bed-outline
+                    icon_color: "{% set t = states('sensor.indoor_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.indoor_temperature
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.indoor_temperature
+                        color: '#e8714a'
+                      - entity: sensor.indoor_humidity
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Büro
+                    secondary: "{{ ((states('sensor.esp32c3_rl_buro_temperature_2')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.esp32c3_rl_buro_temperature_2')) else '–') ~ ' · ' ~ ((states('sensor.esp32c3_rl_buro_humidity_2')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.esp32c3_rl_buro_humidity_2')) else '–') ~ ' · ' ~ ((states('sensor.esp32c3_rl_buro_pressure_2')|float|round(0)|int|string) ~ ' hPa' if is_number(states('sensor.esp32c3_rl_buro_pressure_2')) else '–') }}"
+                    icon: mdi:desk
+                    icon_color: "{% set t = states('sensor.esp32c3_rl_buro_temperature_2')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.esp32c3_rl_buro_temperature_2
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.esp32c3_rl_buro_temperature_2
+                        color: '#e8714a'
+                      - entity: sensor.esp32c3_rl_buro_humidity_2
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Serverraum
+                    secondary: "{{ ((states('sensor.rochlitz_serverraum_serverraum_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_serverraum_serverraum_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')) else '–') }}"
+                    icon: mdi:server
+                    icon_color: "{% set t = states('sensor.rochlitz_serverraum_serverraum_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 15 %}blue{% elif t < 18 %}cyan{% elif t < 26 %}green{% elif t < 30 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                        color: '#e8714a'
+                      - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Außen
+                    secondary: "{{ ((states('sensor.temperature_humidity_sensor_7cd9_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.temperature_humidity_sensor_7cd9_temperature')) else '–') ~ ' · ' ~ ((states('sensor.temperature_humidity_sensor_7cd9_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.temperature_humidity_sensor_7cd9_humidity')) else '–') }}"
+                    icon: mdi:tree-outline
+                    icon_color: "{% set t = states('sensor.temperature_humidity_sensor_7cd9_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 0 %}indigo{% elif t < 10 %}blue{% elif t < 20 %}green{% elif t < 28 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                        color: '#e8714a'
+                      - entity: sensor.temperature_humidity_sensor_7cd9_humidity
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+              - type: custom:mini-graph-card
+                name: Dach (Außen, Heizungs-Fühler)
+                entities:
+                  - entity: sensor.uvr16x2_node_2_analog_logging_5
+                    color: '#e8714a'
+                hours_to_show: 48
+                points_per_hour: 1
+                line_width: 2
+                font_size: 70
+                height: 50
+                smoothing: true
+                show:
+                  icon: true
+                  name: true
+                  state: true
+                  legend: false
+                  labels: false
+                  extrema: true
+                  fill: fade
+                icon: mdi:home-roof
+          - type: entities
+            title: Weitere Außenfühler
+            show_header_toggle: false
+            entities:
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                name: Außen (Sensor 7cd9) – Temperatur
+              - entity: sensor.temperature_humidity_sensor_7cd9_humidity
+                name: Außen (Sensor 7cd9) – Feuchte
+              - entity: sensor.uvr16x2_node_2_analog_logging_5
+                name: Dach (UVR) – Temperatur
+              - entity: sensor.outdoor_temperature
+                name: Außenfühler Tilo – Temperatur
+              - entity: sensor.outdoor_humidity
+                name: Außenfühler Tilo – Feuchte
+      - type: grid
+        cards:
+          - type: heading
+            heading: Tageswerte (Max / Ø / Min)
+            heading_style: title
+            icon: mdi:calendar-week
+          - type: custom:mini-graph-card
+            name: Wohnzimmer – letzte Woche
+            hours_to_show: 168
+            group_by: date
+            points_per_hour: 0.1
+            line_width: 2
+            entities:
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: avg
+                name: Ø
+                color: '#2ecc71'
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+            show:
+              legend: true
+              labels: true
+          - type: custom:mini-graph-card
+            name: Oma – letzte Woche
+            hours_to_show: 168
+            group_by: date
+            points_per_hour: 0.1
+            line_width: 2
+            entities:
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: avg
+                name: Ø
+                color: '#2ecc71'
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+            show:
+              legend: true
+              labels: true
+          - type: custom:mini-graph-card
+            name: Tilo – letzte Woche
+            hours_to_show: 168
+            group_by: date
+            points_per_hour: 0.1
+            line_width: 2
+            entities:
+              - entity: sensor.indoor_temperature
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.indoor_temperature
+                aggregate_func: avg
+                name: Ø
+                color: '#2ecc71'
+              - entity: sensor.indoor_temperature
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+            show:
+              legend: true
+              labels: true
+          - type: custom:mini-graph-card
+            name: Büro – letzte Woche
+            hours_to_show: 168
+            group_by: date
+            points_per_hour: 0.1
+            line_width: 2
+            entities:
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                aggregate_func: avg
+                name: Ø
+                color: '#2ecc71'
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+            show:
+              legend: true
+              labels: true
+          - type: custom:mini-graph-card
+            name: Außen – letzte Woche
+            hours_to_show: 168
+            group_by: date
+            points_per_hour: 0.1
+            line_width: 2
+            entities:
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: avg
+                name: Ø
+                color: '#2ecc71'
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+            show:
+              legend: true
+              labels: true
+      - type: grid
+        cards:
+          - type: heading
+            heading: Langzeit
+            heading_style: title
+            icon: mdi:chart-timeline-variant
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Temperatur aller Räume (60 Tage, Tagesmittel)
+              show_states: true
+              colorize_states: true
+            graph_span: 60d
+            all_series_config:
+              stroke_width: 1.5
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                name: Wohnzimmer
+                color: '#e07b54'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.rochlitz_oma_temperatur
+                name: Oma
+                color: '#f0c44a'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.indoor_temperature
+                name: Tilo
+                color: '#9b59b6'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                name: Büro
+                color: '#2ecc71'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                name: Serverraum
+                color: '#e74c3c'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                name: Außen
+                color: '#3498db'
+                statistics:
+                  type: mean
+                  period: day
+          - type: statistics-graph
+            title: Oma (90 Tage)
+            chart_type: line
+            period: day
+            days_to_show: 90
+            entities:
+              - sensor.rochlitz_oma_temperatur
+            stat_types:
+              - mean
+              - min
+              - max
+          - type: statistics-graph
+            title: Wohnzimmer (60 Tage)
+            chart_type: line
+            period: day
+            days_to_show: 60
+            entities:
+              - sensor.rochlitz_wohnzimmer_temperatur
+            stat_types:
+              - mean
+              - min
+              - max
+          - type: statistics-graph
+            title: Tilo (35 Tage)
+            chart_type: line
+            period: day
+            days_to_show: 35
+            entities:
+              - sensor.indoor_temperature
+            stat_types:
+              - mean
+              - min
+              - max
+          - type: statistics-graph
+            title: Außen (60 Tage)
+            chart_type: line
+            period: day
+            days_to_show: 60
+            entities:
+              - sensor.temperature_humidity_sensor_7cd9_temperature
+            stat_types:
+              - mean
+              - min
+              - max
+        column_span: 2
+  - title: Heizung
+    path: heizung
+    icon: mdi:fire
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Anlage auf einen Blick
+            heading_style: title
+            icon: mdi:fire
+            badges:
+              - type: entity
+                entity: sensor.uvr16x2_node_2_output_16
+                show_state: true
+                show_icon: true
+                icon: mdi:solar-power
+                color: orange
+              - type: entity
+                entity: binary_sensor.uvr16x2_node_2_output_3
+                show_state: true
+                show_icon: true
+                icon: mdi:pump
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Kollektor
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_input_7')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_input_7')) else '–') }}"
+                icon: mdi:solar-power
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% if t is none %}disabled{% elif t < 30 %}blue{% elif t < 60 %}amber{% elif t < 90 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_input_7
+                tap_action: *id001
+              - type: custom:mushroom-template-card
+                primary: Kessel Vorlauf
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_input_1')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_input_1')) else '–') }}"
+                icon: mdi:fire
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_input_1')|float(none) %}{% if t is none %}disabled{% elif t < 30 %}blue{% elif t < 50 %}amber{% elif t < 70 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_input_1
+                tap_action: *id001
+              - type: custom:mushroom-template-card
+                primary: Speicher oben
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_input_2')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_input_2')) else '–') }}"
+                icon: mdi:water-boiler
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_input_2')|float(none) %}{% if t is none %}disabled{% elif t < 35 %}blue{% elif t < 45 %}orange{% elif t < 60 %}red{% else %}purple{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_input_2
+                tap_action: *id001
+              - type: custom:mushroom-template-card
+                primary: Speicher unten
+                secondary: "{{ ((states('sensor.uvr16x2_node_2_input_4')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.uvr16x2_node_2_input_4')) else '–') }}"
+                icon: mdi:storage-tank
+                icon_color: "{% set t = states('sensor.uvr16x2_node_2_input_4')|float(none) %}{% if t is none %}disabled{% elif t < 25 %}blue{% elif t < 40 %}cyan{% elif t < 55 %}orange{% else %}red{% endif %}"
+                layout: vertical
+                entity: sensor.uvr16x2_node_2_input_4
+                tap_action: *id001
+          - type: custom:mushroom-template-card
+            primary: Solar-Ladung
+            secondary: |-
+              {% set k = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% set s = states('sensor.uvr16x2_node_2_input_4')|float(none) %}
+              {% if none in [k, s] %}Keine Messwerte{% else %}
+              Δ Kollektor – Speicher unten: {{ (k - s)|round(1) }} K
+              {% if k - s > 8 %} · Solar lädt vermutlich{% elif k - s > 3 %} · Anlauf möglich{% else %} · keine Ladung{% endif %}
+              {% endif %}
+            icon: mdi:solar-power
+            icon_color: |-
+              {% set k = states('sensor.uvr16x2_node_2_input_7')|float(none) %}{% set s = states('sensor.uvr16x2_node_2_input_4')|float(none) %}
+              {% if none in [k, s] %}disabled{% elif k - s > 8 %}orange{% elif k - s > 3 %}amber{% else %}grey{% endif %}
+            layout: horizontal
+            entity: sensor.uvr16x2_node_2_input_7
+            tap_action: *id001
+            multiline_secondary: true
+          - type: custom:mushroom-template-card
+            primary: Kessel-Strategie
+            secondary: |-
+              {% set v = states('sensor.uvr16x2_node_2_input_1')|float(none) %}{% set o = states('sensor.uvr16x2_node_2_input_2')|float(none) %}
+              {% if none in [v, o] %}Keine Messwerte{% else %}
+              Vorlauf {{ v|round(1) }} °C · Speicher oben {{ o|round(1) }} °C
+              {% if v - o > 10 %} · Kessel lädt vermutlich{% elif v - o < -5 %} · Speicher gibt Wärme ab{% else %} · Gleichgewicht{% endif %}
+              {% endif %}
+            icon: mdi:fire
+            icon_color: |-
+              {% set v = states('sensor.uvr16x2_node_2_input_1')|float(none) %}{% set o = states('sensor.uvr16x2_node_2_input_2')|float(none) %}
+              {% if none in [v, o] %}disabled{% elif v - o > 10 %}red{% else %}grey{% endif %}
+            layout: horizontal
+            entity: sensor.uvr16x2_node_2_input_1
+            tap_action: *id001
+            multiline_secondary: true
+          - type: markdown
+            content: '*Zuordnung der UVR16x2-Eingänge (1 Kessel-Vorlauf, 2 Speicher oben, 4 Speicher unten, 7 Kollektor) und Schwellen (Solar lädt ab Δ 8 K) sind Annahmen aus dem bisherigen Dashboard – bitte am Reglerschema prüfen.*'
+      - type: grid
+        cards:
+          - type: heading
+            heading: Warmwasser
+            heading_style: title
+            icon: mdi:water-boiler
+          - type: custom:mini-graph-card
+            name: Warmwasser 24 h
+            icon: mdi:water-boiler
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_2
+            hours_to_show: 24
+            points_per_hour: 0.75
+            line_width: 2
+            smoothing: true
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+            show:
+              fill: fade
+              extrema: true
+              labels: false
+          - type: custom:mini-graph-card
+            name: Warmwasser 7 Tage
+            icon: mdi:water-boiler
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_2
+            hours_to_show: 168
+            points_per_hour: 0.5
+            line_width: 2
+            smoothing: true
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+            show:
+              fill: fade
+              extrema: true
+              labels: false
+          - type: statistics-graph
+            title: Warmwasser (14 Tage, stündlich)
+            chart_type: line
+            period: hour
+            days_to_show: 14
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_2
+            stat_types:
+              - mean
+              - min
+              - max
+          - type: markdown
+            content: '**Farbskala:** <30 °C kalt · 35 °C knapp · 40 °C ok · 45 °C gut · ≥55 °C Legionellen-Marke'
+      - type: grid
+        cards:
+          - type: heading
+            heading: Wer heizt wann?
+            heading_style: title
+            icon: mdi:chart-line
+          - type: history-graph
+            title: Kessel vs. Speicher (24 h)
+            hours_to_show: 24
+            entities:
+              - entity: sensor.uvr16x2_node_2_input_1
+                name: Kessel Vorlauf
+              - entity: sensor.uvr16x2_node_2_input_4
+                name: Speicher unten (Rücklauf)
+              - entity: sensor.uvr16x2_node_2_input_2
+                name: Warmwasser (Speicher oben)
+          - type: history-graph
+            title: Pumpen & Ausgänge (24 h)
+            hours_to_show: 24
+            entities:
+              - entity: binary_sensor.uvr16x2_node_2_output_3
+                name: Heizung / Ausgang 3
+              - entity: binary_sensor.uvr16x2_node_2_output_4
+                name: Ausgang 4
+              - entity: binary_sensor.uvr16x2_node_2_output_5
+                name: Ausgang 5
+              - entity: binary_sensor.uvr16x2_node_2_output_6
+                name: Ausgang 6
+              - entity: binary_sensor.uvr16x2_node_2_output_7
+                name: Ausgang 7
+              - entity: binary_sensor.uvr16x2_node_2_output_8
+                name: Ausgang 8
+          - type: custom:mini-graph-card
+            name: Kollektor vs. Außen (48 h)
+            icon: mdi:solar-power
+            hours_to_show: 48
+            points_per_hour: 1
+            line_width: 2
+            smoothing: true
+            entities:
+              - entity: sensor.uvr16x2_node_2_input_7
+                name: Kollektor
+                color: '#f08c00'
+              - entity: sensor.uvr16x2_node_2_analog_logging_5
+                name: Dach / Außen
+                color: '#4c78a8'
+            show:
+              legend: true
+              fill: fade
+              labels: false
+          - type: statistics-graph
+            title: Kollektor (14 Tage)
+            chart_type: line
+            period: hour
+            days_to_show: 14
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_7
+            stat_types:
+              - mean
+              - min
+              - max
+        column_span: 2
+      - type: grid
+        cards:
+          - type: heading
+            heading: Rohwerte UVR16x2
+            heading_style: title
+            icon: mdi:format-list-bulleted
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.uvr16x2_node_2_input_1
+                name: Eingang 1 – Kessel Vorlauf
+              - entity: sensor.uvr16x2_node_2_input_2
+                name: Eingang 2 – Speicher oben
+              - entity: sensor.uvr16x2_node_2_input_4
+                name: Eingang 4 – Speicher unten
+              - entity: sensor.uvr16x2_node_2_input_5
+                name: Eingang 5 – weitere Messung
+              - entity: sensor.uvr16x2_node_2_input_7
+                name: Eingang 7 – Kollektor
+              - type: divider
+              - entity: binary_sensor.uvr16x2_node_2_output_3
+                name: Ausgang 3 (Heizung)
+              - entity: binary_sensor.uvr16x2_node_2_output_4
+                name: Ausgang 4
+              - entity: binary_sensor.uvr16x2_node_2_output_5
+                name: Ausgang 5
+              - entity: binary_sensor.uvr16x2_node_2_output_6
+                name: Ausgang 6
+              - entity: binary_sensor.uvr16x2_node_2_output_7
+                name: Ausgang 7
+              - entity: binary_sensor.uvr16x2_node_2_output_8
+                name: Ausgang 8
+              - entity: sensor.uvr16x2_node_2_output_16
+                name: Ausgang 16 (Solar-Leistung)
+              - type: divider
+              - entity: sensor.uvr16x2_node_2_analog_logging_2
+                name: Logging 2 – Warmwasser
+              - entity: sensor.uvr16x2_node_2_analog_logging_5
+                name: Logging 5 – Dach/Außen
+              - entity: sensor.uvr16x2_node_2_analog_logging_7
+                name: Logging 7 – Kollektor
+              - entity: sensor.node_2_analog_logging_2
+                name: Logging 2 (alter Entity-Name)
+  - title: Strom
+    path: strom
+    icon: mdi:lightning-bolt-outline
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Leistung jetzt
+            heading_style: title
+            icon: mdi:flash
+          - type: custom:mushroom-template-card
+            primary: Steckdosen gesamt
+            secondary: "{{ ([states('sensor.rochlitz_kuhlschrank_power'),states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power'),states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power'),states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power'),states('sensor.kaffeemaschine_rochlitz_power'),states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power'),states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power'),states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power')]|map('float', 0)|sum)|round(0)|int }} W"
+            icon: mdi:flash-circle
+            icon_color: amber
+            layout: vertical
+            tap_action:
+              action: none
+          - type: markdown
+            content: ℹ️ *Summe der 8 gemessenen Steckdosen – nicht der gesamte Hausverbrauch (Heizung, Licht, Herd, Backofen fehlen).*
+          - type: grid
+            columns: 1
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Kühlschrank
+                secondary: "{{ ((states('sensor.rochlitz_kuhlschrank_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.rochlitz_kuhlschrank_power')) else '–') }} · {{ ((states('sensor.rochlitz_kuhlschrank_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.rochlitz_kuhlschrank_current')) else '–') }} · {{ ((states('sensor.rochlitz_kuhlschrank_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.rochlitz_kuhlschrank_voltage')) else '–') }} · {{ ((states('sensor.rochlitz_kuhlschrank_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.rochlitz_kuhlschrank_energy')) else '–') }}"
+                icon: mdi:fridge
+                icon_color: "{% set p = states('sensor.rochlitz_kuhlschrank_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: sensor.rochlitz_kuhlschrank_power
+                tap_action: *id001
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Oma
+                secondary: "{{ ((states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power')) else '–') }} · {{ ((states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_current')) else '–') }} · {{ ((states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_voltage')) else '–') }} · {{ ((states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_energy')) else '–') }}"
+                icon: mdi:human-cane
+                icon_color: "{% set p = states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+                tap_action: *id001
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Waschmaschine
+                secondary: "{{ ((states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power')) else '–') }} · {{ ((states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_current')) else '–') }} · {{ ((states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_voltage')) else '–') }} · {{ ((states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_energy')) else '–') }}"
+                icon: mdi:washing-machine
+                icon_color: "{% set p = states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: switch.smart_switch_24022135042720510d0148e1e9ed26af_outlet
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Computer
+                secondary: "{{ ((states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power')) else '–') }} · {{ ((states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_current')) else '–') }} · {{ ((states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_voltage')) else '–') }} · {{ ((states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_energy')) else '–') }}"
+                icon: mdi:desktop-tower-monitor
+                icon_color: "{% set p = states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: switch.smart_switch_24022139185434510d0148e1e9ed14d7_outlet
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Kaffeemaschine
+                secondary: "{{ ((states('sensor.kaffeemaschine_rochlitz_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.kaffeemaschine_rochlitz_power')) else '–') }}"
+                icon: mdi:coffee-maker
+                icon_color: "{% set p = states('sensor.kaffeemaschine_rochlitz_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: sensor.kaffeemaschine_rochlitz_power
+                tap_action: *id001
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Wohnzimmer
+                secondary: "{{ ((states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power')) else '–') }} · {{ ((states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_current')) else '–') }} · {{ ((states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_voltage')) else '–') }} · {{ ((states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_energy')|float|round(1)|string) ~ ' kWh' if is_number(states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_energy')) else '–') }}"
+                icon: mdi:sofa
+                icon_color: "{% set p = states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: switch.smart_switch_24022106833283510d0148e1e9ed3010_outlet
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Tilo
+                secondary: "{{ ((states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power')) else '–') }} · {{ ((states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_current')) else '–') }} · {{ ((states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_voltage')) else '–') }}"
+                icon: mdi:bed
+                icon_color: "{% set p = states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: switch.smart_switch_23070778577851510d0248e1e9cfc20b_outlet
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+                multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: Büro / Musik
+                secondary: "{{ ((states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power')|float|round(0)|int|string) ~ ' W' if is_number(states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power')) else '–') }} · {{ ((states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_current')|float|round(2)|string) ~ ' A' if is_number(states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_current')) else '–') }} · {{ ((states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_voltage')|float|round(0)|int|string) ~ ' V' if is_number(states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_voltage')) else '–') }}"
+                icon: mdi:speaker
+                icon_color: "{% set p = states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power')|float(0) %}{% if p > 500 %}red{% elif p > 100 %}orange{% elif p > 5 %}amber{% else %}disabled{% endif %}"
+                layout: horizontal
+                entity: switch.smart_switch_23070739203051510d0248e1e9cfc328_outlet
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+                multiline_secondary: true
+      - type: grid
+        cards:
+          - type: heading
+            heading: Verbrauch
+            heading_style: title
+            icon: mdi:chart-bar
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Letzte 7 Tage (kWh/Tag)
+              show_states: true
+              colorize_states: true
+            graph_span: 7d
+            span:
+              end: day
+            show:
+              last_updated: true
+            apex_config:
+              chart:
+                stacked: true
+              xaxis:
+                labels:
+                  format: dd.MM
+              legend:
+                show: true
+            series:
+              - entity: sensor.kuhlschrank_rochlitz
+                name: Kühlschrank
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.oma_verbrauch
+                name: Oma
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.waschmaschine_rochlitz
+                name: Waschmaschine
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.computer_rochlitz
+                name: Computer
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.kaffeemaschine_rochlitz
+                name: Kaffeemaschine
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.wohnzimmer_rochlitz
+                name: Wohnzimmer
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.tilo
+                name: Tilo
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.buro_rochlitz
+                name: Büro / Musik
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+          - type: statistics-graph
+            title: Letzte 24 Stunden (stündlich, kWh)
+            chart_type: bar
+            period: hour
+            days_to_show: 1
+            stat_types:
+              - change
+            entities:
+              - entity: sensor.kuhlschrank_rochlitz_2
+                name: Kühlschrank
+              - entity: sensor.kuhlschrank_vorratsraum
+                name: Kühlschrank Vorratsraum
+              - entity: sensor.tilo
+                name: Tilo
+              - entity: sensor.buro_rochlitz
+                name: Büro/Musik
+              - entity: sensor.computer_rochlitz
+                name: Computer
+              - entity: sensor.wohnzimmer_rochlitz
+                name: Wohnzimmer
+              - entity: sensor.waschmaschine_rochlitz
+                name: Waschmaschine
+          - type: statistics-graph
+            title: Kühlschränke (30 Tage, kWh/Tag)
+            chart_type: bar
+            period: day
+            days_to_show: 30
+            stat_types:
+              - change
+            entities:
+              - entity: sensor.kuhlschrank_rochlitz
+                name: Kühlschrank
+              - entity: sensor.kuhlschrank_vorratsraum
+                name: Vorratsraum
+        column_span: 2
+      - type: grid
+        cards:
+          - type: heading
+            heading: Elektrische Details
+            heading_style: title
+            icon: mdi:table
+          - type: markdown
+            title: Alle Steckdosen
+            content: |-
+              {% set plugs = [('Kühlschrank','sensor.rochlitz_kuhlschrank_power','sensor.rochlitz_kuhlschrank_current','sensor.rochlitz_kuhlschrank_voltage','sensor.rochlitz_kuhlschrank_energy'),('Oma','sensor.smart_switch_24060408263254510802c4e7ae048e5e_power','sensor.smart_switch_24060408263254510802c4e7ae048e5e_current','sensor.smart_switch_24060408263254510802c4e7ae048e5e_voltage','sensor.smart_switch_24060408263254510802c4e7ae048e5e_energy'),('Waschmaschine','sensor.smart_switch_24022135042720510d0148e1e9ed26af_power','sensor.smart_switch_24022135042720510d0148e1e9ed26af_current','sensor.smart_switch_24022135042720510d0148e1e9ed26af_voltage','sensor.smart_switch_24022135042720510d0148e1e9ed26af_energy'),('Computer','sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power','sensor.smart_switch_24022139185434510d0148e1e9ed14d7_current','sensor.smart_switch_24022139185434510d0148e1e9ed14d7_voltage','sensor.smart_switch_24022139185434510d0148e1e9ed14d7_energy'),('Kaffeemaschine','sensor.kaffeemaschine_rochlitz_power','','',''),('Wohnzimmer','sensor.smart_switch_24022106833283510d0148e1e9ed3010_power','sensor.smart_switch_24022106833283510d0148e1e9ed3010_current','sensor.smart_switch_24022106833283510d0148e1e9ed3010_voltage','sensor.smart_switch_24022106833283510d0148e1e9ed3010_energy'),('Tilo','sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power','sensor.smart_switch_23070778577851510d0248e1e9cfc20b_current','sensor.smart_switch_23070778577851510d0248e1e9cfc20b_voltage',''),('Büro / Musik','sensor.smart_switch_23070739203051510d0248e1e9cfc328_power','sensor.smart_switch_23070739203051510d0248e1e9cfc328_current','sensor.smart_switch_23070739203051510d0248e1e9cfc328_voltage','')] %}
+              | Gerät | Leistung | Strom | Spannung | Zähler |
+              |---|--:|--:|--:|--:|
+              {%- for n, p, c, v, e in plugs %}
+              | {{ n }} | {{ (states(p)|float|round(0)|int|string ~ ' W') if is_number(states(p)) else '–' }} | {{ (states(c)|float|round(2)|string ~ ' A') if c != '' and is_number(states(c)) else '–' }} | {{ (states(v)|float|round(0)|int|string ~ ' V') if v != '' and is_number(states(v)) else '–' }} | {{ (states(e)|float|round(1)|string ~ ' kWh') if e != '' and is_number(states(e)) else '–' }} |
+              {%- endfor %}
+          - type: entities
+            title: Kühlschrank (Detail)
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rochlitz_kuhlschrank_power
+                name: Leistung
+              - entity: sensor.rochlitz_kuhlschrank_current
+                name: Strom
+              - entity: sensor.rochlitz_kuhlschrank_voltage
+                name: Spannung
+              - entity: sensor.rochlitz_kuhlschrank_energy
+                name: Energie
+              - entity: sensor.rochlitz_kuhlschrank_consumption
+                name: Verbrauch gesamt
+              - entity: sensor.kuhlschrank_rochlitz
+                name: Statistik-Zähler
+              - entity: sensor.rochlitz_kuhlschrank_config_overtemp_type
+                name: Übertemperatur-Modus
+          - type: entities
+            title: Oma-Steckdose (Detail)
+            show_header_toggle: false
+            entities:
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_consumption
+                name: Verbrauch gesamt
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_config_overtemp_type
+                name: Übertemperatur-Modus
+              - entity: sensor.oma_verbrauch
+                name: Statistik-Zähler
+  - title: Haus
+    path: haus
+    icon: mdi:home-variant-outline
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Kaffeevollautomat
+            heading_style: title
+            icon: mdi:coffee-maker
+            badges:
+              - type: entity
+                entity: binary_sensor.kaffeevollautomat_konnektivitat
+                show_state: true
+                show_icon: true
+                icon: mdi:wifi
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Ein/Aus
+                secondary: "{{ states('switch.kaffeevollautomat_einschalter') }}"
+                icon: mdi:coffee-maker
+                icon_color: "{{ 'brown' if is_state('switch.kaffeevollautomat_einschalter','on') else 'disabled' }}"
+                layout: vertical
+                entity: switch.kaffeevollautomat_einschalter
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+              - type: custom:mushroom-template-card
+                primary: Tassenwärmer
+                secondary: "{{ states('switch.kaffeevollautomat_tassenwarmer') }}"
+                icon: mdi:cup-water
+                icon_color: "{{ 'amber' if is_state('switch.kaffeevollautomat_tassenwarmer','on') else 'disabled' }}"
+                layout: vertical
+                entity: switch.kaffeevollautomat_tassenwarmer
+                tap_action:
+                  action: toggle
+                hold_action: *id001
+              - type: custom:mushroom-template-card
+                primary: Stopp
+                secondary: mit Rückfrage
+                icon: mdi:stop-circle-outline
+                icon_color: red
+                layout: vertical
+                entity: button.kaffeevollautomat_programm_stoppen
+                tap_action:
+                  action: perform-action
+                  perform_action: button.press
+                  target:
+                    entity_id: button.kaffeevollautomat_programm_stoppen
+                  confirmation:
+                    text: Laufendes Kaffeeprogramm stoppen?
+                hold_action: *id001
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: select.kaffeevollautomat_aktives_programm
+                name: Aktives Programm
+              - entity: select.kaffeevollautomat_ausgewahltes_programm
+                name: Ausgewähltes Programm
+              - entity: switch.kaffeevollautomat_kindersicherung
+                name: Kindersicherung
+          - type: glance
+            title: Zähler
+            show_state: true
+            entities:
+              - entity: sensor.kaffeevollautomat_kaffees
+                name: Kaffees
+              - entity: sensor.kaffeevollautomat_kaffee_und_milchtassen
+                name: Mit Milch
+              - entity: sensor.kaffeevollautomat_heisswasser
+                name: Heißwasser
+      - type: grid
+        cards:
+          - type: heading
+            heading: Backofen (AEG)
+            heading_style: title
+            icon: mdi:stove
+            badges:
+              - type: entity
+                entity: sensor.aeg_backofen_upperoven_appliancestate
+                show_state: true
+                show_icon: true
+                icon: mdi:stove
+          - type: gauge
+            entity: sensor.aeg_backofen_upperoven_displaytemperaturec
+            name: Ist-Temperatur
+            min: 0
+            max: 300
+            needle: true
+            severity:
+              green: 0
+              yellow: 100
+              red: 200
+          - type: entities
+            title: Status
+            show_header_toggle: false
+            entities:
+              - entity: sensor.aeg_backofen_upperoven_appliancestate
+                name: Geräte-Status
+              - entity: sensor.aeg_backofen_upperoven_processphase
+                name: Prozessphase
+              - entity: sensor.aeg_backofen_upperoven_runningtime
+                name: Laufzeit
+              - entity: sensor.aeg_backofen_upperoven_timetoend
+                name: Restzeit
+              - entity: sensor.aeg_backofen_upperoven_doorstate
+                name: Tür
+              - entity: sensor.aeg_backofen_upperoven_preheatcomplete
+                name: Vorheizen fertig
+              - entity: sensor.aeg_backofen_upperoven_displayfoodprobetemperaturec
+                name: Kerntemperatur-Fühler
+              - entity: sensor.aeg_backofen_upperoven_foodprobeinsertionstate
+                name: Fühler eingesteckt
+              - entity: sensor.aeg_backofen_upperoven_watertanklevel
+                name: Wassertank
+              - entity: sensor.aeg_backofen_upperoven_watertrayinsertionstate
+                name: Wasserschale
+              - entity: binary_sensor.aeg_backofen_cleaningreminder
+                name: Reinigung fällig
+              - entity: binary_sensor.aeg_backofen_descalingreminderstate
+                name: Entkalken fällig
+          - type: entities
+            title: Steuerung
+            show_header_toggle: false
+            entities:
+              - entity: select.aeg_backofen_upperoven_program
+                name: Programm
+              - entity: number.aeg_backofen_upperoven_targettemperaturec
+                name: Zieltemperatur °C
+              - entity: number.aeg_backofen_upperoven_targetduration
+                name: Laufzeit
+              - entity: number.aeg_backofen_upperoven_targetfoodprobetemperaturec
+                name: Ziel-Kerntemperatur °C
+              - entity: select.aeg_backofen_upperoven_targetdurationendaction
+                name: Aktion nach Laufzeit
+              - entity: select.aeg_backofen_upperoven_targetfoodprobetemperatureendaction
+                name: Aktion bei Kerntemperatur
+              - entity: number.aeg_backofen_upperoven_starttime
+                name: Startzeit
+              - entity: number.aeg_backofen_upperoven_remindertime
+                name: Erinnerung
+              - entity: select.aeg_backofen_upperoven_fastheatupfeature
+                name: Schnellaufheizung
+              - entity: switch.aeg_backofen_upperoven_cavitylight
+                name: Backofenlicht
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-template-card
+                primary: START
+                secondary: mit Rückfrage
+                icon: mdi:play-circle
+                icon_color: red
+                layout: vertical
+                entity: button.aeg_backofen_upperoven_executecommand
+                tap_action:
+                  action: perform-action
+                  perform_action: button.press
+                  target:
+                    entity_id: button.aeg_backofen_upperoven_executecommand
+                  confirmation:
+                    text: Backofen wirklich STARTEN?
+                hold_action: *id001
+              - type: custom:mushroom-template-card
+                primary: STOP / RESET
+                secondary: mit Rückfrage
+                icon: mdi:stop-circle
+                icon_color: red
+                layout: vertical
+                entity: button.aeg_backofen_upperoven_executecommand_2
+                tap_action:
+                  action: perform-action
+                  perform_action: button.press
+                  target:
+                    entity_id: button.aeg_backofen_upperoven_executecommand_2
+                  confirmation:
+                    text: Backofen wirklich STOPPEN / zurücksetzen?
+                hold_action: *id001
+          - type: entities
+            title: Geräteeinstellungen
+            show_header_toggle: false
+            entities:
+              - entity: switch.aeg_backofen_childlock
+                name: Kindersicherung
+              - entity: select.aeg_backofen_clockstyle
+                name: Uhranzeige
+              - entity: select.aeg_backofen_displaylight
+                name: Display-Licht
+              - entity: select.aeg_backofen_soundvolume
+                name: Lautstärke
+              - entity: select.aeg_backofen_keysoundtone
+                name: Tastenton
+              - entity: select.aeg_backofen_language
+                name: Sprache
+              - entity: select.aeg_backofen_localtimeautomaticmode
+                name: Zeit automatisch
+              - entity: number.aeg_backofen_appliancelocaltimeoffset
+                name: Zeit-Offset
+              - entity: sensor.aeg_backofen_remotecontrol
+                name: Fernsteuerung
+              - entity: sensor.aeg_backofen_keymodel
+                name: Modell-Schlüssel
+      - type: grid
+        cards:
+          - type: heading
+            heading: Kameras & Garten
+            heading_style: title
+            icon: mdi:cctv
+          - type: picture-entity
+            entity: camera.eingang
+            name: Eingang
+            camera_view: auto
+          - type: picture-entity
+            entity: camera.hintereingang
+            name: Hintereingang
+            camera_view: auto
+            show_state: true
+            show_name: true
+          - type: custom:landroid-card
+            entity: lawn_mower.bennivision_cloud
+            image: default
+          - type: custom:flightradar-flight-card
+            entities:
+              - entity_id: sensor.flightradar24_current_in_area
+            units:
+              altitude: ft
+              distance: km
+              ground_speed: kts
+            carousel:
+              enable: true
+              show_controls: true
+              loop: false
+              autoplay: false
+            show_flightradar_link: true
+            show_airline_info_column: true
+            show_airline_logo: true
+            show_aircraft_photo: true
+            show_progress_bar: true
+  - title: Technik
+    path: technik
+    icon: mdi:server-network
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: RochlitzNAS
+            heading_style: title
+            icon: mdi:nas
+            badges:
+              - type: entity
+                entity: binary_sensor.rochlitznas_sicherheitsstatus
+                show_state: true
+                show_icon: true
+                icon: mdi:shield-check
+              - type: entity
+                entity: sensor.rochlitznas_drive_1_status
+                show_state: true
+                show_icon: true
+                icon: mdi:harddisk
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: gauge
+                entity: sensor.rochlitznas_cpu_auslastung_gesamt
+                name: CPU
+                min: 0
+                max: 100
+                needle: true
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+              - type: gauge
+                entity: sensor.rochlitznas_speichernutzung_real
+                name: RAM
+                min: 0
+                max: 100
+                needle: true
+                severity:
+                  green: 0
+                  yellow: 70
+                  red: 90
+              - type: gauge
+                entity: sensor.rochlitznas_drive_1_temperatur
+                name: Festplatte °C
+                min: 20
+                max: 70
+                needle: true
+                severity:
+                  green: 20
+                  yellow: 45
+                  red: 55
+          - type: custom:mini-graph-card
+            name: Durchsatz (24 h)
+            icon: mdi:swap-vertical
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            smoothing: true
+            entities:
+              - entity: sensor.rochlitznas_download_durchsatz
+                name: ↓
+                color: '#4c78a8'
+              - entity: sensor.rochlitznas_upload_durchsatz
+                name: ↑
+                color: '#f2b134'
+            show:
+              legend: true
+              fill: fade
+              labels: false
+          - type: custom:mini-graph-card
+            name: CPU & RAM (24 h)
+            icon: mdi:cpu-64-bit
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            smoothing: true
+            entities:
+              - entity: sensor.rochlitznas_cpu_auslastung_gesamt
+                name: CPU
+                color: '#e8714a'
+              - entity: sensor.rochlitznas_speichernutzung_real
+                name: RAM
+                color: '#8e6bbf'
+            show:
+              legend: true
+              fill: fade
+              labels: false
+      - type: grid
+        cards:
+          - type: heading
+            heading: Festplatte (Drive 1)
+            heading_style: title
+            icon: mdi:harddisk
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rochlitznas_drive_1_status
+                name: Status
+              - entity: sensor.rochlitznas_drive_1_temperatur
+                name: Temperatur
+              - entity: binary_sensor.rochlitznas_drive_1_max_fehlerhafte_sektoren_uberschritten
+                name: Defekte Sektoren überschritten (on = Problem)
+              - entity: binary_sensor.rochlitznas_drive_1_unterhalb_der_mindestrestlebensdauer
+                name: Unter Mindest-Restlebensdauer (on = Problem)
+              - entity: binary_sensor.rochlitznas_sicherheitsstatus
+                name: Sicherheitsstatus (on = Problem)
+          - type: markdown
+            content: ⚠️ *Es ist nur **eine** Platte gemeldet – ohne Redundanz ist ein externes Backup die einzige Absicherung.*
+          - type: entities
+            title: Alle NAS-Werte
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rochlitznas_cpu_auslastung_benutzer
+                name: CPU Benutzer
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_5_min
+                name: Load Ø 5 min
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_15_min
+                name: Load Ø 15 min
+              - type: divider
+              - entity: sensor.rochlitznas_speicher_gesamt_real
+                name: RAM gesamt
+              - entity: sensor.rochlitznas_speicher_verfugbar_real
+                name: RAM frei
+              - entity: sensor.rochlitznas_speicher_gesamt_swap
+                name: Swap gesamt
+              - entity: sensor.rochlitznas_speicher_verfugbar_swap
+                name: Swap frei
+      - type: grid
+        cards:
+          - type: heading
+            heading: Serverraum
+            heading_style: title
+            icon: mdi:server
+            badges:
+              - type: entity
+                entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                show_state: true
+                show_icon: true
+                icon: mdi:thermometer
+                color: red
+          - type: grid
+            columns: 1
+            square: false
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    primary: Serverraum
+                    secondary: "{{ ((states('sensor.rochlitz_serverraum_serverraum_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.rochlitz_serverraum_serverraum_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit')) else '–') }}"
+                    icon: mdi:server
+                    icon_color: "{% set t = states('sensor.rochlitz_serverraum_serverraum_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 15 %}blue{% elif t < 18 %}cyan{% elif t < 26 %}green{% elif t < 30 %}orange{% else %}red{% endif %}"
+                    layout: horizontal
+                    entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                    tap_action: *id001
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                        color: '#e8714a'
+                      - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                        color: '#3f8fd2'
+                        y_axis: secondary
+                    hours_to_show: 48
+                    points_per_hour: 2
+                    line_width: 2
+                    height: 45
+                    smoothing: true
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      legend: false
+                      labels: false
+                      extrema: false
+                      fill: fade
+          - type: entities
+            show_header_toggle: false
+            entities:
+              - entity: sensor.rochlitz_serverraum_serverraum_monitor_uptime
+                name: Uptime des Sensor-Moduls
+              - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                name: Temperatur
+              - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                name: Luftfeuchte
