@@ -1,0 +1,811 @@
+# =============================================================================
+#  Raumklima & Luftqualität Melsungen – Neuentwurf der Ansicht "Sensors"
+# =============================================================================
+#  Einrichtung (Ansicht ersetzen):
+#    Dashboard bearbeiten → Tab "Sensors" → Stift-Symbol (Ansicht bearbeiten)
+#    → ⋮ → "In YAML bearbeiten" → gesamten Inhalt dieser Datei einfügen → Speichern.
+#  Benötigte Frontend-Karten (HACS): mushroom, mini-graph-card (beide schon vorhanden).
+#  Keine Navigation / keine URL-Anpassung nötig; Details stehen im unteren Bereich.
+# =============================================================================
+title: Raumklima
+path: sensors
+icon: mdi:home-thermometer-outline
+type: sections
+max_columns: 4
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        heading: Auf einen Blick
+        heading_style: title
+        icon: mdi:home-thermometer-outline
+        badges:
+          - type: entity
+            entity: sensor.balkon_melsungen_temperature
+            show_state: true
+            show_icon: true
+            icon: mdi:tree-outline
+            color: orange
+          - type: entity
+            entity: sensor.balkon_melsungen_humidity
+            show_state: true
+            show_icon: true
+            icon: mdi:water-percent
+            color: blue
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Innen Ø
+            secondary: "{% set l = [states('sensor.wohnzimmer_temperature'),states('sensor.abstellkammer_temperature'),states('sensor.wetterstation_temperature'),states('sensor.bad_temperature'),states('sensor.schlafzimmer_schlafzimmer_temperatur'),states('sensor.frida_temperatur'),states('sensor.kids_matilda_kids_matilda_temperature')]|map('float', none)|reject('none')|list %}{{ ((l|sum/l|length)|round(1)|string ~ ' °C') if l else '–' }}"
+            icon: mdi:home-thermometer-outline
+            icon_color: "{% set l = [states('sensor.wohnzimmer_temperature'),states('sensor.abstellkammer_temperature'),states('sensor.wetterstation_temperature'),states('sensor.bad_temperature'),states('sensor.schlafzimmer_schlafzimmer_temperatur'),states('sensor.frida_temperatur'),states('sensor.kids_matilda_kids_matilda_temperature')]|map('float', none)|reject('none')|list %}{% set t = (l|sum/l|length) if l else none %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+            layout: vertical
+            tap_action:
+              action: none
+          - type: custom:mushroom-template-card
+            primary: Luftfeuchte Ø
+            secondary: "{% set l = [states('sensor.abstellkammer_humidity'),states('sensor.wetterstation_humidity'),states('sensor.bad_humidity'),states('sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit'),states('sensor.frida_luftfeuchtigkeit'),states('sensor.kids_matilda_kids_matilda_humidity')]|map('float', none)|reject('none')|list %}{{ ((l|sum/l|length)|round(0)|int|string ~ ' %') if l else '–' }}"
+            icon: mdi:water-percent
+            icon_color: "{% set l = [states('sensor.abstellkammer_humidity'),states('sensor.wetterstation_humidity'),states('sensor.bad_humidity'),states('sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit'),states('sensor.frida_luftfeuchtigkeit'),states('sensor.kids_matilda_kids_matilda_humidity')]|map('float', none)|reject('none')|list %}{% set t = (l|sum/l|length) if l else none %}{% if t is none %}disabled{% elif t < 30 %}orange{% elif t < 40 %}amber{% elif t < 60 %}green{% elif t < 70 %}orange{% else %}red{% endif %}"
+            layout: vertical
+            tap_action:
+              action: none
+          - type: custom:mushroom-template-card
+            primary: CO₂ max
+            secondary: "{% set l = [states('sensor.office_co2_office_eco2'),states('sensor.wetterstation_co2'),states('sensor.schlafzimmer_schlafzimmer_co2_equivalent'),states('sensor.frida_frida_co2_equivalent_2')]|map('float', none)|reject('none')|list %}{{ ((l|max)|round(0)|int|string ~ ' ppm') if l else '–' }}"
+            icon: mdi:molecule-co2
+            icon_color: "{% set l = [states('sensor.office_co2_office_eco2'),states('sensor.wetterstation_co2'),states('sensor.schlafzimmer_schlafzimmer_co2_equivalent'),states('sensor.frida_frida_co2_equivalent_2')]|map('float', none)|reject('none')|list %}{% set t = l|max if l else none %}{% if t is none %}disabled{% elif t < 800 %}green{% elif t < 1200 %}amber{% elif t < 1600 %}orange{% else %}red{% endif %}"
+            layout: vertical
+            tap_action:
+              action: none
+          - type: custom:mushroom-template-card
+            primary: Außen
+            secondary: "{{ ((states('sensor.balkon_melsungen_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.balkon_melsungen_temperature')) else '–') }} · {{ ((states('sensor.balkon_melsungen_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.balkon_melsungen_humidity')) else '–') }}"
+            icon: mdi:tree-outline
+            icon_color: "{% set t = states('sensor.balkon_melsungen_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 0 %}indigo{% elif t < 10 %}blue{% elif t < 20 %}green{% elif t < 28 %}orange{% else %}red{% endif %}"
+            layout: vertical
+            entity: sensor.balkon_melsungen_temperature
+            tap_action: &id001
+              action: more-info
+      - type: markdown
+        title: Meldungen
+        content: |-
+          {% set ns = namespace(m=[], dead=[]) %}
+          {% for n, e in [('Arbeitszimmer','sensor.office_co2_office_eco2'),('Küche','sensor.wetterstation_co2'),('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_co2_equivalent'),('Frida','sensor.frida_frida_co2_equivalent_2')] %}{% if states(e)|float(0) > 1400 %}{% set ns.m = ns.m + ['💨 CO₂ ' ~ n ~ ': ' ~ (states(e)|float|round(0)|int) ~ ' ppm – bitte lüften'] %}{% endif %}{% endfor %}
+          {% for n, e in [('Arbeitszimmer','sensor.abstellkammer_humidity'),('Küche','sensor.wetterstation_humidity'),('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit'),('Frida','sensor.frida_luftfeuchtigkeit'),('Matilda','sensor.kids_matilda_kids_matilda_humidity')] %}{% if states(e)|float(0) > 65 %}{% set ns.m = ns.m + ['💧 Luft zu feucht in ' ~ n ~ ': ' ~ (states(e)|float|round(0)|int) ~ ' %'] %}{% endif %}{% endfor %}
+          {% for n, e in [('Wohnzimmer','sensor.wohnzimmer_temperature'),('Arbeitszimmer','sensor.abstellkammer_temperature'),('Küche','sensor.wetterstation_temperature'),('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_temperatur'),('Frida','sensor.frida_temperatur'),('Matilda','sensor.kids_matilda_kids_matilda_temperature')] %}{% if is_number(states(e)) and states(e)|float < 16 %}{% set ns.m = ns.m + ['🥶 ' ~ n ~ ' kühl: ' ~ (states(e)|float|round(1)) ~ ' °C'] %}{% endif %}{% endfor %}
+          {% for n, e in [('Wohnzimmer','sensor.wohnzimmer_temperature'),('Arbeitszimmer','sensor.abstellkammer_temperature'),('Küche','sensor.wetterstation_temperature'),('Bad','sensor.bad_temperature'),('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_temperatur'),('Frida','sensor.frida_temperatur'),('Matilda','sensor.kids_matilda_kids_matilda_temperature'),('Keller','sensor.keller_bme280_temperature'),('Balkon','sensor.balkon_melsungen_temperature'),('Wetterstation Balkon','sensor.wetterstation_wetterstation_wetterstation_balkon_temperature')] %}{% if states(e) in ['unavailable','unknown'] %}{% set ns.dead = ns.dead + [n] %}{% endif %}{% endfor %}
+          {% if ns.dead %}{% set ns.m = ns.m + ['📡 Keine Messwerte: ' ~ ns.dead|join(', ')] %}{% endif %}
+          {% if ns.m %}{% for x in ns.m %}- {{ x }}
+          {% endfor %}{% else %}✅ **Alles im grünen Bereich** – keine Meldungen zu Raumklima und Luftqualität.{% endif %}
+  - type: grid
+    cards:
+      - type: heading
+        heading: Räume – letzte 24 Stunden
+        heading_style: title
+        icon: mdi:floor-plan
+      - type: grid
+        columns: 3
+        square: false
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Wohnzimmer
+                secondary: "{{ ((states('sensor.wohnzimmer_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.wohnzimmer_temperature')) else '–') }}"
+                icon: mdi:sofa-outline
+                icon_color: "{% set t = states('sensor.wohnzimmer_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.wohnzimmer_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.wohnzimmer_temperature
+                    color: '#e8714a'
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Arbeitszimmer
+                secondary: "{{ ((states('sensor.abstellkammer_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.abstellkammer_temperature')) else '–') ~ ' · ' ~ ((states('sensor.abstellkammer_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.abstellkammer_humidity')) else '–') ~ ' · ' ~ ((states('sensor.office_co2_office_eco2')|float|round(0)|int|string) ~ ' ppm' if is_number(states('sensor.office_co2_office_eco2')) else '–') }}"
+                icon: mdi:desk
+                icon_color: "{% set t = states('sensor.abstellkammer_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.abstellkammer_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.abstellkammer_temperature
+                    color: '#e8714a'
+                  - entity: sensor.abstellkammer_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Küche
+                secondary: "{{ ((states('sensor.wetterstation_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.wetterstation_temperature')) else '–') ~ ' · ' ~ ((states('sensor.wetterstation_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.wetterstation_humidity')) else '–') ~ ' · ' ~ ((states('sensor.wetterstation_co2')|float|round(0)|int|string) ~ ' ppm' if is_number(states('sensor.wetterstation_co2')) else '–') }}"
+                icon: mdi:silverware-fork-knife
+                icon_color: "{% set t = states('sensor.wetterstation_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.wetterstation_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.wetterstation_temperature
+                    color: '#e8714a'
+                  - entity: sensor.wetterstation_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Bad
+                secondary: "{{ ((states('sensor.bad_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.bad_temperature')) else '–') ~ ' · ' ~ ((states('sensor.bad_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.bad_humidity')) else '–') }}"
+                icon: mdi:shower
+                icon_color: "{% set t = states('sensor.bad_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.bad_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.bad_temperature
+                    color: '#e8714a'
+                  - entity: sensor.bad_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Schlafzimmer
+                secondary: "{{ ((states('sensor.schlafzimmer_schlafzimmer_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.schlafzimmer_schlafzimmer_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit')) else '–') ~ ' · ' ~ ((states('sensor.schlafzimmer_schlafzimmer_co2_equivalent')|float|round(0)|int|string) ~ ' ppm' if is_number(states('sensor.schlafzimmer_schlafzimmer_co2_equivalent')) else '–') }}"
+                icon: mdi:bed-outline
+                icon_color: "{% set t = states('sensor.schlafzimmer_schlafzimmer_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 14 %}blue{% elif t < 16 %}cyan{% elif t < 20 %}green{% elif t < 24 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                    color: '#e8714a'
+                  - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Frida
+                secondary: "{{ ((states('sensor.frida_temperatur')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.frida_temperatur')) else '–') ~ ' · ' ~ ((states('sensor.frida_luftfeuchtigkeit')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.frida_luftfeuchtigkeit')) else '–') ~ ' · ' ~ ((states('sensor.frida_frida_co2_equivalent_2')|float|round(0)|int|string) ~ ' ppm' if is_number(states('sensor.frida_frida_co2_equivalent_2')) else '–') }}"
+                icon: mdi:flower-outline
+                icon_color: "{% set t = states('sensor.frida_temperatur')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.frida_temperatur
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.frida_temperatur
+                    color: '#e8714a'
+                  - entity: sensor.frida_luftfeuchtigkeit
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Matilda
+                secondary: "{{ ((states('sensor.kids_matilda_kids_matilda_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.kids_matilda_kids_matilda_temperature')) else '–') ~ ' · ' ~ ((states('sensor.kids_matilda_kids_matilda_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.kids_matilda_kids_matilda_humidity')) else '–') }}"
+                icon: mdi:teddy-bear
+                icon_color: "{% set t = states('sensor.kids_matilda_kids_matilda_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 17 %}blue{% elif t < 20 %}cyan{% elif t < 24 %}green{% elif t < 27 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.kids_matilda_kids_matilda_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.kids_matilda_kids_matilda_temperature
+                    color: '#e8714a'
+                  - entity: sensor.kids_matilda_kids_matilda_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Keller
+                secondary: "{{ ((states('sensor.keller_bme280_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.keller_bme280_temperature')) else '–') ~ ' · ' ~ ((states('sensor.keller_bme280_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.keller_bme280_humidity')) else '–') }}"
+                icon: mdi:home-floor-negative-1
+                icon_color: "{% set t = states('sensor.keller_bme280_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 8 %}blue{% elif t < 10 %}cyan{% elif t < 18 %}green{% elif t < 22 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.keller_bme280_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.keller_bme280_temperature
+                    color: '#e8714a'
+                  - entity: sensor.keller_bme280_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Balkon
+                secondary: "{{ ((states('sensor.balkon_melsungen_temperature')|float|round(1)|string) ~ ' °C' if is_number(states('sensor.balkon_melsungen_temperature')) else '–') ~ ' · ' ~ ((states('sensor.balkon_melsungen_humidity')|float|round(0)|int|string) ~ ' %' if is_number(states('sensor.balkon_melsungen_humidity')) else '–') }}"
+                icon: mdi:tree-outline
+                icon_color: "{% set t = states('sensor.balkon_melsungen_temperature')|float(none) %}{% if t is none %}disabled{% elif t < 0 %}indigo{% elif t < 10 %}blue{% elif t < 20 %}green{% elif t < 28 %}orange{% else %}red{% endif %}"
+                layout: horizontal
+                entity: sensor.balkon_melsungen_temperature
+                tap_action: *id001
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.balkon_melsungen_temperature
+                    color: '#e8714a'
+                  - entity: sensor.balkon_melsungen_humidity
+                    color: '#3f8fd2'
+                    y_axis: secondary
+                hours_to_show: 24
+                points_per_hour: 2
+                line_width: 2
+                height: 45
+                smoothing: true
+                show:
+                  name: false
+                  icon: false
+                  state: false
+                  legend: false
+                  labels: false
+                  extrema: false
+                  fill: fade
+    column_span: 2
+  - type: grid
+    cards:
+      - type: heading
+        heading: Komfort-Check
+        heading_style: title
+        icon: mdi:clipboard-check-outline
+      - type: markdown
+        content: |-
+          {% set rooms = [('Wohnzimmer','sensor.wohnzimmer_temperature',none,none,18,24,0,100),('Arbeitszimmer','sensor.abstellkammer_temperature','sensor.abstellkammer_humidity','sensor.office_co2_office_eco2',18,24,35,60),('Küche','sensor.wetterstation_temperature','sensor.wetterstation_humidity','sensor.wetterstation_co2',18,25,35,60),('Bad','sensor.bad_temperature','sensor.bad_humidity',none,20,26,35,70),('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_temperatur','sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit','sensor.schlafzimmer_schlafzimmer_co2_equivalent',16,21,35,60),('Frida','sensor.frida_temperatur','sensor.frida_luftfeuchtigkeit','sensor.frida_frida_co2_equivalent_2',18,22,35,60),('Matilda','sensor.kids_matilda_kids_matilda_temperature','sensor.kids_matilda_kids_matilda_humidity',none,18,22,35,60),('Keller','sensor.keller_bme280_temperature','sensor.keller_bme280_humidity',none,8,20,30,65)] %}
+          | Raum | Temp. | rF | CO₂ | Bewertung |
+          |---|--:|--:|--:|---|
+          {%- for n, t, h, c, lo, hi, hlo, hhi in rooms %}
+          {%- set tv = states(t)|float(none) if t else none %}{%- set hv = states(h)|float(none) if h else none %}{%- set cv = states(c)|float(none) if c else none %}
+          | {{ n }} | {{ (tv|round(1)|string ~ ' °C') if tv is not none else '–' }} | {{ (hv|round(0)|int|string ~ ' %') if hv is not none else '–' }} | {{ (cv|round(0)|int|string ~ ' ppm') if cv is not none else '–' }} | {{ '⚪ keine Daten' if tv is none else ('💨 lüften' if (cv is not none and cv > 1400) else ('🔵 zu kühl' if tv < lo else ('🟠 zu warm' if tv > hi else ('💧 zu feucht' if (hv is not none and hv > hhi) else ('🏜️ zu trocken' if (hv is not none and hv < hlo) else ('🟡 CO₂ erhöht' if (cv is not none and cv > 1000) else '🟢 gut')))))) }} |
+          {%- endfor %}
+      - type: markdown
+        content: '*Richtwerte: Temperatur Wohnräume 18–24 °C (Schlafzimmer 16–21 °C, Keller 8–20 °C), relative Feuchte 35–60 % (Bad bis 70 %), CO₂ ab 1 000 ppm erhöht, ab 1 400 ppm lüften.*'
+  - type: grid
+    cards:
+      - type: heading
+        heading: Lüftungs-Assistent
+        heading_style: title
+        icon: mdi:window-open-variant
+      - type: markdown
+        content: |-
+          {% set ta = states('sensor.balkon_melsungen_temperature')|float(none) %}{% set ha = states('sensor.balkon_melsungen_humidity')|float(none) %}
+          {% if none in [ta, ha] %}Kein Außenwert vom Balkon-Sensor.{% else %}
+          {% set tda = ta - (100 - ha) / 5 %}
+          Außen: {{ ta|round(1) }} °C · {{ ha|round(0)|int }} % · Taupunkt ≈ {{ tda|round(1) }} °C
+
+          | Raum | Taupunkt innen | Empfehlung |
+          |---|--:|---|
+          {%- for n, t, h, c in [('Schlafzimmer','sensor.schlafzimmer_schlafzimmer_temperatur','sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit','sensor.schlafzimmer_schlafzimmer_co2_equivalent'),('Frida','sensor.frida_temperatur','sensor.frida_luftfeuchtigkeit','sensor.frida_frida_co2_equivalent_2'),('Matilda','sensor.kids_matilda_kids_matilda_temperature','sensor.kids_matilda_kids_matilda_humidity',none),('Arbeitszimmer','sensor.abstellkammer_temperature','sensor.abstellkammer_humidity','sensor.office_co2_office_eco2'),('Bad','sensor.bad_temperature','sensor.bad_humidity',none),('Keller','sensor.keller_bme280_temperature','sensor.keller_bme280_humidity',none)] %}
+          {%- set tv = states(t)|float(none) %}{%- set hv = states(h)|float(none) %}{%- set cv = states(c)|float(none) if c else none %}
+          {%- if none in [tv, hv] %}
+          | {{ n }} | – | ⚪ keine Daten |
+          {%- else %}
+          {%- set tdr = tv - (100 - hv) / 5 %}
+          | {{ n }} | {{ tdr|round(1) }} °C | {{ ('🟢 Lüften entfeuchtet' if (tda < tdr - 1 and (n != 'Keller' or tda < tv - 2)) else ('🔴 geschlossen halten (Außenluft feuchter)' if tda > tdr + 1 else ('🔴 nicht lüften (Kondensat an kühlen Wänden)' if (n == 'Keller' and tda >= tv - 2) else '⚪ neutral'))) }}{{ ' · 💨 CO₂ hoch' if (cv is not none and cv > 1000) else '' }} |
+          {%- endif %}
+          {%- endfor %}
+          {% endif %}
+      - type: markdown
+        content: '*Taupunkt-Näherung `T − (100 − rF)/5`. Lüften entfeuchtet, wenn die Außenluft einen niedrigeren Taupunkt hat als der Raum; im Keller zusätzlich nur, wenn der Außentaupunkt ≥ 2 K unter der Kellertemperatur liegt (sonst Kondensation).*'
+  - type: grid
+    cards:
+      - type: heading
+        heading: Luftqualität
+        heading_style: title
+        icon: mdi:air-filter
+        badges:
+          - type: entity
+            entity: sensor.office_co2_office_luftqualitat_bewertung
+            show_state: true
+            show_icon: true
+            icon: mdi:desk
+          - type: entity
+            entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+            show_state: true
+            show_icon: true
+            icon: mdi:bed-outline
+          - type: entity
+            entity: sensor.frida_luftqualitat_bewertung
+            show_state: true
+            show_icon: true
+            icon: mdi:flower-outline
+          - type: entity
+            entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+            show_state: true
+            show_icon: true
+            icon: mdi:teddy-bear
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: gauge
+            entity: sensor.office_co2_office_eco2
+            name: Arbeitszimmer (eCO₂)
+            min: 400
+            max: 2000
+            needle: true
+            severity:
+              green: 400
+              yellow: 1000
+              red: 1400
+          - type: gauge
+            entity: sensor.wetterstation_co2
+            name: Küche (CO₂)
+            min: 400
+            max: 2000
+            needle: true
+            severity:
+              green: 400
+              yellow: 1000
+              red: 1400
+          - type: gauge
+            entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+            name: Schlafzimmer (eCO₂)
+            min: 400
+            max: 2000
+            needle: true
+            severity:
+              green: 400
+              yellow: 1000
+              red: 1400
+          - type: gauge
+            entity: sensor.frida_frida_co2_equivalent_2
+            name: Frida (eCO₂)
+            min: 400
+            max: 2000
+            needle: true
+            severity:
+              green: 400
+              yellow: 1000
+              red: 1400
+      - type: markdown
+        content: '*„eCO₂“ / „CO₂-Äquivalent“ sind aus Gassensoren **geschätzt** (nicht gemessen) und mit der Küche nur eingeschränkt vergleichbar.*'
+      - type: entities
+        title: Bewertungen & Gas-Sensoren
+        show_header_toggle: false
+        entities:
+          - entity: sensor.office_co2_office_luftqualitat_bewertung
+            name: Arbeitszimmer – Bewertung
+          - entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+            name: Schlafzimmer – Bewertung
+          - entity: sensor.frida_luftqualitat_bewertung
+            name: Frida – Bewertung
+          - entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+            name: Matilda – Klassifizierung
+          - type: divider
+          - entity: sensor.office_co2_office_tvoc
+            name: Arbeitszimmer – TVOC
+          - entity: sensor.frida_frida_tvoc_equivalent_2
+            name: Frida – TVOC
+          - entity: sensor.schlafzimmer_schlafzimmer_voc
+            name: Schlafzimmer – VOC
+          - entity: sensor.schlafzimmer_schlafzimmer_iaq
+            name: Schlafzimmer – IAQ
+          - entity: sensor.schlafzimmer_schlafzimmer_iaq_genauigkeit
+            name: Schlafzimmer – IAQ-Genauigkeit
+          - entity: sensor.kids_matilda_kids_matilda_air_quality_raw
+            name: Matilda – Luftqualität (roh)
+  - type: grid
+    cards:
+      - type: heading
+        heading: Vergleich der Räume
+        heading_style: title
+        icon: mdi:chart-line
+      - type: custom:mini-graph-card
+        name: Temperatur
+        icon: mdi:thermometer
+        hours_to_show: 24
+        points_per_hour: 2
+        line_width: 2
+        smoothing: true
+        entities:
+          - entity: sensor.wohnzimmer_temperature
+            name: Wohnzimmer
+            color: '#e07b54'
+          - entity: sensor.abstellkammer_temperature
+            name: Arbeitszimmer
+            color: '#7eb8d4'
+          - entity: sensor.wetterstation_temperature
+            name: Küche
+            color: '#f5a623'
+          - entity: sensor.bad_temperature
+            name: Bad
+            color: '#5bb8e4'
+          - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+            name: Schlafzimmer
+            color: '#9b8fcf'
+          - entity: sensor.frida_temperatur
+            name: Frida
+            color: '#d48cb4'
+          - entity: sensor.kids_matilda_kids_matilda_temperature
+            name: Matilda
+            color: '#f0c44a'
+          - entity: sensor.keller_bme280_temperature
+            name: Keller
+            color: '#a0a0a0'
+          - entity: sensor.balkon_melsungen_temperature
+            name: Balkon
+            color: '#6dbf8d'
+        show:
+          legend: true
+          labels: false
+          fill: false
+          extrema: false
+      - type: custom:mini-graph-card
+        name: Luftfeuchte
+        icon: mdi:water-percent
+        hours_to_show: 24
+        points_per_hour: 2
+        line_width: 2
+        smoothing: true
+        entities:
+          - entity: sensor.abstellkammer_humidity
+            name: Arbeitszimmer
+            color: '#7eb8d4'
+          - entity: sensor.wetterstation_humidity
+            name: Küche
+            color: '#f5a623'
+          - entity: sensor.bad_humidity
+            name: Bad
+            color: '#5bb8e4'
+          - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+            name: Schlafzimmer
+            color: '#9b8fcf'
+          - entity: sensor.frida_luftfeuchtigkeit
+            name: Frida
+            color: '#d48cb4'
+          - entity: sensor.kids_matilda_kids_matilda_humidity
+            name: Matilda
+            color: '#f0c44a'
+          - entity: sensor.keller_bme280_humidity
+            name: Keller
+            color: '#a0a0a0'
+          - entity: sensor.balkon_melsungen_humidity
+            name: Balkon
+            color: '#27ae60'
+        show:
+          legend: true
+          labels: false
+          fill: false
+          extrema: false
+      - type: custom:mini-graph-card
+        name: CO₂ / eCO₂
+        icon: mdi:molecule-co2
+        hours_to_show: 24
+        points_per_hour: 2
+        line_width: 2
+        smoothing: true
+        entities:
+          - entity: sensor.office_co2_office_eco2
+            name: Arbeitszimmer
+            color: '#7eb8d4'
+          - entity: sensor.wetterstation_co2
+            name: Küche
+            color: '#f5a623'
+          - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+            name: Schlafzimmer
+            color: '#9b8fcf'
+          - entity: sensor.frida_frida_co2_equivalent_2
+            name: Frida
+            color: '#d48cb4'
+        show:
+          legend: true
+          labels: false
+          fill: false
+          extrema: false
+      - type: custom:mini-graph-card
+        name: Luftdruck
+        icon: mdi:gauge
+        hours_to_show: 48
+        points_per_hour: 2
+        line_width: 2
+        smoothing: true
+        entities:
+          - entity: sensor.wetterstation_pressure
+            name: Küche
+            color: '#f5a623'
+          - entity: sensor.schlafzimmer_schlafzimmer_luftdruck
+            name: Schlafzimmer
+            color: '#9b8fcf'
+          - entity: sensor.kids_matilda_kids_matilda_pressure
+            name: Matilda
+            color: '#f0c44a'
+          - entity: sensor.keller_bme280_pressure
+            name: Keller
+            color: '#a0a0a0'
+        show:
+          legend: true
+          labels: false
+          fill: false
+          extrema: false
+    column_span: 2
+  - type: grid
+    cards:
+      - type: heading
+        heading: Draußen & Wetter
+        heading_style: title
+        icon: mdi:weather-partly-cloudy
+      - type: tile
+        entity: weather.forecast_home
+        name: Wetter jetzt & stündlich
+        vertical: true
+        features_position: bottom
+        features:
+          - type: hourly-forecast
+      - type: tile
+        entity: weather.forecast_home
+        name: Nächste Tage
+        vertical: false
+        features_position: bottom
+        features:
+          - type: daily-forecast
+      - type: custom:mini-graph-card
+        name: Zwei Balkon-Sensoren im Vergleich
+        icon: mdi:tree-outline
+        hours_to_show: 48
+        points_per_hour: 2
+        line_width: 2
+        smoothing: true
+        entities:
+          - entity: sensor.balkon_melsungen_temperature
+            name: Balkon Melsungen
+            color: '#6dbf8d'
+          - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+            name: Wetterstation Balkon
+            color: '#f5a623'
+        show:
+          legend: true
+          labels: false
+          fill: false
+      - type: custom:mushroom-template-card
+        primary: Sensor-Abweichung
+        secondary: "{% set a = states('sensor.balkon_melsungen_temperature')|float(none) %}{% set b = states('sensor.wetterstation_wetterstation_wetterstation_balkon_temperature')|float(none) %}{% if none in [a, b] %}Keine Messwerte{% else %}Δ {{ (a - b)|abs|round(1) }} K{% if (a - b)|abs > 3 %} · große Abweichung (Sonne/Abschirmung?){% else %} · plausibel{% endif %}{% endif %}"
+        icon: mdi:swap-vertical
+        icon_color: "{% set a = states('sensor.balkon_melsungen_temperature')|float(none) %}{% set b = states('sensor.wetterstation_wetterstation_wetterstation_balkon_temperature')|float(none) %}{% if none in [a, b] %}disabled{% elif (a - b)|abs > 3 %}orange{% else %}green{% endif %}"
+        layout: horizontal
+        entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+        tap_action: *id001
+        multiline_secondary: true
+      - type: entities
+        show_header_toggle: false
+        entities:
+          - entity: sensor.balkon_melsungen_temperature
+            name: Balkon Melsungen – Temperatur
+          - entity: sensor.balkon_melsungen_humidity
+            name: Balkon Melsungen – Feuchte
+          - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+            name: Wetterstation Balkon – Temperatur
+          - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+            name: Wetterstation Balkon – Feuchte
+  - type: grid
+    cards:
+      - type: heading
+        heading: Alle Werte je Raum
+        heading_style: title
+        icon: mdi:format-list-bulleted
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: entities
+            title: Wohnzimmer
+            show_header_toggle: false
+            entities:
+              - entity: sensor.wohnzimmer_temperature
+                name: Temperatur
+          - type: entities
+            title: Arbeitszimmer
+            show_header_toggle: false
+            entities:
+              - entity: sensor.abstellkammer_temperature
+                name: Temperatur
+              - entity: sensor.abstellkammer_humidity
+                name: Luftfeuchte
+              - entity: sensor.office_co2_office_eco2
+                name: eCO₂
+              - entity: sensor.office_co2_office_tvoc
+                name: TVOC
+              - entity: sensor.office_co2_office_luftqualitat_bewertung
+                name: Bewertung
+          - type: entities
+            title: Küche (Wetterstation)
+            show_header_toggle: false
+            entities:
+              - entity: sensor.wetterstation_temperature
+                name: Temperatur
+              - entity: sensor.wetterstation_humidity
+                name: Luftfeuchte
+              - entity: sensor.wetterstation_co2
+                name: CO₂
+              - entity: sensor.wetterstation_noise
+                name: Lärm
+              - entity: sensor.wetterstation_pressure
+                name: Luftdruck
+          - type: entities
+            title: Bad
+            show_header_toggle: false
+            entities:
+              - entity: sensor.bad_temperature
+                name: Temperatur
+              - entity: sensor.bad_humidity
+                name: Luftfeuchte
+              - entity: sensor.bad_light
+                name: Helligkeit
+          - type: entities
+            title: Schlafzimmer
+            show_header_toggle: false
+            entities:
+              - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                name: Temperatur
+              - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+                name: Luftfeuchte
+              - entity: sensor.schlafzimmer_schlafzimmer_luftdruck
+                name: Luftdruck
+              - entity: sensor.schlafzimmer_schlafzimmer_helligkeit
+                name: Helligkeit
+              - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+                name: eCO₂
+              - entity: sensor.schlafzimmer_schlafzimmer_voc
+                name: VOC
+              - entity: sensor.schlafzimmer_schlafzimmer_iaq
+                name: IAQ
+              - entity: sensor.schlafzimmer_schlafzimmer_iaq_genauigkeit
+                name: IAQ-Genauigkeit
+              - entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+                name: Bewertung
+          - type: entities
+            title: Frida
+            show_header_toggle: false
+            entities:
+              - entity: sensor.frida_temperatur
+                name: Temperatur
+              - entity: sensor.frida_luftfeuchtigkeit
+                name: Luftfeuchte
+              - entity: sensor.frida_frida_co2_equivalent_2
+                name: eCO₂
+              - entity: sensor.frida_frida_tvoc_equivalent_2
+                name: TVOC
+              - entity: sensor.frida_luftqualitat_bewertung
+                name: Bewertung
+          - type: entities
+            title: Matilda
+            show_header_toggle: false
+            entities:
+              - entity: sensor.kids_matilda_kids_matilda_temperature
+                name: Temperatur
+              - entity: sensor.kids_matilda_kids_matilda_humidity
+                name: Luftfeuchte
+              - entity: sensor.kids_matilda_kids_matilda_pressure
+                name: Luftdruck
+              - entity: sensor.kids_matilda_kids_matilda_air_quality_raw
+                name: Luftqualität (roh)
+              - entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+                name: Klassifizierung
+          - type: entities
+            title: Keller (BME280)
+            show_header_toggle: false
+            entities:
+              - entity: sensor.keller_bme280_temperature
+                name: Temperatur
+              - entity: sensor.keller_bme280_humidity
+                name: Luftfeuchte
+              - entity: sensor.keller_bme280_pressure
+                name: Luftdruck
+    column_span: 2
+visible:
+  - user: 091148952dfb4a85a202d471674871af

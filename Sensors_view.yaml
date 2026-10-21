@@ -1,0 +1,115 @@
+theme: Backend-selected
+title: Sensors
+path: sensors
+icon: mdi:home-thermometer-outline
+badges: []
+cards:
+  - type: entities
+    entities:
+      - entity: sensor.wohnzimmer_temperature
+        name: Temperature
+    title: Wohnzimmer
+  - type: entities
+    entities:
+      - entity: sensor.abstellkammer_humidity
+      - entity: sensor.abstellkammer_temperature
+      - entity: sensor.office_co2_office_eco2
+      - entity: sensor.office_co2_office_tvoc
+      - entity: sensor.office_co2_office_luftqualitat_bewertung
+    title: Arbeitszimmer
+  - type: entities
+    entities:
+      - entity: sensor.balkon_melsungen_humidity
+        name: Humidity
+      - entity: sensor.balkon_melsungen_temperature
+        name: Temperature
+    title: Balkon Melsungen
+  - type: entities
+    entities:
+      - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+        name: Humidity
+      - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+        name: Temperature
+    title: Wetterstation Wetterstation Wetterstation Balkon
+  - type: entities
+    entities:
+      - sensor.wetterstation_co2
+      - sensor.wetterstation_humidity
+      - sensor.wetterstation_noise
+      - sensor.wetterstation_pressure
+      - sensor.wetterstation_temperature
+    title: Küche
+  - type: entities
+    entities:
+      - entity: sensor.bad_temperature
+      - entity: sensor.bad_humidity
+      - entity: sensor.bad_light
+    title: Bad
+  - type: entities
+    entities:
+      - entity: sensor.keller_bme280_humidity
+        name: BME280 Humidity
+      - entity: sensor.keller_bme280_pressure
+        name: BME280 Pressure
+      - entity: sensor.keller_bme280_temperature
+        name: BME280 Temperature
+    title: Keller
+  - type: entities
+    entities:
+      - entity: sensor.frida_frida_co2_equivalent_2
+        name: Frida CO2 Equivalent
+      - entity: sensor.frida_frida_tvoc_equivalent_2
+        name: Frida TVOC Equivalent
+      - entity: sensor.frida_luftqualitat_bewertung
+        name: Luftqualität Bewertung
+      - entity: sensor.frida_temperatur
+      - entity: sensor.frida_luftfeuchtigkeit
+    title: Frida
+  - type: entities
+    entities:
+      - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+        name: Schlafzimmer CO2 Equivalent
+      - entity: sensor.schlafzimmer_schlafzimmer_helligkeit
+        name: Schlafzimmer Helligkeit
+      - entity: sensor.schlafzimmer_schlafzimmer_iaq
+        name: Schlafzimmer IAQ
+      - entity: sensor.schlafzimmer_schlafzimmer_iaq_genauigkeit
+        name: Schlafzimmer IAQ Genauigkeit
+      - entity: sensor.schlafzimmer_schlafzimmer_luftdruck
+        name: Schlafzimmer Luftdruck
+      - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+        name: Schlafzimmer Luftfeuchtigkeit
+      - entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+        name: Schlafzimmer Luftqualität Bewertung
+      - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+        name: Schlafzimmer Temperatur
+      - entity: sensor.schlafzimmer_schlafzimmer_voc
+        name: Schlafzimmer VOC
+    title: Schlafzimmer
+  - type: entities
+    entities:
+      - entity: sensor.kids_matilda_kids_matilda_air_quality_raw
+        name: Kids Matilda Air Quality Raw
+      - entity: sensor.kids_matilda_kids_matilda_humidity
+        name: Kids Matilda Humidity
+      - entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+        name: Kids Matilda Luftqualität Klassifizierung
+      - entity: sensor.kids_matilda_kids_matilda_pressure
+        name: Kids Matilda Pressure
+      - entity: sensor.kids_matilda_kids_matilda_temperature
+        name: Kids Matilda Temperature
+    title: Matilda
+  - type: tile
+    entity: weather.forecast_home
+    vertical: true
+    features:
+      - type: hourly-forecast
+    features_position: bottom
+  - type: tile
+    entity: weather.forecast_home
+    vertical: false
+    features_position: bottom
+    features:
+      - type: daily-forecast
+visible:
+  - user: 091148952dfb4a85a202d471674871af
