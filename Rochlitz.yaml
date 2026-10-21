@@ -1,0 +1,4293 @@
+title: Melsungen
+views:
+  - path: default_view
+    title: Home
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.rotenburg_fulda_abfluss
+          - entity: sensor.rotenburg_fulda_pegelstand
+          - entity: sensor.fritzlar_eder_abfluss
+          - entity: sensor.fritzlar_eder_pegelstand
+          - entity: sensor.wechselburg_mulde_abfluss
+          - entity: sensor.wechselburg_mulde_pegelstand
+        title: Wasserstände
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: entities
+            entities:
+              - sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+              - sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+            title: Outdoor
+          - type: weather-forecast
+            entity: weather.forecast_home
+            show_forecast: false
+      - type: entities
+        entities:
+          - entity: switch.kaffeemaschine_outlet
+          - entity: switch.kuhlschrank_outlet
+          - entity: switch.schlafzimmer_energy_outlet
+          - entity: switch.staubsauger_outlet
+          - entity: switch.thermomix_outlet
+          - entity: switch.trockner
+          - entity: switch.waschmaschine
+          - entity: sensor.abstellkammer_humidity
+          - entity: sensor.abstellkammer_temperature
+          - entity: sensor.ambient_light
+          - entity: sensor.bad_humidity
+          - entity: sensor.bad_light
+          - entity: sensor.bad_temperature
+          - entity: binary_sensor.configure
+          - entity: binary_sensor.configure_3
+          - entity: binary_sensor.configure_4
+          - entity: sensor.kaffeemaschine_current
+          - entity: sensor.kaffeemaschine_energy
+          - entity: sensor.kaffeemaschine_power
+          - entity: sensor.kaffeemaschine_voltage
+          - entity: sensor.kuhlschrank_current
+          - entity: sensor.kuhlschrank_energy
+          - entity: sensor.kuhlschrank_power
+          - entity: sensor.kuhlschrank_voltage
+          - entity: sensor.lywsdcgq_humidity
+          - entity: sensor.lywsdcgq_temperature
+          - entity: sensor.schlafzimmer_energy_current
+          - entity: sensor.schlafzimmer_energy_energy
+          - entity: sensor.schlafzimmer_energy_power
+          - entity: sensor.schlafzimmer_energy_voltage
+          - entity: sensor.staubsauger_current
+          - entity: sensor.staubsauger_energy
+          - entity: sensor.staubsauger_power
+          - entity: sensor.staubsauger_voltage
+          - entity: sensor.thermomix_current
+          - entity: sensor.thermomix_energy
+          - entity: sensor.thermomix_power
+          - entity: sensor.thermomix_voltage
+          - entity: sensor.trockner_energy
+          - entity: sensor.trockner_power
+          - entity: sensor.waschmaschine_energy
+          - entity: sensor.waschmaschine_power
+          - entity: sensor.workshop_eco2
+          - entity: sensor.workshop_tvoc
+          - entity: sensor.xiaomi_impedance
+          - entity: sensor.xiaomi_waage
+        title: Energy
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.bme280_humidity
+              - entity: sensor.bme280_pressure
+              - entity: sensor.bme280_temperature
+              - entity: sensor.humidity_2
+              - entity: sensor.temperature_humidity_sensor_903e_humidity
+              - entity: sensor.indoor_humidity
+              - entity: sensor.indoor_temperature
+              - entity: sensor.pressure_2
+              - entity: binary_sensor.samsung_c430w
+              - entity: binary_sensor.samsung_c430w_2
+              - entity: sensor.samsung_c430w_active_alerts
+              - entity: sensor.samsung_c430w_output_tray_0
+              - entity: sensor.samsung_c430w_toner_black
+              - entity: sensor.samsung_c430w_toner_cyan
+              - entity: sensor.samsung_c430w_toner_magenta
+              - entity: sensor.samsung_c430w_toner_yellow
+            title: Rochlitz
+      - type: entities
+        entities:
+          - entity: sensor.ambient_light_2
+          - entity: sensor.bad_humidity_2
+          - entity: sensor.bad_light_2
+          - entity: sensor.bad_temperature_2
+          - entity: sensor.humidity_3
+          - entity: sensor.pressure_3
+          - entity: sensor.temperature_3
+          - entity: sensor.workshop_eco2_2
+          - entity: sensor.workshop_tvoc_2
+        title: Sensor
+      - type: entities
+        entities:
+          - sensor.aral_fritzlarer_strasse_61_diesel
+          - binary_sensor.aral_fritzlarer_strasse_61_status
+          - sensor.aral_fritzlarer_strasse_61_super
+          - sensor.aral_fritzlarer_strasse_61_super_e10
+          - sensor.esso_dr_reimer_str_2_diesel
+          - binary_sensor.esso_dr_reimer_str_2_status
+          - sensor.esso_dr_reimer_str_2_super
+          - sensor.esso_dr_reimer_str_2_super_e10
+          - sensor.honsel_kasseler_str_65_diesel
+          - binary_sensor.honsel_kasseler_str_65_status
+          - sensor.honsel_kasseler_str_65_super
+          - sensor.honsel_kasseler_str_65_super_e10
+          - sensor.q1_nurnberger_strasse_28_diesel
+          - binary_sensor.q1_nurnberger_strasse_28_status
+          - sensor.q1_nurnberger_strasse_28_super
+          - sensor.q1_nurnberger_strasse_28_super_e10
+          - sensor.star_fritzlarer_strasse_67_diesel
+          - binary_sensor.star_fritzlarer_strasse_67_status
+          - sensor.star_fritzlarer_strasse_67_super
+          - sensor.star_fritzlarer_strasse_67_super_e10
+          - sensor.tankcenter_nuernberger_str_16_diesel
+          - binary_sensor.tankcenter_nuernberger_str_16_status
+          - sensor.tankcenter_nuernberger_str_16_super
+          - sensor.tankcenter_nuernberger_str_16_super_e10
+        title: Tanken
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - type: entities
+            entities:
+              - entity: switch.pi_hole
+              - entity: switch.smart_switch_2007145470384551851548e1e924dd58_outlet
+              - entity: switch.smart_switch_2103161424121390845648e1e962def1_outlet
+              - entity: switch.smart_switch_2103161424121390845648e1e962def1_outlet_2
+              - entity: switch.smart_switch_2103161424121390845648e1e962def1_outlet_3
+              - entity: switch.steckdosenleiste_outlet
+              - entity: switch.steckdosenleiste_outlet_2
+              - entity: switch.steckdosenleiste_outlet_3
+              - entity: switch.steckdosenleiste_outlet_4
+              - entity: switch.steckdosenleiste_outlet_5
+              - entity: switch.steckdosenleiste_outlet_6
+              - entity: switch.waschmaschine_power_off
+              - entity: switch.wohnzimmer
+              - entity: sensor.jandtnas_volume_1_status
+              - entity: sensor.jandtnas_volume_1_used_space
+              - entity: sensor.jandtnas_volume_1_volume_used
+              - entity: sensor.jandtnas_cpu_load_average_15_min
+              - entity: sensor.jandtnas_cpu_load_average_5_min
+              - entity: sensor.jandtnas_cpu_utilization_total
+              - entity: sensor.jandtnas_cpu_utilization_user
+              - entity: sensor.jandtnas_download_throughput
+              - entity: sensor.jandtnas_memory_available_real
+              - entity: sensor.jandtnas_memory_available_swap
+              - entity: sensor.jandtnas_memory_total_real
+              - entity: sensor.jandtnas_memory_total_swap
+              - entity: sensor.jandtnas_memory_usage_real
+              - entity: binary_sensor.jandtnas_security_status
+              - entity: sensor.jandtnas_upload_throughput
+              - entity: binary_sensor.samsung_c43x_series
+              - entity: binary_sensor.samsung_c43x_series_2
+              - entity: sensor.samsung_c43x_series_2
+              - entity: sensor.samsung_c43x_series_active_alerts
+              - entity: sensor.samsung_c43x_series_black_toner_s_n_crum_17080351079
+              - entity: sensor.samsung_c43x_series_cyan_toner_s_n_crum_18032731666
+              - entity: sensor.samsung_c43x_series_magenta_toner_s_n_crum_18032726752
+              - entity: sensor.samsung_c43x_series_output_tray_0
+              - entity: sensor.samsung_c43x_series_toner_black
+              - entity: sensor.samsung_c43x_series_toner_cyan
+              - entity: sensor.samsung_c43x_series_toner_magenta
+              - entity: sensor.samsung_c43x_series_toner_yellow
+              - entity: sensor.samsung_c43x_series_tray_tray_1
+              - entity: sensor.samsung_c43x_series_yellow_toner_s_n_crum_17121867854
+              - entity: sensor.ups_load
+              - entity: sensor.ups_output_voltage
+              - entity: sensor.ups_status
+              - entity: sensor.ups_status_data
+              - entity: sensor.uptime
+              - entity: sensor.waschmaschine
+              - entity: sensor.waschmaschine_current_course
+              - entity: sensor.waschmaschine_error_message
+              - entity: binary_sensor.waschmaschine_error_state
+              - entity: sensor.waschmaschine_rinse_mode
+              - entity: sensor.waschmaschine_run_state
+              - entity: sensor.waschmaschine_spin_speed
+              - entity: binary_sensor.waschmaschine_wash_completed
+              - entity: sensor.waschmaschine_water_temp
+              - entity: sensor.wohnzimmer_electric_current
+              - entity: sensor.wohnzimmer_power_consumption
+              - entity: sensor.wohnzimmer_total_energy
+              - entity: sensor.wohnzimmer_voltage
+            title: Technik
+      - title: Energieverteilung heute
+        type: energy-distribution
+        link_dashboard: true
+      - type: entities
+        entities:
+          - sensor.internetgatewaydevicev2_fritz_box_7520_ui_kib_s_received
+          - sensor.internetgatewaydevicev2_fritz_box_7520_ui_kib_s_sent
+          - entity: sensor.fritz_box_7520_ui_kib_s_received
+            name: KiB/s received
+          - entity: sensor.fritz_box_7520_ui_kib_s_sent
+            name: KiB/s sent
+        title: FRITZ!Box 7520 (UI)
+      - type: entities
+        entities:
+          - entity: sensor.timemachine_cpu_load_average_15_min
+            name: CPU Load Average (15 min)
+          - entity: sensor.timemachine_cpu_load_average_5_min
+            name: CPU Load Average (5 min)
+          - entity: sensor.timemachine_cpu_utilization_total
+            name: CPU Utilization (Total)
+          - entity: sensor.timemachine_cpu_utilization_user
+            name: CPU Utilization (User)
+          - entity: sensor.timemachine_download_throughput
+            name: Download Throughput
+          - entity: sensor.timemachine_memory_available_real
+            name: Memory Available (Real)
+          - entity: sensor.timemachine_memory_available_swap
+            name: Memory Available (Swap)
+          - entity: sensor.timemachine_memory_total_real
+            name: Memory Total (Real)
+          - entity: sensor.timemachine_memory_total_swap
+            name: Memory Total (Swap)
+          - entity: sensor.timemachine_memory_usage_real
+            name: Memory Usage (Real)
+          - entity: binary_sensor.timemachine_security_status
+            name: Security Status
+          - entity: sensor.timemachine_upload_throughput
+            name: Upload Throughput
+        title: TimeMachine
+      - type: entities
+        entities:
+          - entity: sensor.timemachine_volume_1_status
+            name: Status
+          - entity: sensor.timemachine_volume_1_used_space
+            name: Used Space
+          - entity: sensor.timemachine_volume_1_volume_used
+            name: Volume Used
+        title: TimeMachine (Volume 1)
+      - type: entities
+        entities:
+          - sensor.warmwasser
+        title: Warmwasser
+      - type: entities
+        entities:
+          - sensor.wasser
+        title: Wasser
+      - type: entities
+        entities:
+          - sensor.warme
+        title: Wärme
+      - type: entities
+        entities:
+          - sensor.pollenflug_ambrosia_91
+          - sensor.pollenflug_beifuss_91
+          - sensor.pollenflug_birke_91
+          - sensor.pollenflug_erle_91
+          - sensor.pollenflug_esche_91
+          - sensor.pollenflug_graeser_91
+          - sensor.pollenflug_hasel_91
+          - sensor.pollenflug_roggen_91
+        title: Pollenflug-Gefahrenindex
+      - type: calendar
+        entities:
+          - calendar.jandt
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: Sensors
+    path: sensors
+    icon: mdi:home-thermometer-outline
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.wohnzimmer_temperature
+            name: Temperature
+        title: Wohnzimmer
+      - type: entities
+        entities:
+          - entity: sensor.abstellkammer_humidity
+          - entity: sensor.abstellkammer_temperature
+          - entity: sensor.office_co2_office_eco2
+          - entity: sensor.office_co2_office_tvoc
+          - entity: sensor.office_co2_office_luftqualitat_bewertung
+        title: Arbeitszimmer
+      - type: entities
+        entities:
+          - entity: sensor.balkon_melsungen_humidity
+            name: Humidity
+          - entity: sensor.balkon_melsungen_temperature
+            name: Temperature
+        title: Balkon Melsungen
+      - type: entities
+        entities:
+          - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+            name: Humidity
+          - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+            name: Temperature
+        title: Wetterstation Wetterstation Wetterstation Balkon
+      - type: entities
+        entities:
+          - sensor.wetterstation_co2
+          - sensor.wetterstation_humidity
+          - sensor.wetterstation_noise
+          - sensor.wetterstation_pressure
+          - sensor.wetterstation_temperature
+        title: Küche
+      - type: entities
+        entities:
+          - entity: sensor.bad_temperature
+          - entity: sensor.bad_humidity
+          - entity: sensor.bad_light
+        title: Bad
+      - type: entities
+        entities:
+          - entity: sensor.keller_bme280_humidity
+            name: BME280 Humidity
+          - entity: sensor.keller_bme280_pressure
+            name: BME280 Pressure
+          - entity: sensor.keller_bme280_temperature
+            name: BME280 Temperature
+        title: Keller
+      - type: entities
+        entities:
+          - entity: sensor.frida_frida_co2_equivalent_2
+            name: Frida CO2 Equivalent
+          - entity: sensor.frida_frida_tvoc_equivalent_2
+            name: Frida TVOC Equivalent
+          - entity: sensor.frida_luftqualitat_bewertung
+            name: Luftqualität Bewertung
+          - entity: sensor.frida_temperatur
+          - entity: sensor.frida_luftfeuchtigkeit
+        title: Frida
+      - type: entities
+        entities:
+          - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+            name: Schlafzimmer CO2 Equivalent
+          - entity: sensor.schlafzimmer_schlafzimmer_helligkeit
+            name: Schlafzimmer Helligkeit
+          - entity: sensor.schlafzimmer_schlafzimmer_iaq
+            name: Schlafzimmer IAQ
+          - entity: sensor.schlafzimmer_schlafzimmer_iaq_genauigkeit
+            name: Schlafzimmer IAQ Genauigkeit
+          - entity: sensor.schlafzimmer_schlafzimmer_luftdruck
+            name: Schlafzimmer Luftdruck
+          - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+            name: Schlafzimmer Luftfeuchtigkeit
+          - entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+            name: Schlafzimmer Luftqualität Bewertung
+          - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+            name: Schlafzimmer Temperatur
+          - entity: sensor.schlafzimmer_schlafzimmer_voc
+            name: Schlafzimmer VOC
+        title: Schlafzimmer
+      - type: entities
+        entities:
+          - entity: sensor.kids_matilda_kids_matilda_air_quality_raw
+            name: Kids Matilda Air Quality Raw
+          - entity: sensor.kids_matilda_kids_matilda_humidity
+            name: Kids Matilda Humidity
+          - entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+            name: Kids Matilda Luftqualität Klassifizierung
+          - entity: sensor.kids_matilda_kids_matilda_pressure
+            name: Kids Matilda Pressure
+          - entity: sensor.kids_matilda_kids_matilda_temperature
+            name: Kids Matilda Temperature
+        title: Matilda
+      - type: tile
+        entity: weather.forecast_home
+        vertical: true
+        features:
+          - type: hourly-forecast
+        features_position: bottom
+      - type: tile
+        entity: weather.forecast_home
+        vertical: false
+        features_position: bottom
+        features:
+          - type: daily-forecast
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - title: Energy
+    path: energy
+    type: sections
+    max_columns: 3
+    theme: Frosted Glass Dark
+    icon: mdi:home-lightning-bolt-outline
+    sections:
+      - cards:
+          - type: heading
+            heading: Hauswirtschaft
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: tile
+                    entity: switch.waschmaschine
+                    name: Waschmaschine
+                    icon: mdi:washing-machine
+                    color: blue
+                  - type: entities
+                    entities:
+                      - entity: sensor.waschmaschine_power
+                        name: Power
+                      - entity: sensor.waschmaschine_energy
+                        name: Energy
+              - type: vertical-stack
+                cards:
+                  - type: tile
+                    entity: switch.trockner
+                    name: Trockner
+                    icon: mdi:tumble-dryer
+                    color: orange
+                  - type: entities
+                    entities:
+                      - entity: sensor.trockner_power
+                        name: Power
+                      - entity: sensor.trockner_energy
+                        name: Energy
+          - type: entities
+            title: Kühlschrank
+            entities:
+              - entity: sensor.kuhlschrank_power
+                name: '- power'
+              - entity: sensor.kuhlschrank_energy
+                name: '- energy'
+              - entity: sensor.kuhlschrank_current
+                name: '- current'
+              - entity: sensor.kuhlschrank_voltage
+                name: '- voltage'
+              - entity: sensor.kuhlschrank_config_overtemp_type
+                name: Config_overtemp_type
+          - type: entities
+            title: Thermomix
+            entities:
+              - entity: sensor.thermomix_power
+                name: '- power'
+              - entity: sensor.thermomix_energy
+                name: '- energy'
+              - entity: sensor.thermomix_current
+                name: '- current'
+              - entity: sensor.thermomix_voltage
+                name: '- voltage'
+              - entity: sensor.thermomix_consumption
+                name: Consumption
+              - entity: sensor.thermomix_config_overtemp_type
+                name: Config overtemp type
+      - cards:
+          - type: heading
+            heading: Küche & Technik
+          - type: glance
+            title: Aktuelle Watt
+            show_state: true
+            entities:
+              - entity: sensor.kuhlschrank_power
+                name: Kühlschrank
+              - entity: sensor.wohnzimmer_power_consumption
+                name: TV
+              - entity: sensor.kaffeemaschine_power
+                name: Kaffee
+              - entity: sensor.thermomix_power
+                name: Thermomix
+              - entity: sensor.arbeitsplatz_power_2
+                name: Office
+              - entity: sensor.schlafzimmer_energy_power
+                name: Schlafzimmer
+              - entity: sensor.technik_power
+                name: Technik
+              - entity: sensor.shelly_plug_s_shelly_plug_s_power
+                name: Keller
+              - entity: sensor.staubsauger_power
+                name: Server
+              - entity: sensor.trockner_power
+                name: Trockner
+              - entity: sensor.waschmaschine_power
+                name: Waschmaschine
+          - type: entities
+            title: Kaffeemaschine
+            entities:
+              - entity: sensor.kaffeemaschine_power
+                name: '- power'
+              - entity: sensor.kaffeemaschine_energy
+                name: '- energy'
+              - entity: sensor.kaffeemaschine_current
+                name: '- current'
+              - entity: sensor.kaffeemaschine_voltage
+                name: '- voltage'
+      - cards:
+          - type: heading
+            heading: Wohnzimmer & Deko
+          - type: tile
+            entity: switch.wohnzimmer
+            name: Wohnzimmer
+          - type: entities
+            entities:
+              - entity: sensor.wohnzimmer_power_consumption
+                name: Power Consumption
+              - entity: sensor.wohnzimmer_total_energy
+                name: Total Energy
+              - entity: sensor.wohnzimmer_electric_current
+                name: Electric Current
+              - entity: sensor.wohnzimmer_voltage
+                name: Voltage
+          - type: entities
+            title: Schwippbogen & Schneemänner
+            entities:
+              - entity: sensor.wzschwippbogen
+                name: Schwippbogen Verbrauch
+              - entity: sensor.smart_switch_24060472346212510802c4e7ae048cf8_power
+                name: Schwippbogen Power
+              - entity: sensor.schwippschneemann
+                name: Schneemänner Verbrauch
+              - entity: sensor.smart_switch_24060416836319510802c4e7ae048cef_power
+                name: Schneemänner Power
+      - cards:
+          - type: heading
+            heading: Schlafzimmer & Licht
+          - type: entities
+            title: Schlafzimmer Energy
+            entities:
+              - entity: sensor.schlafzimmer_energy_power
+                name: '- power'
+              - entity: sensor.schlafzimmer_energy_energy
+                name: '- energy'
+              - entity: sensor.schlafzimmer_energy_current
+                name: '- current'
+              - entity: sensor.schlafzimmer_energy_voltage
+                name: '- voltage'
+              - entity: sensor.luftreiniger
+              - entity: sensor.ikea_of_sweden_starkvind_air_purifier_table_power
+          - type: entities
+            title: Licht (kWh)
+            entities:
+              - entity: sensor.philips_lwb004_energy
+                name: Schlafzimmer
+              - entity: sensor.philips_lwb004_energy_2
+                name: Buddha
+              - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_806lm_energy
+              - entity: sensor.ikea_of_sweden_tradfri_bulb_e27_ww_clear_250lm_energy
+              - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy
+                name: Küche 1
+              - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_2
+                name: Küche 2
+              - entity: sensor.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_energy_3
+                name: Küche 3
+      - cards:
+          - type: heading
+            heading: Technik & Büro
+          - type: entities
+            title: Arbeitsplatz
+            entities:
+              - entity: sensor.arbeitsplatz_power_2
+                name: Power
+              - entity: sensor.arbeitsplatz_energy_2
+                name: Energy
+              - entity: sensor.arbeitsplatz_current_2
+                name: Current
+              - entity: sensor.arbeitsplatz_voltage_2
+                name: Voltage
+              - entity: sensor.arbeitsplatz_consumption_2
+                name: Consumption
+          - type: entities
+            title: Technik Schrank
+            entities:
+              - entity: sensor.technik_power
+                name: '- power'
+              - entity: sensor.technik_energy
+                name: '- energy'
+              - entity: sensor.technik_current
+                name: '- current'
+              - entity: sensor.technik_voltage
+                name: '- voltage'
+          - type: entities
+            title: Keller & Server
+            entities:
+              - entity: sensor.shelly_plug_s_shelly_plug_s_power
+                name: Shelly Power
+              - entity: sensor.shelly_plug_s_shelly_plug_s_current
+                name: Shelly Current
+              - entity: sensor.staubsauger_power
+                name: '- power'
+              - entity: sensor.staubsauger_energy
+                name: '- energy'
+      - cards:
+          - type: heading
+            heading: Equipment & Sonos
+          - type: entities
+            entities:
+              - entity: sensor.frida_energy
+                name: Frida Sonos
+              - entity: sensor.schlafzimmersound_energy
+                name: Schlafzimmer Sonos
+              - entity: sensor.buro_energy_2
+                name: Büro Sonos
+              - entity: sensor.wled_energy
+                name: Office Lightstrip
+              - entity: sensor.nachttisch_energy
+                name: Nachttisch Light
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+    cards: []
+  - theme: Backend-selected
+    title: Sports
+    path: sports
+    icon: mdi:run-fast
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.tilo_basal_metabolism
+          - entity: sensor.tilo_bmi
+          - entity: sensor.tilo_body_fat
+          - entity: sensor.tilo_body_score
+          - entity: sensor.tilo_bone_mass
+          - entity: sensor.tilo_lean_body_mass
+          - entity: sensor.tilo_metabolic_age
+          - entity: sensor.tilo_muscle_mass
+          - entity: sensor.tilo_protein
+          - entity: sensor.tilo_visceral_fat
+          - entity: sensor.tilo_water
+          - entity: sensor.tilo_weight
+        title: Körperwage
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.tilo_weight
+        title: Gewicht
+        stat_types:
+          - mean
+          - min
+          - max
+        days_to_show: 180
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.tilo_body_fat
+        title: Körperfett
+        stat_types:
+          - min
+        days_to_show: 180
+      - show_name: true
+        show_icon: true
+        show_state: true
+        type: glance
+        entities:
+          - entity: sensor.strava_tilo_jandt_stats_ytd_swim_distance
+          - entity: sensor.strava_tilo_jandt_stats_ytd_ride_distance
+          - entity: sensor.strava_tilo_jandt_stats_ytd_run_distance
+        title: Glance
+      - chart_type: line
+        period: day
+        days_to_show: 90
+        type: statistics-graph
+        entities:
+          - sensor.tilo_visceral_fat
+        title: Viszerales Fett
+        stat_types:
+          - min
+      - type: custom:body-miscale-card
+        entity: bodymiscale.tilo
+        attributes:
+          impedance: impedance_low
+        show_name: true
+        show_states: true
+        show_attributes: true
+        theme: false
+        unit: false
+        model: true
+        always_show_details: true
+        show_toolbar: true
+        show_body: true
+        show_buttons: true
+        show_always_details: true
+      - type: entities
+        entities:
+          - entity: sensor.strava_tilo_jandt_recent_activity_average_cadence
+            name: Average Cadence
+          - entity: sensor.strava_tilo_jandt_recent_activity_average_heartrate
+            name: Average Heartrate
+          - entity: sensor.strava_tilo_jandt_recent_activity_calories
+            name: Calories
+          - entity: sensor.strava_tilo_jandt_recent_activity_date
+            name: Date
+          - entity: sensor.strava_tilo_jandt_recent_activity_device_info
+            name: Device Info
+          - entity: sensor.strava_tilo_jandt_recent_activity_distance
+            name: Distance
+          - entity: sensor.strava_tilo_jandt_recent_activity_elapsed_time
+            name: Elapsed Time
+          - entity: sensor.strava_tilo_jandt_recent_activity_elevation_gain
+            name: Elevation Gain
+          - entity: sensor.strava_tilo_jandt_recent_activity_gear_name
+            name: Gear Name
+          - entity: sensor.strava_tilo_jandt_recent_activity_kudos
+            name: Kudos
+          - entity: sensor.strava_tilo_jandt_recent_activity_max_heartrate
+            name: Max Heartrate
+          - entity: sensor.strava_tilo_jandt_recent_activity_moving_time
+            name: Moving Time
+          - entity: sensor.strava_tilo_jandt_recent_activity_pace
+            name: Pace
+          - entity: sensor.strava_tilo_jandt_recent_activity_power
+            name: Power
+          - entity: sensor.strava_tilo_jandt_recent_activity_speed
+            name: Speed
+          - sensor.strava_tilo_jandt_recent_activity
+          - entity: sensor.strava_tilo_jandt_recent_activity_trophies
+            name: Trophies
+        title: Strava Tilo Jandt Recent Activity
+      - type: entities
+        entities:
+          - entity: sensor.strava_tilo_jandt_stats_all_ride_count
+            name: All Ride Count
+          - entity: sensor.strava_tilo_jandt_stats_all_ride_distance
+            name: All Ride Distance
+          - entity: sensor.strava_tilo_jandt_stats_all_ride_elevation_gain
+            name: All Ride Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_all_ride_moving_time
+            name: All Ride Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_all_run_count
+            name: All Run Count
+          - entity: sensor.strava_tilo_jandt_stats_all_run_distance
+            name: All Run Distance
+          - entity: sensor.strava_tilo_jandt_stats_all_run_elevation_gain
+            name: All Run Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_all_run_moving_time
+            name: All Run Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_all_swim_count
+            name: All Swim Count
+          - entity: sensor.strava_tilo_jandt_stats_all_swim_distance
+            name: All Swim Distance
+          - entity: sensor.strava_tilo_jandt_stats_all_swim_moving_time
+            name: All Swim Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_biggest_climb_elevation_gain
+            name: Biggest Climb Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_biggest_ride_distance
+            name: Biggest Ride Distance
+          - entity: sensor.strava_tilo_jandt_stats_recent_ride_count
+            name: Recent Ride Count
+          - entity: sensor.strava_tilo_jandt_stats_recent_ride_distance
+            name: Recent Ride Distance
+          - entity: sensor.strava_tilo_jandt_stats_recent_ride_elevation_gain
+            name: Recent Ride Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_recent_ride_moving_time
+            name: Recent Ride Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_recent_run_count
+            name: Recent Run Count
+          - entity: sensor.strava_tilo_jandt_stats_recent_run_distance
+            name: Recent Run Distance
+          - entity: sensor.strava_tilo_jandt_stats_recent_run_elevation_gain
+            name: Recent Run Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_recent_run_moving_time
+            name: Recent Run Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_recent_swim_count
+            name: Recent Swim Count
+          - entity: sensor.strava_tilo_jandt_stats_recent_swim_distance
+            name: Recent Swim Distance
+          - entity: sensor.strava_tilo_jandt_stats_recent_swim_moving_time
+            name: Recent Swim Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_ytd_ride_count
+            name: Ytd Ride Count
+          - entity: sensor.strava_tilo_jandt_stats_ytd_ride_distance
+            name: Ytd Ride Distance
+          - entity: sensor.strava_tilo_jandt_stats_ytd_ride_elevation_gain
+            name: Ytd Ride Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_ytd_ride_moving_time
+            name: Ytd Ride Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_ytd_run_count
+            name: Ytd Run Count
+          - entity: sensor.strava_tilo_jandt_stats_ytd_run_distance
+            name: Ytd Run Distance
+          - entity: sensor.strava_tilo_jandt_stats_ytd_run_elevation_gain
+            name: Ytd Run Elevation Gain
+          - entity: sensor.strava_tilo_jandt_stats_ytd_run_moving_time
+            name: Ytd Run Moving Time
+          - entity: sensor.strava_tilo_jandt_stats_ytd_swim_count
+            name: Ytd Swim Count
+          - entity: sensor.strava_tilo_jandt_stats_ytd_swim_distance
+            name: Ytd Swim Distance
+          - entity: sensor.strava_tilo_jandt_stats_ytd_swim_moving_time
+            name: Ytd Swim Moving Time
+        title: Strava Tilo Jandt Stats
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: Statistik
+    path: statistik
+    icon: mdi:chart-areaspline
+    badges: []
+    cards:
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.wohnzimmer_temperature
+        title: Wohnzimmer
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.schlaf_temperature
+        title: Schlafzimmer
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.frida_temperatur
+        title: Frida
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.wetterstation_temperature
+        title: Küche
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: week
+        type: statistics-graph
+        entities:
+          - sensor.balkon_melsungen_temperature
+        title: Balkon
+        stat_types:
+          - mean
+          - min
+          - max
+        days_to_show: 360
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.abstellkammer_temperature
+        title: Büro
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.bad_temperature
+        title: Bad
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 30
+        type: statistics-graph
+        entities:
+          - sensor.temperature
+        title: Matilda
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.balkon_melsungen_temperature
+        title: Balkon-Monat
+        stat_types:
+          - mean
+          - min
+          - max
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: Media
+    path: media
+    icon: mdi:television
+    badges: []
+    cards:
+      - type: media-control
+        entity: media_player.marantz_nr1200
+      - type: media-control
+        entity: media_player.bad
+      - type: media-control
+        entity: media_player.kuche
+      - type: media-control
+        entity: media_player.tv
+      - type: media-control
+        entity: media_player.marantz_nr1200_2
+      - type: media-control
+        entity: media_player.buro
+      - type: entities
+        entities:
+          - entity: number.buro_bass
+            name: Bass
+          - entity: switch.buro_crossfade
+            name: Crossfade
+          - entity: switch.buro_loudness
+            name: Loudness
+          - switch.sonoszp_internet_access
+          - entity: number.buro_treble
+            name: Treble
+        title: Büro
+      - type: media-control
+        entity: media_player.schlafzimmersound
+      - type: media-control
+        entity: media_player.unnamed_room
+      - type: custom:sonos-card
+      - type: custom:soundtouchplus-card
+        sections:
+          - player
+          - presets
+          - recents
+          - sources
+          - userpresets
+        entity: media_player.kuche_2
+        pandoraBrowserTitle: >-
+          Pandora Stations ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        pandoraBrowserSubTitle: click an item to play the content
+        pandoraBrowserItemsPerRow: 4
+        pandoraBrowserItemsHideTitle: false
+        pandoraBrowserItemsHideSubTitle: true
+        playerHeaderTitle: '{player.source_noaccount}'
+        playerHeaderArtistTrack: '{player.media_artist} - {player.media_title}'
+        playerHeaderAlbum: '{player.media_album_name}'
+        playerHeaderNoMediaPlayingText: '"{player.name}" state is "{player.state}"'
+        presetBrowserTitle: >-
+          "{player.name}" Presets ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        presetBrowserSubTitle: click an item to select preset; click-hold to store preset
+        presetBrowserItemsPerRow: 3
+        presetBrowserItemsHideTitle: false
+        presetBrowserItemsHideSubTitle: false
+        recentBrowserTitle: >-
+          Recently Played ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        recentBrowserSubTitle: click an item to play content
+        recentBrowserItemsPerRow: 4
+        recentBrowserItemsHideTitle: false
+        recentBrowserItemsHideSubTitle: false
+        sourceBrowserTitle: '"{player.name}" Sources ({medialist.filteritemcount} items)'
+        sourceBrowserSubTitle: click an item to select source; click-hold for actions
+        sourceBrowserItemsPerRow: 1
+        sourceBrowserItemsHideTitle: false
+        sourceBrowserItemsHideSubTitle: true
+        userPresetBrowserTitle: User Presets for "{player.name}" ({medialist.filteritemcount} items)
+        userPresetBrowserSubTitle: click an item to play content; click-hold for actions
+        userPresetBrowserItemsPerRow: 4
+        userPresetBrowserItemsHideTitle: false
+        userPresetBrowserItemsHideSubTitle: false
+        userPresets:
+          - ContentItem:
+              Name: Playlist Daily Mix 1
+              ContainerArt: https://dailymix-images.scdn.co/v2/img/ab6761610000e5ebcd3f796bd7ea49ed7615a550/1/en/default
+              Location: spotify:playlist:37i9dQZF1E39vTG3GurFPW
+              Source: SPOTIFY
+              SourceAccount: YourSpotifyUserId
+              TypeValue: uri
+          - ContentItem:
+              Name: Zach Williams Radio
+              ContainerArt: https://content-images.p-cdn.com/images/68/88/0d/fb/aed34095a11118d2aa7b02a2/_500W_500H.jpg
+              Location: '126740707481236361'
+              Source: PANDORA
+              SourceAccount: YourPandoraUserId
+          - ContentItem:
+              Name: K-Love Radio
+              ContainerArt: http://cdn-profiles.tunein.com/s33828/images/logog.png?t=637986894890000000
+              Location: /v1/playback/station/s33828
+              Source: TUNEIN
+              TypeValue: stationurl
+        customImageUrls:
+          X_default: /local/images/soundtouchplus_card_customimages/default.png
+          X_empty preset: /local/images/soundtouchplus_card_customimages/empty_preset.png
+          X_Daily Mix 1: https://brands.home-assistant.io/soundtouchplus/icon.png
+          X_playerBackground: /local/images/soundtouchplus_card_customimages/playerBackground.png
+          X_playerIdleBackground: /local/images/soundtouchplus_card_customimages/playerIdleBackground.png
+          X_playerOffBackground: /local/images/soundtouchplus_card_customimages/playerOffBackground.png
+      - type: custom:soundtouchplus-card
+        sections:
+          - player
+          - presets
+          - recents
+          - sources
+          - userpresets
+        entity: media_player.bad_3
+        pandoraBrowserTitle: >-
+          Pandora Stations ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        pandoraBrowserSubTitle: click an item to play the content
+        pandoraBrowserItemsPerRow: 4
+        pandoraBrowserItemsHideTitle: false
+        pandoraBrowserItemsHideSubTitle: true
+        playerHeaderTitle: '{player.source_noaccount}'
+        playerHeaderArtistTrack: '{player.media_artist} - {player.media_title}'
+        playerHeaderAlbum: '{player.media_album_name}'
+        playerHeaderNoMediaPlayingText: '"{player.name}" state is "{player.state}"'
+        presetBrowserTitle: >-
+          "{player.name}" Presets ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        presetBrowserSubTitle: click an item to select preset; click-hold to store preset
+        presetBrowserItemsPerRow: 3
+        presetBrowserItemsHideTitle: false
+        presetBrowserItemsHideSubTitle: false
+        recentBrowserTitle: >-
+          Recently Played ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        recentBrowserSubTitle: click an item to play content
+        recentBrowserItemsPerRow: 4
+        recentBrowserItemsHideTitle: false
+        recentBrowserItemsHideSubTitle: false
+        sourceBrowserTitle: '"{player.name}" Sources ({medialist.filteritemcount} items)'
+        sourceBrowserSubTitle: click an item to select source; click-hold for actions
+        sourceBrowserItemsPerRow: 1
+        sourceBrowserItemsHideTitle: false
+        sourceBrowserItemsHideSubTitle: true
+        userPresetBrowserTitle: User Presets for "{player.name}" ({medialist.filteritemcount} items)
+        userPresetBrowserSubTitle: click an item to play content; click-hold for actions
+        userPresetBrowserItemsPerRow: 4
+        userPresetBrowserItemsHideTitle: false
+        userPresetBrowserItemsHideSubTitle: false
+        userPresets:
+          - ContentItem:
+              Name: Playlist Daily Mix 1
+              ContainerArt: https://dailymix-images.scdn.co/v2/img/ab6761610000e5ebcd3f796bd7ea49ed7615a550/1/en/default
+              Location: spotify:playlist:37i9dQZF1E39vTG3GurFPW
+              Source: SPOTIFY
+              SourceAccount: YourSpotifyUserId
+              TypeValue: uri
+          - ContentItem:
+              Name: Zach Williams Radio
+              ContainerArt: https://content-images.p-cdn.com/images/68/88/0d/fb/aed34095a11118d2aa7b02a2/_500W_500H.jpg
+              Location: '126740707481236361'
+              Source: PANDORA
+              SourceAccount: YourPandoraUserId
+          - ContentItem:
+              Name: K-Love Radio
+              ContainerArt: http://cdn-profiles.tunein.com/s33828/images/logog.png?t=637986894890000000
+              Location: /v1/playback/station/s33828
+              Source: TUNEIN
+              TypeValue: stationurl
+        customImageUrls:
+          X_default: /local/images/soundtouchplus_card_customimages/default.png
+          X_empty preset: /local/images/soundtouchplus_card_customimages/empty_preset.png
+          X_Daily Mix 1: https://brands.home-assistant.io/soundtouchplus/icon.png
+          X_playerBackground: /local/images/soundtouchplus_card_customimages/playerBackground.png
+          X_playerIdleBackground: /local/images/soundtouchplus_card_customimages/playerIdleBackground.png
+          X_playerOffBackground: /local/images/soundtouchplus_card_customimages/playerOffBackground.png
+      - type: custom:soundtouchplus-card
+        sections:
+          - player
+          - presets
+          - recents
+          - sources
+          - userpresets
+        entity: media_player.tv_3
+        pandoraBrowserTitle: >-
+          Pandora Stations ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        pandoraBrowserSubTitle: click an item to play the content
+        pandoraBrowserItemsPerRow: 4
+        pandoraBrowserItemsHideTitle: false
+        pandoraBrowserItemsHideSubTitle: true
+        playerHeaderTitle: '{player.source_noaccount}'
+        playerHeaderArtistTrack: '{player.media_artist} - {player.media_title}'
+        playerHeaderAlbum: '{player.media_album_name}'
+        playerHeaderNoMediaPlayingText: '"{player.name}" state is "{player.state}"'
+        presetBrowserTitle: >-
+          "{player.name}" Presets ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        presetBrowserSubTitle: click an item to select preset; click-hold to store preset
+        presetBrowserItemsPerRow: 3
+        presetBrowserItemsHideTitle: false
+        presetBrowserItemsHideSubTitle: false
+        recentBrowserTitle: >-
+          Recently Played ({medialist.filteritemcount} items,
+          {medialist.lastupdatedon})
+        recentBrowserSubTitle: click an item to play content
+        recentBrowserItemsPerRow: 4
+        recentBrowserItemsHideTitle: false
+        recentBrowserItemsHideSubTitle: false
+        sourceBrowserTitle: '"{player.name}" Sources ({medialist.filteritemcount} items)'
+        sourceBrowserSubTitle: click an item to select source; click-hold for actions
+        sourceBrowserItemsPerRow: 1
+        sourceBrowserItemsHideTitle: false
+        sourceBrowserItemsHideSubTitle: true
+        userPresetBrowserTitle: User Presets for "{player.name}" ({medialist.filteritemcount} items)
+        userPresetBrowserSubTitle: click an item to play content; click-hold for actions
+        userPresetBrowserItemsPerRow: 4
+        userPresetBrowserItemsHideTitle: false
+        userPresetBrowserItemsHideSubTitle: false
+        userPresets:
+          - ContentItem:
+              Name: Playlist Daily Mix 1
+              ContainerArt: https://dailymix-images.scdn.co/v2/img/ab6761610000e5ebcd3f796bd7ea49ed7615a550/1/en/default
+              Location: spotify:playlist:37i9dQZF1E39vTG3GurFPW
+              Source: SPOTIFY
+              SourceAccount: YourSpotifyUserId
+              TypeValue: uri
+          - ContentItem:
+              Name: Zach Williams Radio
+              ContainerArt: https://content-images.p-cdn.com/images/68/88/0d/fb/aed34095a11118d2aa7b02a2/_500W_500H.jpg
+              Location: '126740707481236361'
+              Source: PANDORA
+              SourceAccount: YourPandoraUserId
+          - ContentItem:
+              Name: K-Love Radio
+              ContainerArt: http://cdn-profiles.tunein.com/s33828/images/logog.png?t=637986894890000000
+              Location: /v1/playback/station/s33828
+              Source: TUNEIN
+              TypeValue: stationurl
+        customImageUrls:
+          X_default: /local/images/soundtouchplus_card_customimages/default.png
+          X_empty preset: /local/images/soundtouchplus_card_customimages/empty_preset.png
+          X_Daily Mix 1: https://brands.home-assistant.io/soundtouchplus/icon.png
+          X_playerBackground: /local/images/soundtouchplus_card_customimages/playerBackground.png
+          X_playerIdleBackground: /local/images/soundtouchplus_card_customimages/playerIdleBackground.png
+          X_playerOffBackground: /local/images/soundtouchplus_card_customimages/playerOffBackground.png
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: Technik
+    path: technik
+    icon: mdi:desktop-classic
+    type: custom:masonry-layout
+    cards:
+      - type: glance
+        title: 🖥️ System-Vitalwerte
+        entities:
+          - entity: sensor.jandtnas_cpu_utilization_total
+            name: NAS CPU
+          - entity: sensor.jandtnas_memory_usage_real
+            name: NAS RAM
+          - entity: binary_sensor.jandtnas_security_status
+            name: NAS Security
+          - entity: sensor.ups_status
+            name: USV Status
+          - entity: sensor.ups_load
+            name: USV Last
+          - entity: sensor.uptime
+            name: System Up
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: JandtNAS Storage
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.jandtnas_temperature
+                name: System Temp
+              - entity: sensor.jandtnas_volume_1_average_disk_temp
+                name: HDD Ø Temp
+            line_width: 2
+            hours_to_show: 24
+          - type: entities
+            entities:
+              - entity: update.jandtnas_dsm_update
+                name: DSM Update
+              - entity: sensor.jandtnas_volume_1_volume_used
+                name: Volume 1 Belegt (%)
+              - entity: sensor.jandtnas_volume_1_used_space
+                name: Speicherplatz belegt
+              - entity: sensor.jandtnas_download_throughput
+                name: ↓ Download
+              - entity: sensor.jandtnas_upload_throughput
+                name: ↑ Upload
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: DNS & Security (Pi-Hole)
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: binary_sensor.pi_hole_rochlitz_status
+                name: PiHole Rochlitz
+                icon: mdi:shield-check
+                icon_color: green
+              - type: custom:mushroom-entity-card
+                entity: binary_sensor.pi_hole_melsungen_status
+                name: PiHole Melsungen
+                icon: mdi:shield-check
+                icon_color: green
+          - type: glance
+            entities:
+              - entity: sensor.pi_hole_rochlitz_anteil_blockierter_anzeigen
+                name: '% Rochlitz'
+              - entity: sensor.pi_hole_melsungen_anteil_blockierter_anzeigen
+                name: '% Melsungen'
+              - entity: sensor.pi_hole_rochlitz_dns_abfragen
+                name: Queries R.
+              - entity: sensor.pi_hole_melsungen_dns_abfragen
+                name: Queries M.
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: 🖨️ Drucker Toner-Stände
+          - type: glance
+            entities:
+              - entity: sensor.samsung_c430w_toner_black
+                name: Black
+              - entity: sensor.samsung_c430w_toner_cyan
+                name: Cyan
+              - entity: sensor.samsung_c430w_toner_magenta
+                name: Magenta
+              - entity: sensor.samsung_c430w_toner_yellow
+                name: Yellow
+          - type: entities
+            entities:
+              - entity: binary_sensor.samsung_c430w
+                name: Drucker Online
+              - entity: sensor.samsung_c430w_active_alerts
+                name: Warnungen
+      - type: vertical-stack
+        cards:
+          - type: light
+            entity: light.yeelight_desklamp_0x3e1ed8b
+            name: Schreibtischlampe
+      - type: custom:pi-hole
+        device_id: 63520d7b8b402a6eaadeebf06452a605
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: Auto
+    path: auto
+    icon: mdi:car
+    type: custom:masonry-layout
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: ⛽ Aktuelle Spritpreise
+          - type: glance
+            entities:
+              - entity: sensor.star_fritzlarer_strasse_67_super_e10
+                name: STAR E10
+              - entity: sensor.aral_fritzlarer_strasse_61_super_e10
+                name: ARAL E10
+              - entity: sensor.honsel_kasseler_str_65_super_e10
+                name: Honsel E10
+          - type: custom:mini-graph-card
+            name: Super E10 Preisverlauf (24h)
+            entities:
+              - entity: sensor.aral_fritzlarer_strasse_61_super_e10
+                name: Aral
+              - entity: sensor.honsel_kasseler_str_65_super_e10
+                name: Honsel
+              - entity: sensor.star_fritzlarer_strasse_67_super_e10
+                name: Star
+            hours_to_show: 24
+            points_per_hour: 1
+            line_width: 2
+      - type: vertical-stack
+        cards:
+          - type: custom:mushroom-title-card
+            title: 🚗 Audi A5 Avant
+            subtitle: Fahrzeugzustand & Reichweite
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.audi_a5_avant_range
+                name: Gesamtreichweite
+                icon: mdi:map-marker-distance
+                icon_color: blue
+              - type: custom:mushroom-entity-card
+                entity: sensor.audi_a5_avant_tank_level
+                name: Tankfüllung
+                icon: mdi:gas-station
+                icon_color: orange
+          - type: glance
+            title: Sicherheit & Verschluss
+            entities:
+              - entity: binary_sensor.audi_a5_avant_doors_lock
+                name: Türen
+              - entity: binary_sensor.audi_a5_avant_windows
+                name: Fenster
+              - entity: binary_sensor.audi_a5_avant_trunk_lock
+                name: Kofferraum
+              - entity: binary_sensor.audi_a5_avant_is_moving
+                name: In Fahrt
+          - type: entities
+            entities:
+              - entity: sensor.audi_a5_avant_mileage
+                name: Gesamtkilometer
+              - entity: sensor.audi_a5_avant_service_inspection_distance
+                name: Nächster Service (km)
+              - entity: sensor.audi_a5_avant_service_inspection_time
+                name: Nächster Service (Tage)
+      - type: map
+        entities:
+          - device_tracker.audi_a5_avant_position
+        aspect_ratio: '16:9'
+        hours_to_show: 1
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        title: Preis-Trend Honsel (90 Tage)
+        days_to_show: 90
+        entities:
+          - sensor.honsel_kasseler_str_65_super_e10
+        stat_types:
+          - mean
+          - min
+          - max
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Backend-selected
+    title: hauswirtschaft
+    path: s
+    icon: mdi:home-city-outline
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.trockner_energy
+            name: Energy
+          - entity: sensor.trockner_power
+            name: Power
+        title: Trockner
+      - type: entities
+        entities:
+          - switch.trockner
+        title: Trockner
+      - type: entities
+        entities:
+          - entity: sensor.waschmaschine_energy
+            name: Energy
+          - entity: sensor.waschmaschine_power
+            name: Power
+        title: Waschmaschine
+      - type: entities
+        entities:
+          - switch.waschmaschine
+        title: Waschmaschine
+      - type: entities
+        entities:
+          - entity: switch.kaffeemaschine_outlet
+            name: '- outlet'
+        title: Kaffeemaschine
+      - type: entities
+        entities:
+          - entity: sensor.kaffeemaschine_current
+            name: '- current'
+          - entity: sensor.kaffeemaschine_energy
+            name: '- energy'
+          - entity: sensor.kaffeemaschine_power
+            name: '- power'
+          - entity: sensor.kaffeemaschine_voltage
+            name: '- voltage'
+        title: Kaffeemaschine
+      - type: entities
+        entities:
+          - entity: light.philips_lwb004_light
+            name: Buddha
+          - entity: light.philips_lwb004_light_2
+            name: Schlafzimmer
+          - entity: light.yeelight_desklamp_0x3e1ed8b
+            name: Schreibtisch
+          - entity: light.ikea_of_sweden_tradfri_bulb_e27_ww_806lm_light
+          - entity: light.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_light
+          - entity: light.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_light_2
+          - entity: light.ikea_of_sweden_tradfri_bulb_gu10_ws_400lm_light_3
+          - entity: light.ikea_of_sweden_tradfri_bulb_e27_ww_clear_250lm_light
+        title: Beleuchtung
+      - type: light
+        entity: light.philips_lwb004_light
+        name: Buddha
+      - type: entities
+        entities:
+          - entity: fan.ikea_of_sweden_starkvind_air_purifier_table_ikea_fan
+            name: Lüfter
+        title: IKEA of Sweden STARKVIND Air purifier table
+      - type: entities
+        entities:
+          - entity: sensor.ikea_of_sweden_starkvind_air_purifier_table_particulate_matter
+            name: PM2.5
+        title: IKEA of Sweden STARKVIND Air purifier table
+      - type: entities
+        entities:
+          - entity: select.waschmaschine_betrieb
+            name: Betrieb
+          - entity: switch.waschmaschine_power_2
+            name: Power
+          - entity: number.waschmaschine_verzogerung_endet_in
+            name: Verzögertes Ende
+        title: Waschmaschine
+      - type: entities
+        entities:
+          - entity: sensor.waschmaschine_aktueller_status
+            name: Aktueller Status
+          - entity: binary_sensor.waschmaschine_fernstart
+            name: Fernstart
+          - entity: sensor.waschmaschine_gesamtdauer
+            name: Gesamtdauer
+          - entity: sensor.waschmaschine_verbleibende_zeit
+            name: Verbleibende Zeit
+          - entity: sensor.waschmaschine_verzogerung_endet_in
+            name: Verzögertes Ende
+          - entity: sensor.waschmaschine_zyklen
+            name: Zyklen
+        title: Waschmaschine
+      - type: entities
+        entities:
+          - entity: sensor.waschmaschine_countdown_time
+            name: Countdown time
+          - entity: sensor.waschmaschine_current_course
+            name: Current course
+          - entity: binary_sensor.waschmaschine_door_lock
+            name: Door lock
+          - entity: sensor.waschmaschine_error_message
+            name: Error message
+          - entity: binary_sensor.waschmaschine_error_state
+            name: Error state
+          - entity: sensor.waschmaschine_initial_time
+            name: Initial time
+          - entity: sensor.waschmaschine_remaining_time
+            name: Remaining time
+          - entity: sensor.waschmaschine_rinse_mode
+            name: Rinse mode
+          - entity: binary_sensor.waschmaschine_wash_completed
+            name: Run completed
+          - entity: sensor.waschmaschine_run_state
+            name: Run state
+          - entity: sensor.waschmaschine_spin_speed
+            name: Spin speed
+          - entity: binary_sensor.waschmaschine_standby
+            name: Standby
+          - sensor.waschmaschine
+          - entity: sensor.waschmaschine_water_temp
+            name: Water temp
+        title: Waschmaschine
+      - type: entities
+        entities:
+          - entity: sensor.smart_series_7000_cb00_dauer
+            name: Dauer
+          - entity: sensor.smart_series_7000_cb00_druck
+            name: Druck
+          - sensor.smart_series_7000_cb00
+        title: Smart Series 7000 CB00
+      - type: entities
+        entities:
+          - entity: sensor.smart_series_7000_cb00_anzahl_der_sektoren
+            name: Anzahl der Sektoren
+          - entity: sensor.smart_series_7000_cb00_batterie
+            name: Batterie
+          - entity: sensor.smart_series_7000_cb00_putzmodus
+            name: Putzmodus
+          - entity: sensor.smart_series_7000_cb00_sektor
+            name: Sektor
+        title: Smart Series 7000 CB00
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+  - theme: Liquid Glass
+    title: Rochlitz
+    path: rochlitz
+    icon: ''
+    badges: []
+    cards:
+      - type: glance
+        title: ⚡ Aktueller Verbrauch (Watt)
+        show_state: true
+        entities:
+          - entity: sensor.rochlitz_kuhlschrank_power
+            name: Kühlschrank
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+            name: Oma
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+            name: Waschmaschine
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+            name: Computer
+          - entity: sensor.kaffeemaschine_rochlitz_power
+            name: Kaffeemaschine
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+            name: Wohnzimmer
+          - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+            name: Tilo
+          - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+            name: Büro/Musik
+      - type: vertical-stack
+        cards:
+          - type: glance
+            title: ☕ Kaffeevollautomat
+            entities:
+              - entity: sensor.kaffeevollautomat_kaffees
+                name: Kaffees
+              - entity: sensor.kaffeevollautomat_kaffee_und_milchtassen
+                name: Mit Milch
+              - entity: sensor.kaffeevollautomat_heisswasser
+                name: Heißwasser
+              - entity: binary_sensor.kaffeevollautomat_konnektivitat
+                name: Online
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.kaffeevollautomat_einschalter
+                name: Einschalten
+                icon: mdi:coffee-maker
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: switch.kaffeevollautomat_tassenwarmer
+                name: Tassenwärmer
+                icon: mdi:cup-water
+                tap_action:
+                  action: toggle
+              - type: custom:mushroom-entity-card
+                entity: select.kaffeevollautomat_aktives_programm
+                name: Programm
+                icon: mdi:coffee
+      - show_name: true
+        show_icon: true
+        show_state: true
+        type: glance
+        title: 🖥️ System Status NAS
+        entities:
+          - entity: sensor.rochlitznas_cpu_auslastung_gesamt
+            name: CPU %
+          - entity: sensor.rochlitznas_speichernutzung_real
+            name: RAM %
+          - entity: sensor.rochlitznas_download_durchsatz
+            name: ↓ Download
+          - entity: sensor.rochlitznas_upload_durchsatz
+            name: ↑ Upload
+          - entity: binary_sensor.rochlitznas_sicherheitsstatus
+            name: Sicherheit
+          - entity: sensor.rochlitznas_drive_1_temperatur
+            name: HDD °C
+          - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+            name: Server Raum
+          - entity: sensor.rochlitz_serverraum_serverraum_monitor_uptime
+            name: Uptime
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_wohnzimmer_temperatur
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Temperatur
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_wohnzimmer_luftfeuchtigkeit
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Luftfeuchte
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_wohnzimmer_luftdruck
+            line_color: '#e74c3c'
+            line_width: 8
+            font_size: 75
+            name: Luftdruck
+        title: Wohnzimmer
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_oma_temperatur
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Temperatur
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_oma_luftfeuchtigkeit
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Luftfeuchte
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_oma_luftdruck
+            line_color: '#e74c3c'
+            line_width: 8
+            font_size: 75
+            name: Luftdruck
+        title: Oma
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.indoor_temperature
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Temperatur
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.indoor_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Luftfeuchte
+        title: Tilo Zimmer
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.temperature_humidity_sensor_7cd9_temperature
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Tilo
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_5
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Dach
+        title: Aussentemperatur
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_serverraum_serverraum_temperatur
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Temperatur
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Luftfeuchte
+        title: Serverraum
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.esp32c3_rl_buro_temperature_2
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: Temperatur
+            graph: line
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.esp32c3_rl_buro_humidity_2
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Luftfeuchte
+        title: Büro
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.rochlitz_wohnzimmer_temperatur
+            aggregate_func: max
+            name: Max
+            color: '#e74c3c'
+          - entity: sensor.rochlitz_wohnzimmer_temperatur
+            aggregate_func: min
+            name: Min
+          - entity: sensor.rochlitz_wohnzimmer_temperatur
+            aggregate_func: avg
+            name: Avg
+            color: green
+        name: Wohnzimmer (letzte Woche)
+        hours_to_show: 168
+        points_per_hour: 0.1
+        group_by: date
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.rochlitz_oma_temperatur
+            aggregate_func: max
+            name: Max
+            color: '#e74c3c'
+          - entity: sensor.rochlitz_oma_temperatur
+            aggregate_func: min
+            name: Min
+          - entity: sensor.rochlitz_oma_temperatur
+            aggregate_func: avg
+            name: Avg
+            color: green
+        name: Oma (letzte Woche)
+        hours_to_show: 168
+        group_by: date
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.indoor_temperature
+            aggregate_func: max
+            name: Max
+            color: '#e74c3c'
+          - entity: sensor.indoor_temperature
+            aggregate_func: min
+            name: Min
+          - entity: sensor.indoor_temperature
+            aggregate_func: avg
+            name: Avg
+            color: green
+        name: Tilo Zimmer (letzte Woche)
+        hours_to_show: 168
+        points_per_hour: 0.1
+        group_by: date
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+            aggregate_func: max
+            name: Max
+            color: '#e74c3c'
+          - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+            aggregate_func: min
+            name: Min
+          - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+            aggregate_func: avg
+            name: Avg
+            color: green
+        name: Aussentemperatur (letzte Woche)
+        hours_to_show: 168
+        points_per_hour: 0.1
+        group_by: date
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.node_2_analog_logging_2
+        name: WARMWASSER 24h
+        hours_to_show: 24
+        points_per_hour: 0.75
+        color_thresholds:
+          - value: 30
+            color: '#1414b8'
+          - value: 35
+            color: '#f39c12'
+          - value: 40
+            color: '#d35400'
+          - value: 45
+            color: '#c0392b'
+          - value: 55
+            color: '#901090'
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.node_2_analog_logging_2
+        name: WARMWASSER 1 Woche
+        hours_to_show: 168
+        points_per_hour: 0.75
+        color_thresholds:
+          - value: 30
+            color: '#1414b8'
+          - value: 35
+            color: '#f39c12'
+          - value: 40
+            color: '#d35400'
+          - value: 45
+            color: '#c0392b'
+          - value: 55
+            color: '#901090'
+      - header:
+          show: true
+          show_states: true
+          colorize_states: true
+          title: Stromverbrauch
+        type: custom:apexcharts-card
+        apex_config:
+          chart:
+            stacked: true
+          xaxis:
+            labels:
+              format: dd.MM
+          legend:
+            show: true
+        graph_span: 7d
+        span:
+          end: day
+        show:
+          last_updated: true
+        series:
+          - entity: sensor.kuhlschrank_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.oma_verbrauch
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.waschmaschine_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.computer_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.kaffeemaschine_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.wohnzimmer_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.tilo
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+          - entity: sensor.buro_rochlitz
+            type: column
+            group_by:
+              func: diff
+              duration: 1d
+              start_with_last: true
+      - type: entities
+        entities:
+          - entity: sensor.uvr16x2_node_2_input_5
+          - entity: sensor.uvr16x2_node_2_input_2
+          - entity: sensor.uvr16x2_node_2_input_4
+          - entity: sensor.uvr16x2_node_2_input_7
+          - entity: sensor.uvr16x2_node_2_input_1
+        title: UVR16x2
+      - type: entities
+        entities:
+          - entity: sensor.rochlitz_kuhlschrank_config_overtemp_type
+            name: Config overtemp type
+          - entity: sensor.rochlitz_kuhlschrank_consumption
+            name: Consumption
+          - entity: sensor.rochlitz_kuhlschrank_current
+            name: Current
+          - entity: sensor.rochlitz_kuhlschrank_energy
+            name: Energy
+          - sensor.kuhlschrank_rochlitz
+          - entity: sensor.rochlitz_kuhlschrank_power
+            name: Power
+          - entity: sensor.rochlitz_kuhlschrank_voltage
+            name: Voltage
+        title: Rochlitz Kühlschrank
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_current
+            name: Current
+          - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+            name: Power
+          - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_voltage
+            name: Voltage
+          - entity: sensor.buro_rochlitz
+          - entity: switch.smart_switch_23070739203051510d0248e1e9cfc328_outlet
+        title: Rochlitz Music
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_current
+            name: Current
+          - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+            name: Power
+          - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_voltage
+            name: Voltage
+          - entity: sensor.tilo
+          - entity: switch.smart_switch_23070778577851510d0248e1e9cfc20b_outlet
+        title: Rochlitz Tilo
+      - type: entities
+        entities:
+          - entity: binary_sensor.uvr16x2_node_2_output_6
+          - entity: binary_sensor.uvr16x2_node_2_output_8
+          - entity: binary_sensor.uvr16x2_node_2_output_5
+          - entity: binary_sensor.uvr16x2_node_2_output_4
+          - entity: binary_sensor.uvr16x2_node_2_output_7
+          - entity: binary_sensor.uvr16x2_node_2_output_3
+          - entity: sensor.uvr16x2_node_2_output_16
+        title: UVR16x2 Aktivität
+      - type: history-graph
+        title: Kessel vs. Speicher Strategie
+        hours_to_show: 24
+        entities:
+          - entity: sensor.uvr16x2_node_2_input_1
+            name: Kessel Vorlauf
+          - entity: sensor.uvr16x2_node_2_input_4
+            name: Speicher unten (Rücklauf)
+          - entity: sensor.uvr16x2_node_2_input_2
+            name: Warmwasser (Speicher oben)
+      - chart_type: bar
+        period: hour
+        type: statistics-graph
+        entities:
+          - sensor.kuhlschrank_rochlitz_2
+          - sensor.tilo
+          - sensor.buro_rochlitz
+          - sensor.computer_rochlitz
+          - sensor.wohnzimmer_rochlitz
+          - sensor.kuhlschrank_vorratsraum
+          - sensor.waschmaschine_rochlitz
+        title: Stromverbrauch 24h
+        days_to_show: 1
+        hide_legend: false
+        logarithmic_scale: false
+        stat_types:
+          - change
+      - type: entities
+        entities:
+          - entity: sensor.indoor_humidity
+          - entity: sensor.indoor_temperature
+          - entity: sensor.outdoor_temperature
+            name: Outdoor Humidity
+          - entity: sensor.outdoor_humidity
+            name: Outdoor Temperature
+        title: Zimmer Tilo
+      - chart_type: line
+        period: hour
+        type: statistics-graph
+        entities:
+          - sensor.uvr16x2_node_2_analog_logging_7
+        stat_types:
+          - mean
+          - min
+          - max
+        title: Kollektor
+        days_to_show: 14
+      - chart_type: line
+        period: day
+        days_to_show: 90
+        type: statistics-graph
+        entities:
+          - sensor.rochlitz_oma_temperatur
+        title: Oma
+        stat_types:
+          - mean
+          - min
+          - max
+      - chart_type: line
+        period: day
+        days_to_show: 60
+        type: statistics-graph
+        entities:
+          - sensor.rochlitz_wohnzimmer_temperatur
+        stat_types:
+          - mean
+          - min
+          - max
+        title: Wohnzimmer Temperatur
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.indoor_temperature
+        stat_types:
+          - mean
+          - min
+          - max
+        title: Zimmer Tilo
+        days_to_show: 35
+      - type: entities
+        entities:
+          - entity: sensor.temperature_humidity_sensor_7cd9_humidity
+            name: Humidity
+          - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+            name: Temperature
+        title: Rochlitz Outdoor
+      - chart_type: line
+        period: day
+        type: statistics-graph
+        entities:
+          - sensor.temperature_humidity_sensor_7cd9_temperature
+        stat_types:
+          - mean
+          - min
+          - max
+        title: Outdoor
+        days_to_show: 60
+      - type: picture-entity
+        entity: camera.eingang
+      - show_state: true
+        show_name: true
+        camera_view: auto
+        type: picture-entity
+        entity: camera.hintereingang
+      - type: custom:mini-graph-card
+        entities:
+          - sensor.uvr16x2_node_2_analog_logging_2
+        name: WARMWASSER 48h
+        hours_to_show: 48
+        points_per_hour: 0.75
+        color_thresholds:
+          - value: 30
+            color: '#1414b8'
+          - value: 35
+            color: '#f39c12'
+          - value: 40
+            color: '#d35400'
+          - value: 45
+            color: '#c0392b'
+          - value: 55
+            color: '#901090'
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_config_overtemp_type
+            name: Config overtemp type
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_current
+            name: Current
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_energy
+            name: Energy
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+            name: Power
+          - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_voltage
+            name: Voltage
+          - entity: sensor.wohnzimmer_rochlitz
+          - entity: switch.smart_switch_24022106833283510d0148e1e9ed3010_outlet
+        title: Wohnzimmer RL
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_config_overtemp_type
+            name: Config overtemp type
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_current
+            name: Current
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_energy
+            name: Energy
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+            name: Power
+          - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_voltage
+            name: Voltage
+          - entity: sensor.waschmaschine_rochlitz
+          - entity: switch.smart_switch_24022135042720510d0148e1e9ed26af_outlet
+        title: Waschmaschine RL
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_config_overtemp_type
+            name: Config overtemp type
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_current
+            name: Current
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_energy
+            name: Energy
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+            name: Power
+          - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_voltage
+            name: Voltage
+          - entity: sensor.computer_rochlitz
+          - entity: switch.smart_switch_24022139185434510d0148e1e9ed14d7_outlet
+        title: Computer RL
+      - type: entities
+        entities:
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_config_overtemp_type
+            name: Config overtemp type
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_consumption
+            name: Consumption
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_current
+            name: Current
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_energy
+            name: Energy
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+            name: Power
+          - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_voltage
+            name: Voltage
+          - entity: sensor.oma_verbrauch
+        title: OmaPower
+      - type: entities
+        entities:
+          - entity: sensor.rochlitznas_cpu_auslastung_benutzer
+            name: CPU-Auslastung (Benutzer)
+          - entity: sensor.rochlitznas_cpu_auslastung_gesamt
+            name: CPU-Auslastung (gesamt)
+          - entity: sensor.rochlitznas_download_durchsatz
+            name: Download-Durchsatz
+          - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_15_min
+            name: Durchschnittliche CPU-Auslastung (15 min)
+          - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_5_min
+            name: Durchschnittliche CPU-Auslastung (5 min)
+          - entity: binary_sensor.rochlitznas_sicherheitsstatus
+            name: Sicherheitsstatus
+          - entity: sensor.rochlitznas_speicher_gesamt_real
+            name: Speicher gesamt (real)
+          - entity: sensor.rochlitznas_speicher_gesamt_swap
+            name: Speicher gesamt (Swap)
+          - entity: sensor.rochlitznas_speicher_verfugbar_real
+            name: Speicher verfügbar (real)
+          - entity: sensor.rochlitznas_speicher_verfugbar_swap
+            name: Speicher verfügbar (Swap)
+          - entity: sensor.rochlitznas_speichernutzung_real
+            name: Speichernutzung (real)
+          - entity: sensor.rochlitznas_upload_durchsatz
+            name: Upload-Durchsatz
+        title: RochlitzNAS
+      - type: entities
+        entities:
+          - entity: binary_sensor.rochlitznas_drive_1_max_fehlerhafte_sektoren_uberschritten
+            name: Max. fehlerhafte Sektoren überschritten
+          - entity: sensor.rochlitznas_drive_1_status
+            name: Status
+          - entity: sensor.rochlitznas_drive_1_temperatur
+            name: Temperatur
+          - entity: binary_sensor.rochlitznas_drive_1_unterhalb_der_mindestrestlebensdauer
+            name: Unterhalb der Mindestrestlebensdauer
+        title: RochlitzNAS (Drive 1)
+      - type: entities
+        entities:
+          - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+            name: Humidity
+          - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+            name: Temperature
+          - entity: sensor.rochlitz_serverraum_serverraum_monitor_uptime
+        title: Rochlitz_Serverraum
+      - type: entities
+        entities:
+          - entity: sensor.esp32c3_rl_buro_humidity_2
+          - entity: sensor.esp32c3_rl_buro_temperature_2
+          - entity: sensor.esp32c3_rl_buro_pressure_2
+        title: RL Office Temp
+      - type: entities
+        entities:
+          - entity: select.kaffeevollautomat_aktives_programm
+            name: Aktives Programm
+          - entity: select.kaffeevollautomat_ausgewahltes_programm
+            name: Ausgewähltes Programm
+          - entity: switch.kaffeevollautomat_einschalter
+            name: Einschalter
+          - entity: switch.kaffeevollautomat_kindersicherung
+            name: Kindersicherung
+          - entity: button.kaffeevollautomat_programm_stoppen
+            name: Programm stoppen
+          - entity: switch.kaffeevollautomat_tassenwarmer
+            name: Tassenwärmer
+        title: Kaffeevollautomat
+      - type: custom:flightradar-flight-card
+        entities:
+          - entity_id: sensor.flightradar24_current_in_area
+        units:
+          altitude: ft
+          distance: km
+          ground_speed: kts
+        carousel:
+          enable: true
+          show_controls: true
+          loop: false
+          autoplay: false
+          autoplay_delay: 5000
+        colors:
+          primary: var(--primary-text-color)
+          secondary: rgba(var(--rgb-primary-text-color), 0.7)
+          accent: var(--accent-color)
+          accent_light: var(--state-active-color)
+          progress_bar_light: var(--secondary-background-color)
+        show_flightradar_link: true
+        show_airline_info_column: true
+        show_airline_logo: true
+        show_aircraft_photo: true
+        show_progress_bar: true
+      - type: entities
+        entities:
+          - entity: number.aeg_backofen_appliancelocaltimeoffset
+            name: Appliance local time offset
+          - entity: switch.aeg_backofen_childlock
+            name: Child lock
+          - entity: select.aeg_backofen_clockstyle
+            name: Clock style
+          - entity: select.aeg_backofen_displaylight
+            name: Display light
+          - entity: select.aeg_backofen_keysoundtone
+            name: Key sound tone
+          - entity: select.aeg_backofen_language
+            name: Language
+          - entity: select.aeg_backofen_localtimeautomaticmode
+            name: Local time automatic mode
+          - entity: select.aeg_backofen_soundvolume
+            name: Sound volume
+          - entity: switch.aeg_backofen_upperoven_cavitylight
+            name: Upper oven cavity light
+          - entity: button.aeg_backofen_upperoven_executecommand
+            name: Upper oven execute command START
+          - entity: button.aeg_backofen_upperoven_executecommand_2
+            name: Upper oven execute command STOPRESET
+          - entity: select.aeg_backofen_upperoven_fastheatupfeature
+            name: Upper oven fast heat up feature
+          - entity: select.aeg_backofen_upperoven_program
+            name: Upper oven program
+          - entity: number.aeg_backofen_upperoven_remindertime
+            name: Upper oven reminder time
+          - entity: number.aeg_backofen_upperoven_starttime
+            name: Upper oven start time
+          - entity: number.aeg_backofen_upperoven_targetduration
+            name: Upper oven target duration
+          - entity: select.aeg_backofen_upperoven_targetdurationendaction
+            name: Upper oven target duration end action
+          - entity: number.aeg_backofen_upperoven_targetfoodprobetemperaturec
+            name: Upper oven target food probe temperature c
+          - entity: select.aeg_backofen_upperoven_targetfoodprobetemperatureendaction
+            name: Upper oven target food probe temperature end action
+          - entity: number.aeg_backofen_upperoven_targetfoodprobetemperaturef
+            name: Upper oven target food probe temperature f
+          - entity: number.aeg_backofen_upperoven_targettemperaturec
+            name: Upper oven target temperature c
+          - entity: number.aeg_backofen_upperoven_targettemperaturef
+            name: Upper oven target temperature f
+        title: Backofen
+      - type: entities
+        entities:
+          - entity: sensor.aeg_backofen_autolocaltimeoffset
+            name: Auto local time offset
+          - entity: binary_sensor.aeg_backofen_cleaningreminder
+            name: Cleaning reminder
+          - entity: sensor.aeg_backofen_cpv
+            name: Cpv
+          - entity: binary_sensor.aeg_backofen_descalingreminderstate
+            name: Descaling reminder state
+          - entity: sensor.aeg_backofen_favoriteorder_number
+            name: Favorite order number
+          - entity: sensor.aeg_backofen_favoritestatus_number
+            name: Favorite status number
+          - entity: sensor.aeg_backofen_keymodel
+            name: Key model
+          - entity: sensor.aeg_backofen_messagequeuesync_activemessageindex
+            name: Message queue sync active message index
+          - entity: sensor.aeg_backofen_messagequeuesync_messagebehaviour
+            name: Message queue sync message behaviour
+          - entity: sensor.aeg_backofen_messagequeuesync_messagequeueid
+            name: Message queue sync message queue id
+          - entity: sensor.aeg_backofen_messagequeuesync_messagequeuetype
+            name: Message queue sync message queue type
+          - entity: sensor.aeg_backofen_remotecontrol
+            name: Remote control
+          - entity: sensor.aeg_backofen_upperoven_appliancestate
+            name: Upper oven appliance state
+          - entity: sensor.aeg_backofen_upperoven_displayfoodprobetemperaturec
+            name: Upper oven display food probe temperature c
+          - entity: sensor.aeg_backofen_upperoven_displayfoodprobetemperaturef
+            name: Upper oven display food probe temperature f
+          - entity: sensor.aeg_backofen_upperoven_displaytemperaturec
+            name: Upper oven display temperature c
+          - entity: sensor.aeg_backofen_upperoven_displaytemperaturef
+            name: Upper oven display temperature f
+          - entity: sensor.aeg_backofen_upperoven_doorstate
+            name: Upper oven door state
+          - entity: sensor.aeg_backofen_upperoven_foodprobeinsertionstate
+            name: Upper oven food probe insertion state
+          - entity: sensor.aeg_backofen_upperoven_preheatcomplete
+            name: Upper oven preheat complete
+          - entity: sensor.aeg_backofen_upperoven_processphase
+            name: Upper oven process phase
+          - entity: sensor.aeg_backofen_upperoven_runningtime
+            name: Upper oven running time
+          - entity: sensor.aeg_backofen_upperoven_timetoend
+            name: Upper oven time to end
+          - entity: sensor.aeg_backofen_upperoven_watertanklevel
+            name: Upper oven water tank level
+          - entity: sensor.aeg_backofen_upperoven_watertrayinsertionstate
+            name: Upper oven water tray insertion state
+        title: Backofen
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.uvr16x2_node_2_input_7
+                icon: mdi:solar-power
+                icon_color: orange
+                primary_info: state
+                secondary_info: name
+              - type: custom:mushroom-entity-card
+                entity: sensor.uvr16x2_node_2_input_2
+                icon: mdi:water-boiler
+                icon_color: blue
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: entity
+                    entity: sensor.uvr16x2_node_2_input_5
+                    icon: mdi:thermometer
+          - type: entities
+            title: Pumpen & Status
+            show_header_toggle: false
+            entities:
+              - entity: binary_sensor.uvr16x2_node_2_output_3
+                name: Heizung
+                icon: mdi:pump
+              - type: custom:bar-card
+                entity: sensor.uvr16x2_node_2_output_16
+                name: Solar Leistung
+                color: orange
+      - type: custom:landroid-card
+        entity: lawn_mower.bennivision_cloud
+        image: default
+    type: custom:horizontal-layout
+  - title: Rochlitz Modern
+    path: rochlitz-modern
+    theme: Liquid Glass
+    type: sections
+    max_columns: 4
+    sections:
+      - cards:
+          - type: heading
+            heading: Energie & Verbrauch
+          - type: glance
+            title: Aktuelle Watt
+            show_state: true
+            entities:
+              - sensor.rochlitz_kuhlschrank_power
+              - sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+              - sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+              - sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+              - sensor.kaffeemaschine_rochlitz_power
+              - sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+              - sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+              - sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: Stromverbrauch (7 Tage)
+            graph_span: 7d
+            stacked: true
+            series:
+              - entity: sensor.kuhlschrank_rochlitz
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+              - entity: sensor.oma_verbrauch
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+              - entity: sensor.waschmaschine_rochlitz
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+              - entity: sensor.tilo
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+          - type: statistics-graph
+            title: Verbrauch 24h (Vergleich)
+            entities:
+              - sensor.kuhlschrank_rochlitz_2
+              - sensor.tilo
+              - sensor.waschmaschine_rochlitz
+            chart_type: bar
+            days_to_show: 1
+            stat_types:
+              - change
+      - cards:
+          - type: heading
+            heading: Klima & Wetter
+          - type: custom:mushroom-title-card
+            title: Haus Klima
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_wohnzimmer_temperatur
+                name: Wohnz.
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.esp32c3_rl_buro_temperature_2
+                name: Büro
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_oma_temperatur
+                name: Oma
+          - type: custom:mini-graph-card
+            name: Büro Detail (24h)
+            entities:
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+              - entity: sensor.esp32c3_rl_buro_humidity_2
+                y_axis: secondary
+            hours_to_show: 24
+          - type: entities
+            title: Außen & Tilo
+            entities:
+              - sensor.indoor_temperature
+              - sensor.temperature_humidity_sensor_7cd9_temperature
+              - sensor.temperature_humidity_sensor_7cd9_humidity
+          - type: statistics-graph
+            title: Langzeit (60 Tage)
+            entities:
+              - sensor.rochlitz_wohnzimmer_temperatur
+              - sensor.rochlitz_oma_temperatur
+            days_to_show: 60
+            stat_types:
+              - mean
+      - cards:
+          - type: heading
+            heading: Solar & UVR Technik
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.uvr16x2_node_2_input_7
+                name: Kollektor
+              - type: custom:mushroom-entity-card
+                entity: sensor.uvr16x2_node_2_output_16
+                name: Solar Watt
+          - type: gauge
+            entity: sensor.uvr16x2_node_2_output_16
+            max: 5000
+            needle: true
+          - type: custom:mini-graph-card
+            name: Warmwasser Verlauf
+            entities:
+              - sensor.node_2_analog_logging_2
+            hours_to_show: 48
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 45
+                color: '#c0392b'
+          - type: history-graph
+            title: Kessel Strategie
+            entities:
+              - sensor.uvr16x2_node_2_input_1
+              - sensor.uvr16x2_node_2_input_4
+              - sensor.uvr16x2_node_2_input_2
+          - type: entities
+            title: UVR Aktivität
+            entities:
+              - binary_sensor.uvr16x2_node_2_output_3
+              - binary_sensor.uvr16x2_node_2_output_6
+              - binary_sensor.uvr16x2_node_2_output_7
+      - cards:
+          - type: heading
+            heading: NAS & Infrastruktur
+          - type: glance
+            entities:
+              - sensor.rochlitznas_cpu_auslastung_gesamt
+              - sensor.rochlitznas_speichernutzung_real
+              - sensor.rochlitznas_download_durchsatz
+              - binary_sensor.rochlitznas_sicherheitsstatus
+          - type: entities
+            title: NAS Details & Drive
+            entities:
+              - sensor.rochlitznas_drive_1_status
+              - sensor.rochlitznas_drive_1_temperatur
+              - sensor.rochlitznas_cpu_auslastung_benutzer
+              - binary_sensor.rochlitznas_drive_1_max_fehlerhafte_sektoren_uberschritten
+          - type: entities
+            title: Serverraum & Uptime
+            entities:
+              - sensor.rochlitz_serverraum_serverraum_temperatur
+              - sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+              - sensor.rochlitz_serverraum_serverraum_monitor_uptime
+          - type: custom:pi-hole
+            device_id: b116dfadb0fc3b8d4f02167306cf7c6c
+          - type: custom:flightradar-flight-card
+            entities:
+              - entity_id: sensor.flightradar24_current_in_area
+            carousel:
+              enable: true
+              loop: true
+      - cards:
+          - type: heading
+            heading: Hausgeräte & Küche
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.kaffeevollautomat_einschalter
+              - type: custom:mushroom-entity-card
+                entity: select.kaffeevollautomat_aktives_programm
+          - type: glance
+            entities:
+              - sensor.kaffeevollautomat_kaffees
+              - sensor.kaffeevollautomat_kaffee_und_milchtassen
+              - binary_sensor.kaffeevollautomat_konnektivitat
+          - type: entities
+            title: Backofen Status
+            entities:
+              - entity: sensor.aeg_backofen_upperoven_appliancestate
+              - entity: sensor.aeg_backofen_upperoven_displaytemperaturec
+              - entity: sensor.aeg_backofen_upperoven_timetoend
+              - entity: binary_sensor.aeg_backofen_cleaningreminder
+      - cards:
+          - type: heading
+            heading: Kameras
+          - type: picture-entity
+            entity: camera.eingang
+          - type: picture-entity
+            entity: camera.hintereingang
+    cards: []
+  - title: RochlitzNew
+    path: rochlitznew
+    icon: mdi:home-variant
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🏠 Überblick
+          - type: custom:mushroom-title-card
+            title: Rochlitz Smart Home
+            subtitle: '{{ now().strftime(''%A, %d. %B %Y – %H:%M'') }}'
+          - type: custom:mushroom-template-card
+            primary: Gesamtverbrauch
+            secondary: |
+              {{ (states('sensor.rochlitz_kuhlschrank_power') | float(0)
+                + states('sensor.smart_switch_24060408263254510802c4e7ae048e5e_power') | float(0)
+                + states('sensor.smart_switch_24022135042720510d0148e1e9ed26af_power') | float(0)
+                + states('sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power') | float(0)
+                + states('sensor.kaffeemaschine_rochlitz_power') | float(0)
+                + states('sensor.smart_switch_24022106833283510d0148e1e9ed3010_power') | float(0)
+                + states('sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power') | float(0)
+                + states('sensor.smart_switch_23070739203051510d0248e1e9cfc328_power') | float(0)) | round(1) }} W
+            icon: mdi:lightning-bolt-circle
+            icon_color: amber
+            badge_icon: mdi:home-lightning-bolt
+            badge_color: orange
+          - type: custom:mushroom-template-card
+            primary: Außentemperatur
+            secondary: >
+              {{ states('sensor.temperature_humidity_sensor_7cd9_temperature')
+              }}°C · Feuchte: {{
+              states('sensor.temperature_humidity_sensor_7cd9_humidity') }}%
+            icon: mdi:thermometer-lines
+            icon_color: >
+              {% set t =
+              states('sensor.temperature_humidity_sensor_7cd9_temperature') |
+              float(0) %} {% if t < 0 %}blue{% elif t < 10 %}cyan{% elif t < 20
+              %}green{% elif t < 28 %}orange{% else %}red{% endif %}
+          - type: custom:mushroom-template-card
+            primary: NAS Status
+            secondary: >
+              CPU: {{ states('sensor.rochlitznas_cpu_auslastung_gesamt') }}% ·
+              RAM: {{ states('sensor.rochlitznas_speichernutzung_real') }}% · {{
+              '🔒 Sicher' if
+              is_state('binary_sensor.rochlitznas_sicherheitsstatus', 'off')
+              else '⚠️ Alarm' }}
+            icon: mdi:nas
+            icon_color: >
+              {% if is_state('binary_sensor.rochlitznas_sicherheitsstatus',
+              'off') %}green{% else %}red{% endif %}
+          - type: glance
+            title: ⚡ Aktueller Verbrauch (Watt)
+            show_state: true
+            columns: 4
+            entities:
+              - entity: sensor.rochlitz_kuhlschrank_power
+                name: Kühlschrank
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+                name: Oma
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+                name: Waschmaschine
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+                name: Computer
+              - entity: sensor.kaffeemaschine_rochlitz_power
+                name: Kaffeemaschine
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+                name: Wohnzimmer
+              - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+                name: Tilo
+              - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+                name: Büro/Musik
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-title-card
+                title: ☕ Kaffeevollautomat
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: switch.kaffeevollautomat_einschalter
+                    name: Ein/Aus
+                    icon: mdi:coffee-maker
+                    tap_action:
+                      action: toggle
+                  - type: custom:mushroom-entity-card
+                    entity: switch.kaffeevollautomat_tassenwarmer
+                    name: Wärmer
+                    icon: mdi:cup-water
+                    tap_action:
+                      action: toggle
+                  - type: custom:mushroom-entity-card
+                    entity: select.kaffeevollautomat_aktives_programm
+                    name: Programm
+                    icon: mdi:coffee
+              - type: glance
+                entities:
+                  - entity: sensor.kaffeevollautomat_kaffees
+                    name: Kaffees
+                  - entity: sensor.kaffeevollautomat_kaffee_und_milchtassen
+                    name: Mit Milch
+                  - entity: sensor.kaffeevollautomat_heisswasser
+                    name: Heißwasser
+                  - entity: binary_sensor.kaffeevollautomat_konnektivitat
+                    name: Online
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🌡️ Klima
+          - type: custom:mushroom-title-card
+            title: Haus & Klima
+            subtitle: Alle Räume im Überblick
+          - square: false
+            type: grid
+            columns: 3
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_wohnzimmer_temperatur
+                name: 🛋️ Wohnzimmer
+                line_color: orange
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.esp32c3_rl_buro_temperature_2
+                name: 💼 Büro
+                line_color: '#2ecc71'
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_oma_temperatur
+                name: 👵 Oma
+                line_color: yellow
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.indoor_temperature
+                name: 🛏️ Tilo
+                line_color: '#9b59b6'
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_serverraum_serverraum_temperatur
+                name: 🖥️ Serverraum
+                line_color: '#e74c3c'
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.temperature_humidity_sensor_7cd9_temperature
+                name: 🌤️ Außen
+                line_color: '#3498db'
+                line_width: 2
+                font_size: 75
+                show:
+                  labels: false
+                  extrema: true
+          - type: custom:mini-graph-card
+            name: 💼 Büro – Temperatur & Feuchte (24h)
+            entities:
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                name: Temperatur
+                color: '#e74c3c'
+              - entity: sensor.esp32c3_rl_buro_humidity_2
+                name: Luftfeuchte
+                color: '#3498db'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_wohnzimmer_temperatur
+                line_color: var(--accent-color)
+                line_width: 2
+                font_size: 75
+                name: 🌡️ Temperatur
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_wohnzimmer_luftfeuchtigkeit
+                line_color: blue
+                line_width: 2
+                font_size: 75
+                name: 💧 Luftfeuchte
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_wohnzimmer_luftdruck
+                line_color: '#e74c3c'
+                line_width: 2
+                font_size: 75
+                name: 📊 Luftdruck
+            title: 🛋️ Wohnzimmer
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_oma_temperatur
+                line_color: var(--accent-color)
+                line_width: 2
+                font_size: 75
+                name: 🌡️ Temperatur
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_oma_luftfeuchtigkeit
+                line_color: blue
+                line_width: 2
+                font_size: 75
+                name: 💧 Luftfeuchte
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_oma_luftdruck
+                line_color: '#e74c3c'
+                line_width: 2
+                font_size: 75
+                name: 📊 Luftdruck
+            title: 👵 Oma
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.indoor_temperature
+                line_color: '#9b59b6'
+                line_width: 2
+                font_size: 75
+                name: 🌡️ Temperatur
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.indoor_humidity
+                line_color: blue
+                line_width: 2
+                font_size: 75
+                name: 💧 Luftfeuchte
+            title: 🛏️ Tilo
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_serverraum_serverraum_temperatur
+                line_color: '#e74c3c'
+                line_width: 2
+                font_size: 75
+                name: 🌡️ Temperatur
+              - type: custom:mini-graph-card
+                entities:
+                  - sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                line_color: blue
+                line_width: 2
+                font_size: 75
+                name: 💧 Luftfeuchte
+            title: 🖥️ Serverraum
+          - type: entities
+            title: 📋 Alle Raumwerte – Aktuell
+            entities:
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                name: Wohnzimmer – Temperatur
+                secondary_info: last-changed
+              - entity: sensor.rochlitz_wohnzimmer_luftfeuchtigkeit
+                name: Wohnzimmer – Feuchte
+              - entity: sensor.rochlitz_wohnzimmer_luftdruck
+                name: Wohnzimmer – Luftdruck
+              - type: divider
+              - entity: sensor.rochlitz_oma_temperatur
+                name: Oma – Temperatur
+                secondary_info: last-changed
+              - entity: sensor.rochlitz_oma_luftfeuchtigkeit
+                name: Oma – Feuchte
+              - type: divider
+              - entity: sensor.indoor_temperature
+                name: Tilo – Temperatur
+              - entity: sensor.indoor_humidity
+                name: Tilo – Feuchte
+              - type: divider
+              - entity: sensor.esp32c3_rl_buro_temperature_2
+                name: Büro – Temperatur
+              - entity: sensor.esp32c3_rl_buro_humidity_2
+                name: Büro – Feuchte
+              - entity: sensor.esp32c3_rl_buro_pressure_2
+                name: Büro – Luftdruck
+              - type: divider
+              - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                name: Serverraum – Temperatur
+              - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                name: Serverraum – Feuchte
+              - type: divider
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                name: Außen – Temperatur
+                secondary_info: last-changed
+              - entity: sensor.temperature_humidity_sensor_7cd9_humidity
+                name: Außen – Feuchte
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+              - entity: sensor.rochlitz_wohnzimmer_temperatur
+                aggregate_func: avg
+                name: Ø
+                color: green
+            name: 🛋️ Wohnzimmer – 60 Tage
+            hours_to_show: 1440
+            points_per_hour: 0.05
+            group_by: date
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+              - entity: sensor.rochlitz_oma_temperatur
+                aggregate_func: avg
+                name: Ø
+                color: green
+            name: 👵 Oma – 60 Tage
+            hours_to_show: 1440
+            points_per_hour: 0.05
+            group_by: date
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.indoor_temperature
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.indoor_temperature
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+              - entity: sensor.indoor_temperature
+                aggregate_func: avg
+                name: Ø
+                color: green
+            name: 🛏️ Tilo – 60 Tage
+            hours_to_show: 1440
+            points_per_hour: 0.05
+            group_by: date
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: max
+                name: Max
+                color: '#e74c3c'
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: min
+                name: Min
+                color: '#3498db'
+              - entity: sensor.temperature_humidity_sensor_7cd9_temperature
+                aggregate_func: avg
+                name: Ø
+                color: green
+            name: 🌤️ Außen – 60 Tage
+            hours_to_show: 1440
+            points_per_hour: 0.05
+            group_by: date
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_7
+            stat_types:
+              - mean
+              - min
+              - max
+            title: ☀️ Kollektor – 14 Tage
+            days_to_show: 14
+      - type: grid
+        cards:
+          - type: heading
+            heading: ⚡ Energie
+          - type: custom:mushroom-title-card
+            title: Energieverbrauch
+            subtitle: Verbrauch je Gerät und Raum
+          - header:
+              show: true
+              show_states: true
+              colorize_states: true
+              title: 📊 Stromverbrauch letzte 7 Tage
+            type: custom:apexcharts-card
+            apex_config:
+              chart:
+                stacked: true
+                height: 300
+              xaxis:
+                labels:
+                  format: dd.MM
+              legend:
+                show: true
+            graph_span: 7d
+            span:
+              end: day
+            show:
+              last_updated: true
+            series:
+              - entity: sensor.kuhlschrank_rochlitz
+                name: Kühlschrank
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.oma_verbrauch
+                name: Oma
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.waschmaschine_rochlitz
+                name: Waschmaschine
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.computer_rochlitz
+                name: Computer
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.kaffeemaschine_rochlitz
+                name: Kaffeemaschine
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.wohnzimmer_rochlitz
+                name: Wohnzimmer
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.tilo
+                name: Tilo
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+              - entity: sensor.buro_rochlitz
+                name: Büro/Musik
+                type: column
+                group_by:
+                  func: diff
+                  duration: 1d
+                  start_with_last: true
+          - chart_type: bar
+            period: hour
+            type: statistics-graph
+            title: ⚡ Stromverbrauch 24h – Stündlich
+            entities:
+              - entity: sensor.kuhlschrank_rochlitz_2
+                name: Kühlschrank
+              - entity: sensor.tilo
+                name: Tilo
+              - entity: sensor.buro_rochlitz
+                name: Büro/Musik
+              - entity: sensor.computer_rochlitz
+                name: Computer
+              - entity: sensor.wohnzimmer_rochlitz
+                name: Wohnzimmer
+              - entity: sensor.waschmaschine_rochlitz
+                name: Waschmaschine
+            days_to_show: 1
+            hide_legend: false
+            stat_types:
+              - change
+          - type: entities
+            title: 🧊 Kühlschrank
+            entities:
+              - entity: sensor.rochlitz_kuhlschrank_power
+                name: Leistung (W)
+              - entity: sensor.rochlitz_kuhlschrank_current
+                name: Strom (A)
+              - entity: sensor.rochlitz_kuhlschrank_voltage
+                name: Spannung (V)
+              - entity: sensor.rochlitz_kuhlschrank_energy
+                name: Energie (kWh)
+              - entity: sensor.rochlitz_kuhlschrank_consumption
+                name: Verbrauch gesamt
+              - entity: sensor.kuhlschrank_rochlitz
+                name: Statistik
+          - type: entities
+            title: 🛋️ Wohnzimmer Steckdose
+            entities:
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_voltage
+                name: Spannung (V)
+              - entity: sensor.smart_switch_24022106833283510d0148e1e9ed3010_energy
+                name: Energie (kWh)
+              - entity: sensor.wohnzimmer_rochlitz
+                name: Statistik
+              - entity: switch.smart_switch_24022106833283510d0148e1e9ed3010_outlet
+                name: Schalter
+          - type: entities
+            title: 🫧 Waschmaschine
+            entities:
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_voltage
+                name: Spannung (V)
+              - entity: sensor.smart_switch_24022135042720510d0148e1e9ed26af_energy
+                name: Energie (kWh)
+              - entity: sensor.waschmaschine_rochlitz
+                name: Statistik
+              - entity: switch.smart_switch_24022135042720510d0148e1e9ed26af_outlet
+                name: Schalter
+          - type: entities
+            title: 💻 Computer
+            entities:
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_voltage
+                name: Spannung (V)
+              - entity: sensor.smart_switch_24022139185434510d0148e1e9ed14d7_energy
+                name: Energie (kWh)
+              - entity: sensor.computer_rochlitz
+                name: Statistik
+              - entity: switch.smart_switch_24022139185434510d0148e1e9ed14d7_outlet
+                name: Schalter
+          - type: entities
+            title: 🛏️ Tilo Zimmer
+            entities:
+              - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_23070778577851510d0248e1e9cfc20b_voltage
+                name: Spannung (V)
+              - entity: sensor.tilo
+                name: Statistik
+              - entity: switch.smart_switch_23070778577851510d0248e1e9cfc20b_outlet
+                name: Schalter
+          - type: entities
+            title: 🎵 Büro / Musik
+            entities:
+              - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_23070739203051510d0248e1e9cfc328_voltage
+                name: Spannung (V)
+              - entity: sensor.buro_rochlitz
+                name: Statistik
+              - entity: switch.smart_switch_23070739203051510d0248e1e9cfc328_outlet
+                name: Schalter
+          - type: entities
+            title: 👵 Oma Steckdose
+            entities:
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_power
+                name: Leistung (W)
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_current
+                name: Strom (A)
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_voltage
+                name: Spannung (V)
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_energy
+                name: Energie (kWh)
+              - entity: sensor.smart_switch_24060408263254510802c4e7ae048e5e_consumption
+                name: Verbrauch gesamt
+              - entity: sensor.oma_verbrauch
+                name: Statistik
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🔥 Heizung & Solar
+          - type: custom:mushroom-title-card
+            title: Heizung & Solar
+            subtitle: UVR16x2 · Warmwasser · Kessel · Kollektor
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.uvr16x2_node_2_input_7
+                    name: Kollektor
+                    icon: mdi:solar-power
+                    icon_color: orange
+                    primary_info: state
+                    secondary_info: name
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.uvr16x2_node_2_input_2
+                    name: Warmwasser oben
+                    icon: mdi:water-boiler
+                    icon_color: red
+                    primary_info: state
+                    secondary_info: name
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.uvr16x2_node_2_input_4
+                    name: Speicher unten
+                    icon: mdi:storage-tank
+                    icon_color: blue
+                    primary_info: state
+                    secondary_info: name
+          - type: entities
+            title: 🌡️ UVR16x2 – Temperaturen
+            entities:
+              - entity: sensor.uvr16x2_node_2_input_1
+                name: Kessel Vorlauf
+                icon: mdi:fire
+              - entity: sensor.uvr16x2_node_2_input_2
+                name: Warmwasser (Speicher oben)
+                icon: mdi:water-boiler
+              - entity: sensor.uvr16x2_node_2_input_4
+                name: Speicher unten (Rücklauf)
+                icon: mdi:storage-tank
+              - entity: sensor.uvr16x2_node_2_input_5
+                name: Weitere Messung
+              - entity: sensor.uvr16x2_node_2_input_7
+                name: Kollektor / Solar
+                icon: mdi:solar-panel
+          - type: entities
+            title: ⚙️ Pumpen & Ausgänge
+            entities:
+              - entity: binary_sensor.uvr16x2_node_2_output_3
+                name: Heizungspumpe
+                icon: mdi:pump
+              - entity: binary_sensor.uvr16x2_node_2_output_4
+                name: Ausgang 4
+              - entity: binary_sensor.uvr16x2_node_2_output_5
+                name: Ausgang 5
+              - entity: binary_sensor.uvr16x2_node_2_output_6
+                name: Ausgang 6
+              - entity: binary_sensor.uvr16x2_node_2_output_7
+                name: Ausgang 7
+              - entity: binary_sensor.uvr16x2_node_2_output_8
+                name: Ausgang 8
+              - entity: sensor.uvr16x2_node_2_output_16
+                name: Solar Leistung
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.node_2_analog_logging_2
+            name: 🚿 Warmwasser – 24h
+            hours_to_show: 24
+            points_per_hour: 0.75
+            line_width: 2
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_2
+            name: 🚿 Warmwasser – 48h
+            hours_to_show: 48
+            points_per_hour: 0.75
+            line_width: 2
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.node_2_analog_logging_2
+            name: 🚿 Warmwasser – 1 Woche
+            hours_to_show: 168
+            points_per_hour: 0.75
+            line_width: 2
+            color_thresholds:
+              - value: 30
+                color: '#1414b8'
+              - value: 35
+                color: '#f39c12'
+              - value: 40
+                color: '#d35400'
+              - value: 45
+                color: '#c0392b'
+              - value: 55
+                color: '#901090'
+          - type: history-graph
+            title: 🔥 Kessel vs. Speicher – 24h Strategie
+            hours_to_show: 24
+            entities:
+              - entity: sensor.uvr16x2_node_2_input_1
+                name: Kessel Vorlauf
+              - entity: sensor.uvr16x2_node_2_input_4
+                name: Speicher unten (Rücklauf)
+              - entity: sensor.uvr16x2_node_2_input_2
+                name: Warmwasser (Speicher oben)
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.uvr16x2_node_2_analog_logging_7
+            stat_types:
+              - mean
+              - min
+              - max
+            title: ☀️ Kollektor – 14 Tage
+            days_to_show: 14
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.uvr16x2_node_2_analog_logging_5
+                name: Dach Außen
+                color: '#3498db'
+            name: 🌤️ Dachtemperatur
+            hours_to_show: 24
+            points_per_hour: 1
+            line_width: 2
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🖥️ Technik
+          - type: custom:mushroom-title-card
+            title: Infrastruktur & NAS
+            subtitle: RochlitzNAS · Serverraum · Uptime
+          - type: glance
+            title: 🖥️ RochlitzNAS – Übersicht
+            entities:
+              - entity: sensor.rochlitznas_cpu_auslastung_gesamt
+                name: CPU gesamt
+              - entity: sensor.rochlitznas_cpu_auslastung_benutzer
+                name: CPU Benutzer
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_5_min
+                name: Ø CPU 5min
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_15_min
+                name: Ø CPU 15min
+              - entity: sensor.rochlitznas_speichernutzung_real
+                name: RAM %
+              - entity: sensor.rochlitznas_speicher_verfugbar_real
+                name: RAM frei
+              - entity: sensor.rochlitznas_download_durchsatz
+                name: ↓ Download
+              - entity: sensor.rochlitznas_upload_durchsatz
+                name: ↑ Upload
+              - entity: binary_sensor.rochlitznas_sicherheitsstatus
+                name: Sicherheit
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.rochlitznas_cpu_auslastung_gesamt
+                name: CPU Last
+                icon: mdi:chip
+                icon_color: blue
+              - type: custom:mushroom-entity-card
+                entity: sensor.rochlitznas_speichernutzung_real
+                name: RAM Auslastung
+                icon: mdi:memory
+                icon_color: green
+              - type: custom:mushroom-entity-card
+                entity: sensor.rochlitznas_download_durchsatz
+                name: Download
+                icon: mdi:download-network
+                icon_color: cyan
+              - type: custom:mushroom-entity-card
+                entity: sensor.rochlitznas_upload_durchsatz
+                name: Upload
+                icon: mdi:upload-network
+                icon_color: purple
+          - type: entities
+            title: 💾 Drive 1 – Status & Gesundheit
+            entities:
+              - entity: sensor.rochlitznas_drive_1_status
+                name: HDD Status
+                icon: mdi:harddisk
+              - entity: sensor.rochlitznas_drive_1_temperatur
+                name: HDD Temperatur
+                icon: mdi:thermometer
+              - entity: binary_sensor.rochlitznas_drive_1_max_fehlerhafte_sektoren_uberschritten
+                name: Fehlerhafte Sektoren
+                icon: mdi:alert-circle
+              - entity: binary_sensor.rochlitznas_drive_1_unterhalb_der_mindestrestlebensdauer
+                name: Mindestlebensdauer OK
+                icon: mdi:shield-check
+          - type: entities
+            title: 📊 NAS – Alle Werte
+            entities:
+              - entity: sensor.rochlitznas_cpu_auslastung_benutzer
+                name: CPU Benutzer
+              - entity: sensor.rochlitznas_cpu_auslastung_gesamt
+                name: CPU Gesamt
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_5_min
+                name: Ø CPU 5 min
+              - entity: sensor.rochlitznas_durchschnittliche_cpu_auslastung_15_min
+                name: Ø CPU 15 min
+              - type: divider
+              - entity: sensor.rochlitznas_speicher_gesamt_real
+                name: RAM gesamt
+              - entity: sensor.rochlitznas_speicher_verfugbar_real
+                name: RAM frei
+              - entity: sensor.rochlitznas_speichernutzung_real
+                name: RAM Auslastung %
+              - entity: sensor.rochlitznas_speicher_gesamt_swap
+                name: Swap gesamt
+              - entity: sensor.rochlitznas_speicher_verfugbar_swap
+                name: Swap frei
+              - type: divider
+              - entity: sensor.rochlitznas_download_durchsatz
+                name: Download
+              - entity: sensor.rochlitznas_upload_durchsatz
+                name: Upload
+              - type: divider
+              - entity: binary_sensor.rochlitznas_sicherheitsstatus
+                name: Sicherheitsstatus
+                icon: mdi:shield
+          - type: entities
+            title: 🌡️ Serverraum
+            entities:
+              - entity: sensor.rochlitz_serverraum_serverraum_temperatur
+                name: Temperatur
+              - entity: sensor.rochlitz_serverraum_serverraum_luftfeuchtigkeit
+                name: Luftfeuchte
+              - entity: sensor.rochlitz_serverraum_serverraum_monitor_uptime
+                name: Uptime
+          - type: custom:flightradar-flight-card
+            entities:
+              - entity_id: sensor.flightradar24_current_in_area
+            units:
+              altitude: ft
+              distance: km
+              ground_speed: kts
+            carousel:
+              enable: true
+              show_controls: true
+              loop: false
+              autoplay: false
+              autoplay_delay: 5000
+            colors:
+              primary: var(--primary-text-color)
+              secondary: rgba(var(--rgb-primary-text-color), 0.7)
+              accent: var(--accent-color)
+              accent_light: var(--state-active-color)
+              progress_bar_light: var(--secondary-background-color)
+            show_flightradar_link: true
+            show_airline_info_column: true
+            show_airline_logo: true
+            show_aircraft_photo: true
+            show_progress_bar: true
+      - type: grid
+        cards:
+          - type: heading
+            heading: 📷 Kameras & Hausgeräte
+          - type: custom:mushroom-title-card
+            title: Kameras & Geräte
+            subtitle: Eingang · Hintereingang · Backofen · Kaffeevollautomat
+          - type: picture-entity
+            entity: camera.eingang
+            name: 📷 Eingang
+          - show_state: true
+            show_name: true
+            camera_view: auto
+            type: picture-entity
+            entity: camera.hintereingang
+            name: 📷 Hintereingang
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-title-card
+                title: ☕ Kaffeevollautomat – Details
+              - type: entities
+                entities:
+                  - entity: select.kaffeevollautomat_aktives_programm
+                    name: Aktives Programm
+                  - entity: select.kaffeevollautomat_ausgewahltes_programm
+                    name: Ausgewähltes Programm
+                  - entity: switch.kaffeevollautomat_einschalter
+                    name: Einschalter
+                  - entity: switch.kaffeevollautomat_kindersicherung
+                    name: Kindersicherung
+                  - entity: button.kaffeevollautomat_programm_stoppen
+                    name: Programm stoppen
+                  - entity: switch.kaffeevollautomat_tassenwarmer
+                    name: Tassenwärmer
+                  - entity: binary_sensor.kaffeevollautomat_konnektivitat
+                    name: Verbindung
+          - type: entities
+            title: 🥘 Backofen – Steuerung
+            entities:
+              - entity: select.aeg_backofen_upperoven_program
+                name: Programm
+              - entity: number.aeg_backofen_upperoven_targettemperaturec
+                name: Zieltemperatur °C
+              - entity: number.aeg_backofen_upperoven_targetduration
+                name: Laufzeit (min)
+              - entity: button.aeg_backofen_upperoven_executecommand
+                name: ▶ START
+              - entity: button.aeg_backofen_upperoven_executecommand_2
+                name: ⏹ STOP/RESET
+              - entity: switch.aeg_backofen_upperoven_cavitylight
+                name: Backofenlicht
+              - entity: switch.aeg_backofen_childlock
+                name: Kindersicherung
+          - type: entities
+            title: 📊 Backofen – Status
+            entities:
+              - entity: sensor.aeg_backofen_upperoven_appliancestate
+                name: Geräte-Status
+              - entity: sensor.aeg_backofen_upperoven_displaytemperaturec
+                name: Aktuelle Temperatur °C
+              - entity: sensor.aeg_backofen_upperoven_processphase
+                name: Prozessphase
+              - entity: sensor.aeg_backofen_upperoven_runningtime
+                name: Laufzeit
+              - entity: sensor.aeg_backofen_upperoven_timetoend
+                name: Restzeit
+              - entity: sensor.aeg_backofen_upperoven_doorstate
+                name: Tür
+              - entity: sensor.aeg_backofen_upperoven_preheatcomplete
+                name: Vorheizen fertig
+              - entity: sensor.aeg_backofen_upperoven_watertanklevel
+                name: Wassertank
+          - type: entities
+            title: ⚙️ Backofen – Einstellungen
+            entities:
+              - entity: select.aeg_backofen_upperoven_fastheatupfeature
+                name: Schnellaufheizung
+              - entity: select.aeg_backofen_upperoven_targetdurationendaction
+                name: Ende-Aktion nach Zeit
+              - entity: select.aeg_backofen_clockstyle
+                name: Uhranzeige
+              - entity: select.aeg_backofen_displaylight
+                name: Display-Licht
+              - entity: select.aeg_backofen_soundvolume
+                name: Lautstärke
+              - entity: select.aeg_backofen_keysoundtone
+                name: Tastenton
+              - entity: select.aeg_backofen_language
+                name: Sprache
+              - entity: binary_sensor.aeg_backofen_cleaningreminder
+                name: Reinigungserinnerung
+              - entity: sensor.aeg_backofen_remotecontrol
+                name: Fernsteuerung
+    cards: []
+  - theme: Frosted Glass Dark
+    title: Klima Melsungen
+    path: sensors_melsungen
+    icon: mdi:home-thermometer-outline
+    badges: []
+    visible:
+      - user: 091148952dfb4a85a202d471674871af
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🏠 Raumklima – Übersicht
+          - type: grid
+            square: false
+            columns: 3
+            cards:
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.wohnzimmer_temperature
+                name: 🛋️ Wohnzimmer
+                line_color: '#e07b54'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.abstellkammer_temperature
+                name: 🗄️ Office
+                line_color: '#7eb8d4'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.balkon_melsungen_temperature
+                name: 🌿 Balkon
+                line_color: '#6dbf8d'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.wetterstation_temperature
+                name: 🍳 Küche
+                line_color: '#f5a623'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.bad_temperature
+                name: 🚿 Bad
+                line_color: '#5bb8e4'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                name: 🛏️ Schlafzimmer
+                line_color: '#9b8fcf'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.frida_temperatur
+                name: 🌸 Frida
+                line_color: '#d48cb4'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.kids_matilda_kids_matilda_temperature
+                name: 🧸 Matilda
+                line_color: '#f0c44a'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+              - type: custom:mini-graph-card
+                entities:
+                  - entity: sensor.keller_bme280_temperature
+                name: 🧱 Keller
+                line_color: '#a0a0a0'
+                line_width: 2
+                font_size: 75
+                hours_to_show: 6
+                show:
+                  labels: false
+                  extrema: true
+                  icon: false
+      - type: grid
+        cards:
+          - type: heading
+            heading: 🌬️ Luftqualität
+          - type: grid
+            square: false
+            columns: 3
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.office_co2_office_luftqualitat_bewertung
+                name: Arbeitszimmer
+                icon: mdi:air-filter
+                layout: vertical
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-entity-card
+                entity: sensor.frida_luftqualitat_bewertung
+                name: Frida
+                icon: mdi:air-filter
+                layout: vertical
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-entity-card
+                entity: sensor.schlafzimmer_schlafzimmer_luftqualitat_bewertung
+                name: Schlafzimmer
+                icon: mdi:air-filter
+                layout: vertical
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-entity-card
+                entity: sensor.kids_matilda_kids_matilda_luftqualitat_klassifizierung
+                name: Matilda
+                icon: mdi:air-filter
+                layout: vertical
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-entity-card
+                entity: sensor.schlafzimmer_schlafzimmer_iaq_genauigkeit
+                name: IAQ Genauigkeit
+                icon: mdi:gauge
+                layout: vertical
+                tap_action:
+                  action: more-info
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 💼 Arbeitszimmer – eCO₂ & TVOC
+              show_states: true
+              colorize_states: true
+            chart_type: radialBar
+            apex_config:
+              plotOptions:
+                radialBar:
+                  hollow:
+                    size: 30%
+                  track:
+                    show: true
+                    startAngle: -135
+                    endAngle: 135
+                  startAngle: -135
+                  endAngle: 135
+                  dataLabels:
+                    name:
+                      fontSize: 11px
+                    value:
+                      fontSize: 16px
+                      formatter: function(val) { return val + '%'; }
+                    total:
+                      show: true
+                      label: Gesamt
+                      fontSize: 12px
+              legend:
+                show: true
+                position: bottom
+            series:
+              - entity: sensor.office_co2_office_eco2
+                name: eCO₂
+                color: '#e74c3c'
+                min: 400
+                max: 2000
+              - entity: sensor.office_co2_office_tvoc
+                name: TVOC
+                color: '#f39c12'
+                min: 0
+                max: 500
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🛏️ Schlafzimmer – IAQ & CO₂
+              show_states: true
+              colorize_states: true
+            chart_type: radialBar
+            apex_config:
+              plotOptions:
+                radialBar:
+                  hollow:
+                    size: 25%
+                  startAngle: -135
+                  endAngle: 135
+                  dataLabels:
+                    name:
+                      fontSize: 11px
+                    value:
+                      fontSize: 14px
+                    total:
+                      show: true
+                      label: IAQ
+                      fontSize: 12px
+              legend:
+                show: true
+                position: bottom
+            series:
+              - entity: sensor.schlafzimmer_schlafzimmer_iaq
+                name: IAQ
+                color: '#3498db'
+                min: 0
+                max: 500
+              - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+                name: eCO₂
+                color: '#9b8fcf'
+                min: 400
+                max: 2000
+              - entity: sensor.schlafzimmer_schlafzimmer_voc
+                name: VOC
+                color: '#1abc9c'
+                min: 0
+                max: 500
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🌸 Frida – CO₂ & TVOC
+              show_states: true
+              colorize_states: true
+            chart_type: radialBar
+            apex_config:
+              plotOptions:
+                radialBar:
+                  hollow:
+                    size: 30%
+                  startAngle: -135
+                  endAngle: 135
+                  dataLabels:
+                    name:
+                      fontSize: 11px
+                    value:
+                      fontSize: 14px
+                    total:
+                      show: true
+                      label: Gesamt
+                      fontSize: 12px
+              legend:
+                show: true
+                position: bottom
+            series:
+              - entity: sensor.frida_frida_co2_equivalent_2
+                name: eCO₂
+                color: '#e91e8c'
+                min: 400
+                max: 2000
+              - entity: sensor.frida_frida_tvoc_equivalent_2
+                name: TVOC
+                color: '#f06292'
+                min: 0
+                max: 500
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🍳 Küche
+              show_states: true
+              colorize_states: true
+            chart_type: radialBar
+            apex_config:
+              plotOptions:
+                radialBar:
+                  hollow:
+                    size: 30%
+                  startAngle: -135
+                  endAngle: 135
+                  dataLabels:
+                    name:
+                      fontSize: 11px
+                    value:
+                      fontSize: 14px
+                    total:
+                      show: true
+                      label: AQ
+                      fontSize: 12px
+              legend:
+                show: true
+                position: bottom
+            series:
+              - entity: sensor.wetterstation_co2
+                name: Küche CO₂
+                color: '#ff5722'
+                min: 400
+                max: 2000
+      - type: grid
+        cards:
+          - type: heading
+            heading: 📊 24-Stunden-Verlauf
+          - type: custom:mini-graph-card
+            name: 🛋️ Wohnzimmer – Temperatur (24h)
+            entities:
+              - entity: sensor.wohnzimmer_temperature
+                name: Temperatur
+                color: '#e07b54'
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🗄️ Office – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.abstellkammer_temperature
+                name: Temperatur
+                color: '#7eb8d4'
+              - entity: sensor.abstellkammer_humidity
+                name: Luftfeuchte
+                color: '#4a90d9'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🌿 Balkon – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.balkon_melsungen_temperature
+                name: Temperatur
+                color: '#6dbf8d'
+              - entity: sensor.balkon_melsungen_humidity
+                name: Luftfeuchte
+                color: '#27ae60'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🌡️ Wetterstation Balkon (24h)
+            entities:
+              - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+                name: Temperatur
+                color: '#f5a623'
+              - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+                name: Luftfeuchte
+                color: '#e67e22'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🍳 Küche – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.wetterstation_temperature
+                name: Temperatur
+                color: '#f5a623'
+              - entity: sensor.wetterstation_humidity
+                name: Luftfeuchte
+                color: '#e67e22'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🚿 Bad – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.bad_temperature
+                name: Temperatur
+                color: '#5bb8e4'
+              - entity: sensor.bad_humidity
+                name: Luftfeuchte
+                color: '#2980b9'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🧱 Keller – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.keller_bme280_temperature
+                name: Temperatur
+                color: '#a0a0a0'
+              - entity: sensor.keller_bme280_humidity
+                name: Luftfeuchte
+                color: '#7f8c8d'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🛏️ Schlafzimmer – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                name: Temperatur
+                color: '#9b8fcf'
+              - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+                name: Luftfeuchte
+                color: '#6c5ce7'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🌸 Frida – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.frida_temperatur
+                name: Temperatur
+                color: '#d48cb4'
+              - entity: sensor.frida_luftfeuchtigkeit
+                name: Luftfeuchte
+                color: '#e91e8c'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🧸 Matilda – Temp & Feuchte (24h)
+            entities:
+              - entity: sensor.kids_matilda_kids_matilda_temperature
+                name: Temperatur
+                color: '#f0c44a'
+              - entity: sensor.kids_matilda_kids_matilda_humidity
+                name: Luftfeuchte
+                color: '#f39c12'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 💼 Arbeitszimmer – CO₂ & TVOC (24h)
+            entities:
+              - entity: sensor.office_co2_office_eco2
+                name: eCO₂
+                color: '#e74c3c'
+              - entity: sensor.office_co2_office_tvoc
+                name: TVOC
+                color: '#f39c12'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 🛏️ Schlafzimmer – IAQ & CO₂ (24h)
+            entities:
+              - entity: sensor.schlafzimmer_schlafzimmer_iaq
+                name: IAQ
+                color: '#3498db'
+              - entity: sensor.schlafzimmer_schlafzimmer_co2_equivalent
+                name: eCO₂
+                color: '#e74c3c'
+                y_axis: secondary
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+          - type: custom:mini-graph-card
+            name: 💡 Helligkeit (24h)
+            entities:
+              - entity: sensor.schlafzimmer_schlafzimmer_helligkeit
+                name: Schlafzimmer
+                color: '#f9ca24'
+              - entity: sensor.bad_light
+                name: Bad
+                color: '#f0932b'
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            font_size: 75
+            show:
+              labels: true
+              extrema: true
+      - type: grid
+        cards:
+          - type: heading
+            heading: 📈 Langzeit-Verlauf – 90 Tage
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🌡️ Alle Räume – Temperatur (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              opacity: 0.8
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.wohnzimmer_temperature
+                name: Wohnzimmer
+                color: '#e07b54'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.abstellkammer_temperature
+                name: Abstellkammer
+                color: '#7eb8d4'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.balkon_melsungen_temperature
+                name: Balkon
+                color: '#6dbf8d'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.wetterstation_temperature
+                name: Küche
+                color: '#f5a623'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.bad_temperature
+                name: Bad
+                color: '#5bb8e4'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.schlafzimmer_schlafzimmer_temperatur
+                name: Schlafzimmer
+                color: '#9b8fcf'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.frida_temperatur
+                name: Frida
+                color: '#d48cb4'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.kids_matilda_kids_matilda_temperature
+                name: Matilda
+                color: '#f0c44a'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.keller_bme280_temperature
+                name: Keller
+                color: '#a0a0a0'
+                statistics:
+                  type: mean
+                  period: day
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🔊 Lärm Küche (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.wetterstation_noise
+                name: Lärmpegel (dB)
+                color: '#607d8b'
+                statistics:
+                  type: mean
+                  period: day
+      - type: grid
+        cards:
+          - type: heading
+            heading: Neuer Abschnitt
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 💧 Alle Räume – Luftfeuchtigkeit (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              opacity: 0.8
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.abstellkammer_humidity
+                name: Abstellkammer
+                color: '#4a90d9'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.balkon_melsungen_humidity
+                name: Balkon
+                color: '#27ae60'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.wetterstation_humidity
+                name: Küche
+                color: '#e67e22'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.bad_humidity
+                name: Bad
+                color: '#2980b9'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.schlafzimmer_schlafzimmer_luftfeuchtigkeit
+                name: Schlafzimmer
+                color: '#6c5ce7'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.frida_luftfeuchtigkeit
+                name: Frida
+                color: '#e91e8c'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.kids_matilda_kids_matilda_humidity
+                name: Matilda
+                color: '#f39c12'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.keller_bme280_humidity
+                name: Keller
+                color: '#95a5a6'
+                statistics:
+                  type: mean
+                  period: day
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🌬️ TVOC & IAQ (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.office_co2_office_tvoc
+                name: Arbeitszimmer TVOC
+                color: '#f39c12'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.frida_frida_tvoc_equivalent_2
+                name: Frida TVOC
+                color: '#e67e22'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.schlafzimmer_schlafzimmer_iaq
+                name: Schlafzimmer IAQ
+                color: '#3498db'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.schlafzimmer_schlafzimmer_voc
+                name: Schlafzimmer VOC
+                color: '#1abc9c'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.kids_matilda_kids_matilda_air_quality_raw
+                name: Matilda AQ Raw
+                color: '#9b59b6'
+                statistics:
+                  type: mean
+                  period: day
+      - type: grid
+        cards:
+          - type: heading
+            heading: Neuer Abschnitt
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 🌡️ Wetterstation Balkon (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_temperature
+                name: Temperatur
+                color: '#f5a623'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.wetterstation_wetterstation_wetterstation_balkon_humidity
+                name: Luftfeuchtigkeit
+                color: '#e67e22'
+                statistics:
+                  type: mean
+                  period: day
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              title: 💡 Helligkeit (90 Tage)
+              show_states: true
+              colorize_states: true
+            graph_span: 90d
+            all_series_config:
+              stroke_width: 1.5
+              type: line
+              show:
+                in_legend: true
+                legend_value: true
+            series:
+              - entity: sensor.schlafzimmer_schlafzimmer_helligkeit
+                name: Schlafzimmer
+                color: '#f9ca24'
+                statistics:
+                  type: mean
+                  period: day
+              - entity: sensor.bad_light
+                name: Bad
+                color: '#f0932b'
+                statistics:
+                  type: mean
+                  period: day
+    cards: []
